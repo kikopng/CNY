@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <style>
-        /* --- COPYING SAME STYLING AS BEFORE FOR CONSISTENCY --- */
+        /* --- CORE STYLES --- */
         :root { --cny-red: #c41e3a; --cny-dark-red: #8a0b1e; --cny-gold: #d4af37; --bg-cream: #fffdf5; --text-dark: #3e0c13; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-cream); color: var(--text-dark); margin: 0; padding-bottom: 120px; background-image: radial-gradient(rgba(212, 175, 55, 0.2) 1px, transparent 1px); background-size: 30px 30px; }
         
@@ -17,6 +17,41 @@
         .category-nav { position: sticky; top: 0; background: rgba(255,255,255,0.95); padding: 15px 0; z-index: 100; display: flex; justify-content: center; gap: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .nav-btn { padding: 8px 18px; border-radius: 20px; text-decoration: none; color: var(--cny-dark-red); font-weight: bold; border: 1px solid transparent; transition: 0.3s; }
         .nav-btn:hover { background: #fff5f5; border-color: var(--cny-red); }
+
+        /* --- NEW GALLERY STYLES --- */
+        .gallery-container {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 20px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+        }
+        /* Hide scrollbar but keep functionality */
+        .gallery-container::-webkit-scrollbar { height: 8px; }
+        .gallery-container::-webkit-scrollbar-thumb { background: var(--cny-gold); border-radius: 4px; }
+        
+        .gallery-img {
+            height: 250px; /* Fixed height */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            cursor: zoom-in;
+            border: 2px solid var(--cny-gold);
+            transition: transform 0.2s;
+            flex-shrink: 0; /* Prevents squishing */
+        }
+        .gallery-img:hover { transform: scale(1.02); }
+        
+        .gallery-hint { text-align: center; font-size: 0.85rem; color: #666; margin-bottom: 10px; font-style: italic; }
+
+        /* Image Viewer Modal */
+        .img-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 3000;
+            display: none; justify-content: center; align-items: center;
+        }
+        .img-modal img { max-width: 95%; max-height: 95%; border: 2px solid white; border-radius: 5px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .close-img { position: absolute; top: 20px; right: 20px; color: white; font-size: 2rem; cursor: pointer; }
 
         /* Container & Cards */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
@@ -62,7 +97,6 @@
         .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 2000; }
         .toast.show { opacity: 1; }
         
-        /* Spinner */
         .spinner { border: 3px solid #f3f3f3; border-top: 3px solid var(--cny-gold); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
@@ -79,16 +113,34 @@
 </header>
 
 <nav class="category-nav">
+    <a href="#section-gallery" class="nav-btn">📷 Photos</a>
     <a href="#section-biscuits" class="nav-btn">🍪 Biscuits</a>
     <a href="#section-meat" class="nav-btn">🥩 Dried Meat</a>
-    <a href="#section-hampers" class="nav-btn">🎁 Hampers</a>
 </nav>
+
+<!-- PHOTO GALLERY SECTION -->
+<div id="section-gallery" style="background: white; padding-bottom: 20px;">
+    <div class="category-header" style="margin-top: 20px;">Product Gallery</div>
+    <div class="gallery-hint">Tap any photo to zoom in to see labels</div>
+    
+    <div class="gallery-container">
+        <!-- REPLACE THESE NAMES WITH YOUR IMAGE FILE NAMES -->
+        <img src="menu1.jpeg" class="gallery-img" onclick="openImage(this.src)">
+        <img src="menu2.jpeg" class="gallery-img" onclick="openImage(this.src)">
+        <img src="menu3.jpeg" class="gallery-img" onclick="openImage(this.src)">
+        <img src="menu4.jpg" class="gallery-img" onclick="openImage(this.src)">
+        <img src="menu5.jpeg" class="gallery-img" onclick="openImage(this.src)">
+        <img src="menu6.jpeg" class="gallery-img" onclick="openImage(this.src)">
+        <img src="menu7.jpeg" class="gallery-img" onclick="openImage(this.src)">
+        <img src="menu8.jpg" class="gallery-img" onclick="openImage(this.src)">
+    </div>
+</div>
 
 <div class="container">
     
     <!-- Biscuits -->
     <div id="section-biscuits">
-        <div class="category-header">CNY Cookies</div>
+        <div class="category-header">Order List</div>
         <div style="text-align:center; margin-bottom: 20px; color: var(--cny-red); font-weight: bold;">
             ✨ PROMO: Mix & Match any 3 for RM 52! (RM18 items)
         </div>
@@ -166,14 +218,19 @@
     </div>
 </div>
 
+<!-- IMAGE ZOOM MODAL -->
+<div class="img-modal" id="imgModal" onclick="closeImage()">
+    <span class="close-img">&times;</span>
+    <img id="imgZoom" src="">
+</div>
+
 <div class="toast" id="toast">Item added!</div>
 
 <script>
     // --- CONFIGURATION ---
     const PHONE_NUMBER = "60199881373"; 
-    
     // *** PASTE YOUR GOOGLE WEB APP URL HERE ***
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1nGrORIGWuFr7_LlzLrvfhOXwNopqi9pOS6aLEGk5sOmlkPRYAezOAdkB8y9D_JiT/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxB-XXXXX-EXAMPLE-URL-XXXX/exec"; 
 
     // --- PRODUCT DATA ---
     const products = [
@@ -282,6 +339,15 @@
         setTimeout(() => t.classList.remove('show'), 2000);
     }
 
+    // IMAGE ZOOM FUNCTIONS
+    function openImage(src) {
+        document.getElementById('imgZoom').src = src;
+        document.getElementById('imgModal').style.display = 'flex';
+    }
+    function closeImage() {
+        document.getElementById('imgModal').style.display = 'none';
+    }
+
     function openCheckout() {
         if (Object.keys(cart).length === 0) return alert("Cart is empty");
         let html = '', total = document.getElementById('totalPrice').innerText;
@@ -337,7 +403,6 @@
         const spinner = document.getElementById('loadingSpinner');
         const btnText = document.getElementById('sheetBtnText');
         
-        // Loading State
         btn.disabled = true;
         spinner.style.display = 'block';
         btnText.innerText = "Processing...";
@@ -352,18 +417,14 @@
 
         fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors', // Important for Google Apps Script
-            headers: {
-                'Content-Type': 'text/plain' // Helps avoid pre-flight CORS check
-            },
+            mode: 'no-cors', 
+            headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify(payload)
         }).then(() => {
             alert("Order Submitted! We will contact you shortly.");
             cart = {};
             recalcTotal();
             closeCheckout();
-            
-            // Reset Button
             btn.disabled = false;
             spinner.style.display = 'none';
             btnText.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Submit Order to Shop';
