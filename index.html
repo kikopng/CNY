@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 CNY Goodies | Premium Cookies & Bakkwa</title>
+    <title>2026 新年饼 | Premium CNY Goodies</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <style>
@@ -15,47 +15,25 @@
         header { background: linear-gradient(135deg, #2b050a, var(--cny-dark-red)); color: var(--cny-gold); text-align: center; padding: 40px 20px 20px; border-bottom: 4px solid var(--cny-gold); }
         h1 { margin: 0; font-size: 2.2rem; }
         .category-nav { position: sticky; top: 0; background: rgba(255,255,255,0.95); padding: 15px 0; z-index: 100; display: flex; justify-content: center; gap: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .nav-btn { padding: 8px 18px; border-radius: 20px; text-decoration: none; color: var(--cny-dark-red); font-weight: bold; border: 1px solid transparent; transition: 0.3s; }
+        .nav-btn { padding: 8px 18px; border-radius: 20px; text-decoration: none; color: var(--cny-dark-red); font-weight: bold; border: 1px solid transparent; transition: 0.3s; font-size: 0.95rem; }
         .nav-btn:hover { background: #fff5f5; border-color: var(--cny-red); }
 
-        /* --- NEW GALLERY STYLES --- */
-        .gallery-container {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding: 20px;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
-        }
-        /* Hide scrollbar but keep functionality */
+        /* --- GALLERY STYLES --- */
+        .gallery-container { display: flex; gap: 15px; overflow-x: auto; padding: 20px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
         .gallery-container::-webkit-scrollbar { height: 8px; }
         .gallery-container::-webkit-scrollbar-thumb { background: var(--cny-gold); border-radius: 4px; }
-        
-        .gallery-img {
-            height: 250px; /* Fixed height */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            cursor: zoom-in;
-            border: 2px solid var(--cny-gold);
-            transition: transform 0.2s;
-            flex-shrink: 0; /* Prevents squishing */
-        }
+        .gallery-img { height: 250px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: zoom-in; border: 2px solid var(--cny-gold); transition: transform 0.2s; flex-shrink: 0; }
         .gallery-img:hover { transform: scale(1.02); }
-        
         .gallery-hint { text-align: center; font-size: 0.85rem; color: #666; margin-bottom: 10px; font-style: italic; }
 
         /* Image Viewer Modal */
-        .img-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 3000;
-            display: none; justify-content: center; align-items: center;
-        }
+        .img-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; display: none; justify-content: center; align-items: center; }
         .img-modal img { max-width: 95%; max-height: 95%; border: 2px solid white; border-radius: 5px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
         .close-img { position: absolute; top: 20px; right: 20px; color: white; font-size: 2rem; cursor: pointer; }
 
         /* Container & Cards */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .category-header { text-align: center; margin: 40px 0 20px; color: var(--cny-dark-red); font-size: 1.8rem; }
+        .category-header { text-align: center; margin: 40px 0 20px; color: var(--cny-dark-red); font-size: 1.8rem; font-weight: bold; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
         
         .card { background: white; border-radius: 15px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid transparent; transition: transform 0.2s; }
@@ -63,7 +41,7 @@
         .card.in-cart { border: 2px solid var(--cny-red); background: #fff9f9; }
         
         .price-tag { background: var(--cny-red); color: white; padding: 4px 10px; border-radius: 10px; font-weight: bold; float: right; font-size: 0.9rem; }
-        .product-name { font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; }
+        .product-name { font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; color: #2b050a; }
         .add-btn { background: white; color: var(--cny-red); border: 2px solid var(--cny-red); width: 100%; padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .add-btn:hover { background: var(--cny-red); color: white; }
         .qty-control { display: none; align-items: center; justify-content: center; gap: 10px; margin-top: 5px; }
@@ -90,9 +68,7 @@
         
         .divider { display: flex; align-items: center; text-align: center; color: #888; margin: 20px 0; font-size: 0.8rem; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #ddd; }
-        .divider::before { margin-right: 10px; }
-        .divider::after { margin-left: 10px; }
-
+        
         .helper-text { font-size: 0.75rem; color: #666; margin-top: 4px; }
         .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 2000; }
         .toast.show { opacity: 1; }
@@ -108,20 +84,20 @@
         <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
         <span id="headerCount" style="background:red; color:white; border-radius:50%; padding: 2px 6px; font-size: 0.7rem; vertical-align: top;">0</span>
     </div>
-    <h1>2026 CNY Shop</h1>
+    <h1>2026 新春年货</h1>
     <div style="font-size: 0.9rem; opacity: 0.9; margin-top:5px;">Homemade Goodies & Hampers</div>
 </header>
 
 <nav class="category-nav">
-    <a href="#section-gallery" class="nav-btn">📷 Photos</a>
-    <a href="#section-biscuits" class="nav-btn">🍪 Biscuits</a>
-    <a href="#section-meat" class="nav-btn">🥩 Dried Meat</a>
+    <a href="#section-gallery" class="nav-btn">📷 照片 (Photos)</a>
+    <a href="#section-biscuits" class="nav-btn">🍪 年饼 (Biscuits)</a>
+    <a href="#section-meat" class="nav-btn">🥩 肉干 (Bakkwa)</a>
 </nav>
 
 <!-- PHOTO GALLERY SECTION -->
 <div id="section-gallery" style="background: white; padding-bottom: 20px;">
-    <div class="category-header" style="margin-top: 20px;">Product Gallery</div>
-    <div class="gallery-hint">Tap any photo to zoom in to see labels</div>
+    <div class="category-header" style="margin-top: 20px;">产品展示 (Gallery)</div>
+    <div class="gallery-hint">Tap any photo to zoom in</div>
     
     <div class="gallery-container">
         <!-- REPLACE THESE NAMES WITH YOUR IMAGE FILE NAMES -->
@@ -130,41 +106,40 @@
         <img src="menu3.jpeg" class="gallery-img" onclick="openImage(this.src)">
         <img src="menu4.jpg" class="gallery-img" onclick="openImage(this.src)">
         <img src="menu5.jpeg" class="gallery-img" onclick="openImage(this.src)">
-        <img src="menu6.jpeg" class="gallery-img" onclick="openImage(this.src)">
-        <img src="menu7.jpeg" class="gallery-img" onclick="openImage(this.src)">
-        <img src="menu8.jpeg" class="gallery-img" onclick="openImage(this.src)">
     </div>
 </div>
 
 <div class="container">
     
-    <!-- Biscuits -->
+    <!-- Biscuits SECTION -->
     <div id="section-biscuits">
-        <div class="category-header">Order List</div>
+        <div class="category-header">热卖年饼 (Hot Selling)</div>
         <div style="text-align:center; margin-bottom: 20px; color: var(--cny-red); font-weight: bold;">
-            ✨ PROMO: Mix & Match any 3 for RM 52! (RM18 items)
+            ✨ PROMO: 任选 3 罐 RM 52! (Mix Any 3)
         </div>
+        <!-- Grid for RM 18 Items -->
         <div class="product-grid" id="grid-18"></div>
         
-        <h3 style="text-align:center; margin-top:40px; color:var(--cny-dark-red);">Premium Selection (RM 22)</h3>
-        <div class="product-grid" id="grid-22"></div>
-        
-        <h3 style="text-align:center; margin-top:40px; color:var(--cny-dark-red);">Signature Series</h3>
-        <div class="product-grid" id="grid-signature"></div>
+        <div class="category-header" style="margin-top: 50px;">特级精选 (Premium Selection)</div>
+        <div style="text-align:center; margin-bottom: 20px; color: #666; font-size: 0.9rem;">
+            真材实料 & 传统风味
+        </div>
+        <!-- Grid for Premium Items -->
+        <div class="product-grid" id="grid-prem"></div>
     </div>
 
     <!-- Meat -->
     <div id="section-meat">
-        <div class="category-header">Charcoal Grilled Bakkwa</div>
+        <div class="category-header">炭烧肉干 (Charcoal Bakkwa)</div>
         <div class="product-grid" id="grid-meat"></div>
     </div>
 
     <!-- Hampers -->
     <div id="section-hampers" class="hamper-box">
         <i class="fas fa-gift" style="font-size: 3rem; margin-bottom: 15px;"></i>
-        <h2>CNY Hampers</h2>
+        <h2>新春礼篮 (CNY Hampers)</h2>
         <p>Customizable hampers for corporate & family gifting.</p>
-        <a href="#" onclick="inquireHamper()" class="hamper-btn">Ask via WhatsApp</a>
+        <a href="#" onclick="inquireHamper()" class="hamper-btn">WhatsApp 询问 (Inquire)</a>
     </div>
 
 </div>
@@ -175,46 +150,45 @@
         <span style="font-weight:bold;">Total: RM <span id="totalPrice">0</span></span>
         <span style="font-size:0.8rem; color:#666;"><span id="totalItems">0</span> items</span>
     </div>
-    <button class="checkout-btn" onclick="openCheckout()">Checkout <i class="fas fa-arrow-right"></i></button>
+    <button class="checkout-btn" onclick="openCheckout()">结账 Checkout <i class="fas fa-arrow-right"></i></button>
 </div>
 
 <!-- Modal -->
 <div class="modal-overlay" id="checkoutModal">
     <div class="modal-content">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0; color:var(--cny-dark-red);">Review Order</h2>
+            <h2 style="margin:0; color:var(--cny-dark-red);">订单详情 (Review Order)</h2>
             <button onclick="closeCheckout()" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
         </div>
 
         <div id="orderSummaryList" style="background:#f9f9f9; padding:15px; border-radius:10px; margin-bottom:20px; font-size:0.9rem;"></div>
 
         <div class="form-group">
-            <label style="font-weight:bold; display:block; margin-bottom:5px;">Name</label>
+            <label style="font-weight:bold; display:block; margin-bottom:5px;">姓名 Name</label>
             <input type="text" id="custName" class="form-input" placeholder="Your Name">
             <div class="helper-text">*Optional for WhatsApp</div>
         </div>
         <div class="form-group">
-            <label style="font-weight:bold; display:block; margin-bottom:5px;">Phone</label>
+            <label style="font-weight:bold; display:block; margin-bottom:5px;">电话 Phone</label>
             <input type="tel" id="custPhone" class="form-input" placeholder="012-3456789">
             <div class="helper-text">*Optional for WhatsApp</div>
         </div>
         <div class="form-group">
-            <label style="font-weight:bold; display:block; margin-bottom:5px;">Remarks</label>
+            <label style="font-weight:bold; display:block; margin-bottom:5px;">备注 Remarks</label>
             <input type="text" id="custRemarks" class="form-input" placeholder="Any special requests?">
         </div>
 
         <!-- Buttons -->
         <button class="btn-whatsapp" onclick="sendWhatsApp()">
-            <i class="fab fa-whatsapp"></i> Send via WhatsApp
+            <i class="fab fa-whatsapp"></i> WhatsApp 发送订单
         </button>
         
         <div class="divider">OR</div>
         
         <button class="btn-submit" onclick="submitToSheet()" id="sheetBtn">
             <div class="spinner" id="loadingSpinner"></div>
-            <span id="sheetBtnText"><i class="fas fa-cloud-upload-alt"></i> Submit Order to Shop</span>
+            <span id="sheetBtnText"><i class="fas fa-cloud-upload-alt"></i> 提交订单 (Submit Order)</span>
         </button>
-        <div style="text-align:center; font-size:0.75rem; color:#888; margin-top:5px;">(Requires Name & Phone)</div>
     </div>
 </div>
 
@@ -224,7 +198,7 @@
     <img id="imgZoom" src="">
 </div>
 
-<div class="toast" id="toast">Item added!</div>
+<div class="toast" id="toast">已加入购物车! (Item added)</div>
 
 <script>
     // --- CONFIGURATION ---
@@ -232,47 +206,28 @@
     // *** PASTE YOUR GOOGLE WEB APP URL HERE ***
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxB-XXXXX-EXAMPLE-URL-XXXX/exec"; 
 
-    // --- PRODUCT DATA ---
+    // --- PRODUCT LIST (CHINESE FIRST) ---
     const products = [
-        { id: 101, name: "Fried Ngaku (炸芽菇)", price: 18, cat: "hot" },
-        { id: 102, name: "Hae Bee Hiam Rolls", weight: "270g", price: 18, cat: "hot" },
-        { id: 103, name: "Chicken Floss Rolls", weight: "200g", price: 18, cat: "hot" },
-        { id: 104, name: "Fried Seaweed", weight: "125g", price: 18, cat: "hot" },
-        { id: 105, name: "Fried Crab Stick", weight: "150g", price: 18, cat: "hot" },
-        { id: 106, name: "Snowflake Flakes", weight: "300g", price: 18, cat: "hot" },
-        { id: 107, name: "Sweet Potato Chips", weight: "160g", price: 18, cat: "hot" },
-        { id: 108, name: "Pumpkin Crackers", weight: "160g", price: 18, cat: "hot" },
-        { id: 109, name: "Tofu Crackers", weight: "150g", price: 18, cat: "hot" },
-        { id: 110, name: "Seaweed Sticks", weight: "240g", price: 18, cat: "hot" },
-        { id: 111, name: "Egg Cookies", weight: "360g", price: 18, cat: "hot" },
-        { id: 112, name: "5-Spice Bean", weight: "280g", price: 18, cat: "hot" },
-        { id: 113, name: "Strawberry Egg Rolls", weight: "300g", price: 18, cat: "hot" },
-        { id: 114, name: "Chocolate Egg Rolls", weight: "300g", price: 18, cat: "hot" },
-        { id: 115, name: "Peanut Puffs", weight: "450g", price: 18, cat: "hot" },
-        { id: 116, name: "Kuih Bangkit", weight: "400g", price: 18, cat: "hot" },
-        { id: 117, name: "Meat Floss Kapit", price: 18, cat: "hot" },
-        
-        { id: 201, name: "Pineapple Rolls", weight: "400g", price: 22, cat: "prem" },
-        { id: 202, name: "Pineapple Balls", weight: "300g", price: 22, cat: "prem" },
-        { id: 203, name: "Yam Cookies", weight: "230g", price: 22, cat: "prem" },
-        { id: 204, name: "Salted Egg Fish Skin", weight: "130g", price: 22, cat: "prem" },
-        { id: 205, name: "Almond Cookies", weight: "350g", price: 22, cat: "prem" },
-        { id: 206, name: "Peanut Cookies", weight: "400g", price: 22, cat: "prem" },
-        { id: 207, name: "Dragon Cookies", price: 22, cat: "prem" },
-        { id: 208, name: "Coconut Bangkit", weight: "220g", price: 22, cat: "prem" },
-        { id: 209, name: "Kuih Kapit Trad", weight: "400g", price: 22, cat: "prem" },
-        { id: 210, name: "Peanut Butter Kapit", price: 22, cat: "prem" },
+        // --- PROMO ITEMS (RM 18) ---
+        { id: 101, name: "辣椒虾米卷 (Spicy Shrimp Roll)", price: 18, cat: "hot" },
+        { id: 102, name: "迷你鸡蛋酥 (Egg Cookies)", price: 18, cat: "hot" },
+        { id: 103, name: "肉松鸡蛋饼 (Chicken Floss Kapit)", price: 18, cat: "hot" },
+        { id: 104, name: "炸紫菜饼 (Fried Seaweed)", price: 18, cat: "hot" },
+        { id: 105, name: "炸蟹柳 (Fried Crab Stick)", price: 18, cat: "hot" },
 
-        { id: 301, name: "Premium Kuih Kapit", price: 25, cat: "sig" },
-        { id: 302, name: "Mixed Sauce Kapit", price: 28, cat: "sig" },
-        { id: 303, name: "Peanut Nyonya Kapit", price: 28, cat: "sig" },
-        { id: 304, name: "Honey Mixed Nuts", price: 28, cat: "sig" },
+        // --- PREMIUM ITEMS (RM 22 - 25) ---
+        { id: 201, name: "花生酥 (Peanut Cookies)", price: 22, cat: "prem" },
+        { id: 202, name: "凤梨一口酥 (Prem. Pineapple Tart)", price: 22, cat: "prem" },
+        { id: 203, name: "咸蛋鱼皮 (Salted Egg Fish Skin)", price: 22, cat: "prem" },
+        { id: 204, name: "特级椰丝番婆饼 (Coconut Bangkit)", price: 22, cat: "prem" },
+        { id: 205, name: "特级鸡蛋饼 (Premium Kuih Kapit)", price: 25, cat: "prem" },
 
-        { id: 401, name: "Minced Pork BBQ", weight: "500g", price: 50, cat: "meat" },
-        { id: 402, name: "Honey Sliced Pork", weight: "500g", price: 60, cat: "meat" },
-        { id: 403, name: "Minced Chicken BBQ", weight: "500g", price: 51, cat: "meat" },
-        { id: 404, name: "Mini Honey Pork", weight: "400g", price: 50, cat: "meat" },
-        { id: 405, name: "Chicken Floss", weight: "250g", price: 23, cat: "meat" }
+        // --- MEAT ---
+        { id: 401, name: "猪肉干 (Minced Pork BBQ)", weight: "500g", price: 50, cat: "meat" },
+        { id: 402, name: "切片肉干 (Honey Sliced Pork)", weight: "500g", price: 60, cat: "meat" },
+        { id: 403, name: "鸡肉干 (Minced Chicken BBQ)", weight: "500g", price: 51, cat: "meat" },
+        { id: 404, name: "金钱肉干 (Mini Honey Pork)", weight: "400g", price: 50, cat: "meat" },
+        { id: 405, name: "鸡肉丝 (Chicken Floss)", weight: "250g", price: 23, cat: "meat" }
     ];
 
     let cart = {};
@@ -298,9 +253,9 @@
                 </div>
             `).join('');
         };
+        
         render('grid-18', products.filter(p => p.cat === 'hot'));
-        render('grid-22', products.filter(p => p.cat === 'prem'));
-        render('grid-signature', products.filter(p => p.cat === 'sig'));
+        render('grid-prem', products.filter(p => p.cat === 'prem'));
         render('grid-meat', products.filter(p => p.cat === 'meat'));
     }
 
@@ -323,10 +278,13 @@
         for (const [id, qty] of Object.entries(cart)) {
             const p = products.find(x => x.id == id);
             count += qty;
+            // 3 for 52 Logic applies only to 'hot' category
             if (p.cat === 'hot') hotCount += qty;
             else total += (p.price * qty);
         }
+        // Calculation: Groups of 3 cost 52. Remainder costs 18 each.
         total += (Math.floor(hotCount/3) * 52) + ((hotCount%3) * 18);
+        
         document.getElementById('totalPrice').innerText = total;
         document.getElementById('totalItems').innerText = count;
         document.getElementById('headerCount').innerText = count;
@@ -339,7 +297,6 @@
         setTimeout(() => t.classList.remove('show'), 2000);
     }
 
-    // IMAGE ZOOM FUNCTIONS
     function openImage(src) {
         document.getElementById('imgZoom').src = src;
         document.getElementById('imgModal').style.display = 'flex';
@@ -361,9 +318,7 @@
     }
 
     function closeCheckout() { document.getElementById('checkoutModal').style.display = 'none'; }
-    function inquireHamper() { window.open(`https://wa.me/${PHONE_NUMBER}?text=Hi, I am interested in Hampers.`, '_blank'); }
-
-    // --- SUBMISSION LOGIC ---
+    function inquireHamper() { window.open(`https://wa.me/${PHONE_NUMBER}?text=Hi, I am interested in Hampers (新春礼篮).`, '_blank'); }
 
     function getOrderDetails() {
         let lines = [];
@@ -375,12 +330,12 @@
     }
 
     function sendWhatsApp() {
-        const name = document.getElementById('custName').value || "New Customer";
+        const name = document.getElementById('custName').value || "Customer";
         const phone = document.getElementById('custPhone').value || "";
         const remarks = document.getElementById('custRemarks').value;
         const total = document.getElementById('totalPrice').innerText;
         
-        let msg = `*🧧 CNY ORDER 2026*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Note:* ${remarks}\n\n*--- ORDER ---*\n`;
+        let msg = `*🧧 CNY ORDER 2026*\n\n*姓名 Name:* ${name}\n*电话 Phone:* ${phone}\n*备注 Note:* ${remarks}\n\n*--- 订单 Order ---*\n`;
         for (const [id, qty] of Object.entries(cart)) {
             const p = products.find(x => x.id == id);
             msg += `▪️ ${p.name} x${qty}\n`;
@@ -396,7 +351,7 @@
         const remarks = document.getElementById('custRemarks').value.trim();
         const total = document.getElementById('totalPrice').innerText;
 
-        if (!name || !phone) return alert("Please enter Name and Phone to submit to our system.");
+        if (!name || !phone) return alert("Please enter Name and Phone (请输入姓名和电话).");
         if (GOOGLE_SCRIPT_URL.includes("EXAMPLE")) return alert("Error: Shop owner has not set up the script URL yet.");
 
         const btn = document.getElementById('sheetBtn');
@@ -421,19 +376,19 @@
             headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify(payload)
         }).then(() => {
-            alert("Order Submitted! We will contact you shortly.");
+            alert("订单已提交! Order Submitted!");
             cart = {};
             recalcTotal();
             closeCheckout();
             btn.disabled = false;
             spinner.style.display = 'none';
-            btnText.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Submit Order to Shop';
+            btnText.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> 提交订单 (Submit Order)';
         }).catch(err => {
             console.error(err);
             alert("Error submitting order. Please try WhatsApp.");
             btn.disabled = false;
             spinner.style.display = 'none';
-            btnText.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Submit Order to Shop';
+            btnText.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> 提交订单 (Submit Order)';
         });
     }
 
