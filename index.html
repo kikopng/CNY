@@ -1,636 +1,1084 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Can AI Beat Roulette? — Episode 1</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI vs Roulette — Episode 1</title>
 <style>
-:root{
-  --bg:#03050a;
-  --panel:#0a0f17;
-  --panel2:#0e1622;
-  --text:#f4f7fb;
-  --muted:#7f8b9d;
-  --cyan:#63e6ff;
-  --cyan2:#1bb8e6;
-  --green:#63f2a1;
-  --red:#ff516d;
-  --gold:#ffd36b;
-  --violet:#a78bfa;
-  --line:rgba(255,255,255,.09);
-  --soft:rgba(255,255,255,.06);
-  --shadow:0 24px 90px rgba(0,0,0,.42);
-}
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0c11;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-body{display:flex;align-items:center;justify-content:center;user-select:none}
-button{font:inherit}
+  :root {
+    --bg: #05070c;
+    --panel: rgba(14, 20, 32, 0.92);
+    --panel-border: rgba(255, 255, 255, 0.14);
+    --muted: #94a3b8;
+    --white: #f8fafc;
+    --cyan: #38bdf8;
+    --green: #4ade80;
+    --red: #f87171;
+    --amber: #fbbf24;
+    --violet: #a78bfa;
+    --shadow: 0 24px 60px rgba(0,0,0,0.7);
+  }
 
-/* Desktop recorder surface */
-#viewport{
-  position:relative;
-  width:min(92vw,540px);
-  height:min(92vh,960px);
-  aspect-ratio:9/16;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-#stage{
-  position:absolute;
-  left:0;top:0;
-  width:1080px;height:1920px;
-  overflow:hidden;
-  transform-origin:top left;
-  background:
-    radial-gradient(circle at 50% 12%,rgba(50,110,155,.16),transparent 30%),
-    radial-gradient(circle at 52% 84%,rgba(110,33,66,.11),transparent 32%),
-    linear-gradient(180deg,#04060b 0%,#070b12 50%,#030408 100%);
-  border:2px solid rgba(255,255,255,.10);
-  box-shadow:0 0 0 1px rgba(0,0,0,.65),0 40px 120px rgba(0,0,0,.58);
-}
-#stage::before{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:98;
-  background:repeating-linear-gradient(to bottom,rgba(255,255,255,.018) 0 2px,transparent 2px 8px);
-  opacity:.48;mix-blend-mode:screen;
-}
-#stage::after{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:99;
-  background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.42) 100%);
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  html, body {
+    width: 100%;
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--white);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+  }
 
-.scene{position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none;isolation:isolate}
-.scene.active{opacity:1;visibility:visible}
-.center{position:absolute;left:50%;transform:translateX(-50%);text-align:center}
-.big{font-weight:950;line-height:.90;letter-spacing:-.055em;text-transform:uppercase}
-.eyebrow{font-size:25px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted);font-weight:850}
-.micro{font-size:22px;letter-spacing:.20em;text-transform:uppercase;color:#8994a4;font-weight:850}
-.hi{color:var(--cyan)}
-.profit{color:var(--green)}
-.danger{color:var(--red)}
-.gold{color:var(--gold)}
+  #appContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px 10px;
+    width: 100%;
+  }
 
-/* HUD chrome */
-#episodeTag{position:absolute;left:58px;top:50px;z-index:120;font-size:22px;letter-spacing:.20em;color:#778394;font-weight:850}
-#episodeTag span{color:var(--cyan)}
-#sceneCode{position:absolute;right:58px;top:50px;z-index:120;font-size:20px;letter-spacing:.18em;color:#657184;font-weight:800}
-#cornerA,#cornerB,#cornerC,#cornerD{position:absolute;z-index:110;pointer-events:none}
-#cornerA{left:26px;top:30px;width:54px;height:54px;border-left:2px solid rgba(99,230,255,.26);border-top:2px solid rgba(99,230,255,.26)}
-#cornerB{right:26px;top:30px;width:54px;height:54px;border-right:2px solid rgba(99,230,255,.26);border-top:2px solid rgba(99,230,255,.26)}
-#cornerC{left:26px;bottom:30px;width:54px;height:54px;border-left:2px solid rgba(99,230,255,.20);border-bottom:2px solid rgba(99,230,255,.20)}
-#cornerD{right:26px;bottom:30px;width:54px;height:54px;border-right:2px solid rgba(99,230,255,.20);border-bottom:2px solid rgba(99,230,255,.20)}
+  /* 9:16 YouTube Shorts Stage Frame */
+  #stageWrap {
+    position: relative;
+    box-shadow: 0 25px 90px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    overflow: hidden;
+    background: #000;
+  }
 
-/* Subtitle + progress, always above scene content */
-#subtitle{position:absolute;left:82px;right:82px;bottom:132px;z-index:150;display:flex;justify-content:center;text-align:center;pointer-events:none}
-#subtitleBox{
-  max-width:900px;min-height:66px;padding:18px 28px 20px;border-radius:22px;
-  background:linear-gradient(180deg,rgba(2,5,10,.84),rgba(2,5,10,.68));
-  border:1px solid rgba(255,255,255,.10);
-  box-shadow:0 14px 44px rgba(0,0,0,.34),0 0 20px rgba(0,0,0,.12);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  font-size:34px;line-height:1.16;letter-spacing:-.018em;font-weight:820;
-}
-#subtitleBox::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin:0 11px 4px 0;background:var(--cyan);box-shadow:0 0 12px rgba(99,230,255,.5)}
-#progress{position:absolute;left:58px;right:58px;bottom:45px;height:7px;z-index:150;background:rgba(255,255,255,.09);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
-#progressFill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--red));box-shadow:0 0 18px rgba(99,230,255,.35)}
+  #stage {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    transform-origin: top left;
+    background: radial-gradient(circle at 50% 38%, #141f33 0%, #060911 55%, #020306 100%);
+    overflow: hidden;
+  }
 
-/* Shared glass/card language */
-.glass{background:linear-gradient(180deg,rgba(14,21,31,.96),rgba(5,8,13,.94));border:1px solid rgba(255,255,255,.09);box-shadow:var(--shadow);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.kicker{font-size:22px;letter-spacing:.28em;color:#6f7b8b;font-weight:900;text-transform:uppercase}
+  #vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle, transparent 35%, rgba(0,0,0,0.45) 75%, rgba(0,0,0,0.9) 100%);
+  }
 
-/* Scene 1 */
-#s1 .heroAura{position:absolute;left:50%;top:155px;width:720px;height:720px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(99,230,255,.14),transparent 63%);filter:blur(8px);opacity:.9}
-.wheel{position:absolute;left:50%;top:230px;width:610px;height:610px;transform:translateX(-50%);filter:drop-shadow(0 28px 48px rgba(0,0,0,.62))}
-.wheel .ring{position:absolute;inset:0;border-radius:50%;background:conic-gradient(#b52743 0 4.86%,#10151c 4.86% 9.73%,#b52743 9.73% 14.59%,#10151c 14.59% 19.46%,#b52743 19.46% 24.32%,#10151c 24.32% 29.19%,#b52743 29.19% 34.05%,#10151c 34.05% 38.92%,#b52743 38.92% 43.78%,#10151c 43.78% 48.65%,#b52743 48.65% 53.51%,#10151c 53.51% 58.38%,#b52743 58.38% 63.24%,#10151c 63.24% 68.11%,#b52743 68.11% 72.97%,#10151c 72.97% 77.84%,#b52743 77.84% 82.70%,#10151c 82.70% 87.57%,#b52743 87.57% 92.43%,#10151c 92.43% 97.30%,#16a26c 97.30% 100%);border:22px solid #aeb5bf;box-shadow:inset 0 0 0 16px #2a3039,inset 0 0 42px rgba(0,0,0,.9),0 0 0 8px rgba(255,255,255,.025)}
-.wheel .hub{position:absolute;inset:134px;border-radius:50%;background:radial-gradient(circle at 38% 30%,#394451,#111722 62%,#070a0e 100%);border:12px solid #9ea6af;box-shadow:inset 0 0 30px rgba(0,0,0,.8),0 0 22px rgba(99,230,255,.07)}
-.wheel .pin{position:absolute;left:50%;top:52px;width:12px;height:108px;transform:translateX(-50%);background:linear-gradient(#fff,#626c76);border-radius:9px;box-shadow:0 0 18px rgba(255,255,255,.34);transform-origin:50% 70%}
-#s1 .wheelGlow{position:absolute;left:50%;top:535px;width:670px;height:230px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(99,230,255,.14),transparent 68%);filter:blur(18px)}
-#s1 .cash{top:865px;font-size:150px;text-shadow:0 0 36px rgba(99,230,255,.20);white-space:nowrap}
-#s1 .cashLabel{top:1048px;font-size:23px;letter-spacing:.30em;color:#6d7787;font-weight:900}
-#s1 .title{top:1155px;font-size:102px;white-space:nowrap;text-shadow:0 0 30px rgba(99,230,255,.15)}
-#s1 .title .slash{color:#687588;padding:0 18px}
-#s1 .titleSub{position:absolute;left:50%;top:1280px;transform:translateX(-50%);font-size:26px;color:#758092;letter-spacing:.28em;font-weight:900}
+  /* In-Short Minimal HUD */
+  #topHud {
+    position: absolute;
+    left: 48px;
+    right: 48px;
+    top: 48px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 40;
+  }
+  .hudBadge {
+    border: 1px solid var(--panel-border);
+    background: rgba(11, 17, 26, 0.85);
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 20px;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #e2e8f0;
+  }
+  .hudTag { color: var(--cyan); }
 
-/* Scene 2 */
-#s2 .hud{position:absolute;left:64px;right:64px;top:215px;padding:46px;border-radius:32px}
-.statRow{display:flex;justify-content:space-between;align-items:end;gap:26px}.statBlock .label{font-size:22px;color:#758092;letter-spacing:.20em;font-weight:900}.statBlock .value{font-size:82px;font-weight:950;letter-spacing:-.05em;margin-top:8px}.divider{height:1px;background:var(--line);margin:34px 0}
-#s2 .spinCount{font-size:118px;color:var(--cyan);font-weight:950;letter-spacing:-.06em;line-height:.95;white-space:nowrap}
-#s2 .betBox{margin-top:32px;border:1px dashed rgba(99,230,255,.22);padding:24px 28px;border-radius:22px;color:#7d8999;font-size:21px;letter-spacing:.18em;font-weight:800}
-#s2 .betBox strong{display:block;color:#e5eaf0;font-size:38px;letter-spacing:0;margin-top:8px}
-#s2 .miniWheel{position:absolute;left:50%;top:1145px;width:320px;height:320px;transform:translateX(-50%);filter:drop-shadow(0 25px 45px rgba(0,0,0,.55))}
-#s2 .miniWheel .ring{position:absolute;inset:0;border-radius:50%;background:conic-gradient(#bd304e 0 48.65%,#11161d 48.65% 97.30%,#16a26c 97.30% 100%);border:18px solid #8e969f;box-shadow:inset 0 0 0 12px #272d35}
-#s2 .miniWheel .hub{position:absolute;inset:84px;border-radius:50%;background:#141a23;border:10px solid #7f8792}
-#s2 .result{position:absolute;left:50%;top:1516px;transform:translateX(-50%);font-size:65px;font-weight:950;min-width:460px;text-align:center;letter-spacing:.03em}
+  #disclaimer {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 240px;
+    z-index: 40;
+    font-size: 18px;
+    letter-spacing: 0.16em;
+    color: rgba(148, 163, 184, 0.65);
+    text-transform: uppercase;
+    font-weight: 750;
+    white-space: nowrap;
+  }
 
-/* Scene 3 */
-#s3 .startLabel{top:430px;font-size:27px;color:#7e8998;letter-spacing:.24em;font-weight:900}
-#s3 .startVal{top:495px;font-size:96px;color:#ced4dd}
-#s3 .finalLabel{top:700px;font-size:27px;color:#7e8998;letter-spacing:.24em;font-weight:900}
-#s3 .finalVal{top:760px;font-size:154px;text-shadow:0 0 38px rgba(99,230,255,.10);white-space:nowrap}
-#s3 .profitVal{top:980px;font-size:168px;color:var(--green);text-shadow:0 0 44px rgba(99,242,161,.18);white-space:nowrap}
-#s3 .profitBar{position:absolute;left:50%;top:1235px;transform:translateX(-50%);width:760px;height:14px;background:rgba(255,255,255,.07);border-radius:999px;overflow:hidden}.profitBar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 20px rgba(99,242,161,.35)}
-#s3 .card{position:absolute;left:50%;top:1340px;transform:translateX(-50%);width:790px;padding:28px 34px;border-radius:26px;border:1px solid rgba(99,242,161,.24);background:rgba(16,40,28,.34);text-align:center;color:#b7d5c4;font-size:25px;font-weight:800;letter-spacing:.03em}
+  /* Subtitles */
+  #subtitle {
+    position: absolute;
+    left: 60px;
+    right: 60px;
+    bottom: 305px;
+    z-index: 60;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    min-height: 120px;
+    align-items: center;
+  }
+  .subCard {
+    display: inline-block;
+    max-width: 960px;
+    background: rgba(7, 11, 18, 0.94);
+    border: 2px solid rgba(255, 255, 255, 0.18);
+    border-radius: 22px;
+    padding: 18px 32px;
+    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.9);
+    font-size: 40px;
+    line-height: 1.32;
+    font-weight: 850;
+    letter-spacing: -0.015em;
+    text-align: center;
+    color: #ffffff;
+    animation: subSpring 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes subSpring {
+    from { opacity: 0; transform: scale(0.88) translateY(14px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .hl-cyan { color: var(--cyan); }
+  .hl-green { color: var(--green); }
+  .hl-amber { color: var(--amber); }
+  .hl-red { color: var(--red); }
 
-/* Scene 4 */
-#s4 .question{top:660px;font-size:122px;white-space:nowrap;text-shadow:0 0 38px rgba(99,230,255,.10)}
-#s4 .questionSmall{position:absolute;left:50%;top:850px;transform:translateX(-50%);font-size:30px;letter-spacing:.28em;color:#758091;font-weight:900}
-#s4 .scan{position:absolute;left:76px;right:76px;top:1040px;height:4px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);box-shadow:0 0 18px rgba(99,230,255,.55)}
-#s4 .gridLines{position:absolute;left:76px;right:76px;top:270px;height:1060px;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/100% 25%;opacity:.55}
-#s4 .testTag{top:1195px;font-size:31px;color:#7f8998;letter-spacing:.24em;font-weight:900}
+  #sceneRoot { position: absolute; inset: 0; z-index: 20; }
 
-/* Scene 5 */
-#s5 .testsGrid{position:absolute;left:58px;right:58px;top:285px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.testCard{height:130px;border:1px solid rgba(255,255,255,.08);border-radius:22px;background:linear-gradient(180deg,rgba(16,23,34,.96),rgba(8,11,17,.95));display:flex;align-items:center;justify-content:space-between;padding:0 24px;box-shadow:0 12px 30px rgba(0,0,0,.20)}
-.testCard .n{font-size:22px;color:#7c8798;letter-spacing:.16em;font-weight:850}.testCard .v{font-size:43px;font-weight:950;white-space:nowrap}.testCard.profit .v{color:var(--green)}.testCard.loss .v{color:var(--red)}
-#s5 .summary{position:absolute;left:50%;top:1160px;transform:translateX(-50%);text-align:center;width:900px}.summary .small{font-size:25px;letter-spacing:.24em;color:#7d8899;font-weight:900}.summary .big8{font-size:205px;line-height:.78;font-weight:950;letter-spacing:-.07em}.summary .big8 span{color:var(--cyan)}.summary .desc{font-size:31px;letter-spacing:.20em;font-weight:900;color:#dce1e8}
-#s5 .warning{position:absolute;left:50%;top:1520px;transform:translateX(-50%);font-size:22px;color:#707b8a;letter-spacing:.12em;text-align:center;width:880px;font-weight:800}
+  /* Shorts Guide Overlay */
+  #shortsGuide { position: absolute; inset: 0; pointer-events: none; z-index: 90; display: none; }
+  .guideRightIcons {
+    position: absolute; right: 24px; bottom: 300px; width: 90px;
+    display: flex; flex-direction: column; gap: 34px; align-items: center;
+  }
+  .guideIcon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15); border: 1px dashed rgba(255, 255, 255, 0.4);
+    display: grid; place-items: center; font-size: 15px; font-weight: 700;
+  }
+  .guideBottomBar {
+    position: absolute; left: 40px; right: 140px; bottom: 40px; height: 150px;
+    border: 1px dashed rgba(255, 255, 255, 0.3); border-radius: 16px;
+    background: rgba(255, 255, 255, 0.05); padding: 16px;
+    display: flex; flex-direction: column; justify-content: flex-end; font-size: 20px; color: #94a3b8;
+  }
 
-/* Scene 6 */
-#s6 .codePanel{position:absolute;left:56px;right:56px;top:270px;height:910px;border:1px solid rgba(99,230,255,.18);border-radius:28px;background:linear-gradient(180deg,#091018,#05080d);box-shadow:var(--shadow);padding:34px;overflow:hidden}
-#s6 .terminalTop{display:flex;justify-content:space-between;align-items:center;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.07);color:#6f7b8c;font-size:19px;letter-spacing:.18em;font-weight:850}.terminalDots{display:flex;gap:8px}.terminalDots i{display:block;width:9px;height:9px;border-radius:50%;background:#36404d}
-#s6 .code{color:#a4b0bf;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:27px;line-height:1.55;white-space:pre-wrap;word-break:break-word;margin-top:26px}
-.code .kw{color:#a78bfa}.code .fn{color:#63e6ff}.code .num{color:#ffd36b}.code .ok{color:#63f2a1}.code .dim{color:#657184}
-#s6 .detected{position:absolute;left:50%;top:1290px;transform:translateX(-50%);width:920px;text-align:center}.detected .label{font-size:24px;letter-spacing:.24em;color:#7d8899;font-weight:900}.detected .name{font-size:92px;font-weight:950;margin-top:16px;letter-spacing:-.05em;text-shadow:0 0 28px rgba(99,230,255,.14)}
-#s6 .detected::before{content:"";display:block;width:170px;height:4px;margin:0 auto 20px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);box-shadow:0 0 16px rgba(99,230,255,.42)}
+  /* External Controls (Outside 9:16 frame) */
+  #externalControls {
+    width: min(100vw - 32px, 580px);
+    background: rgba(13, 18, 28, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  }
+  .timelineRow { display: flex; align-items: center; gap: 14px; }
+  .timeText { font-size: 14px; font-weight: 700; color: var(--muted); min-width: 44px; }
+  .scrubTrack {
+    flex: 1; position: relative; height: 8px;
+    background: rgba(255, 255, 255, 0.12); border-radius: 99px; cursor: pointer;
+  }
+  #progressBar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--cyan), var(--violet));
+    border-radius: 99px;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+  }
+  .btnRow { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff; padding: 9px 18px; border-radius: 12px; font-size: 14px;
+    font-weight: 750; cursor: pointer; transition: all 0.2s ease;
+  }
+  .btn:hover { background: rgba(255, 255, 255, 0.16); }
+  .btnPrimary { background: linear-gradient(135deg, #0284c7, #2563eb); }
+  .btnToggleActive { background: rgba(56, 189, 248, 0.25); border-color: var(--cyan); color: var(--cyan); }
 
-/* Scene 7 */
-#s7 .mart{top:245px;font-size:118px;text-shadow:0 0 28px rgba(99,230,255,.16)}
-#s7 .simTag{top:405px;font-size:26px;letter-spacing:.27em;color:#7a8696;font-weight:900}
-#s7 .sequence{position:absolute;left:90px;right:90px;top:560px;display:grid;gap:14px}
-.step{display:grid;grid-template-columns:240px 68px 1fr;align-items:center;min-height:140px;padding:0 22px;border-radius:24px;background:linear-gradient(90deg,rgba(14,21,31,.90),rgba(7,10,16,.72));border:1px solid rgba(255,255,255,.07);box-shadow:0 12px 24px rgba(0,0,0,.18)}
-.step .amt{font-size:72px;font-weight:950}.step .arrow{font-size:46px;color:#7d8794;text-align:center}.step .note{font-size:23px;letter-spacing:.13em;color:#788496;font-weight:900}.step.current{border-color:rgba(99,230,255,.26);box-shadow:0 0 28px rgba(99,230,255,.08)}
-#s7 .logic{position:absolute;left:50%;top:1340px;transform:translateX(-50%);display:flex;justify-content:center;gap:18px;align-items:center;width:880px}.logic .pill{border:1px solid rgba(255,255,255,.12);padding:18px 22px;border-radius:999px;font-size:24px;font-weight:900;letter-spacing:.08em;background:rgba(12,17,25,.86)}.logic .pill.danger{border-color:rgba(255,81,109,.28);color:var(--red)}.logic .arrow2{color:#778293;font-size:34px}
+  /* Smooth Animation Keyframes (Applied Once On Mount) */
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+  .rouletteCanvas { position: absolute; left: 50%; transform: translate(-50%, -50%); }
 
-/* Scene 8 */
-#s8 .cards{position:absolute;left:58px;right:58px;top:295px;display:grid;gap:22px}.betCard{height:215px;border-radius:28px;display:flex;align-items:center;justify-content:space-between;padding:0 42px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(180deg,rgba(17,24,34,.96),rgba(8,11,17,.95));box-shadow:0 12px 30px rgba(0,0,0,.18)}
-.betCard .left{font-size:34px;color:#7f8999;font-weight:900;letter-spacing:.15em}.betCard .right{font-size:58px;font-weight:950;text-align:right;white-space:nowrap}.betCard.redAccent .right{color:#f4f7fb}.redWord{color:var(--red)}
-#s8 .wheelInfo{position:absolute;left:50%;top:1045px;transform:translateX(-50%);width:900px;padding:34px 36px;border:1px solid rgba(99,230,255,.18);border-radius:28px;background:rgba(9,14,22,.92);text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.28)}
-.wheelInfo .eu{font-size:27px;letter-spacing:.28em;color:#818c9b;font-weight:900}.wheelInfo .numbers{font-size:34px;line-height:1.55;color:#dce2ea;margin-top:12px;font-weight:850}.wheelInfo .numbers .n18{color:#ff6a82}.wheelInfo .numbers .n0{color:#63f2a1}
-#s8 .rouletteTiny{position:absolute;left:50%;top:1355px;transform:translateX(-50%);display:flex;gap:18px;align-items:center}.rouletteTiny span{padding:12px 18px;border:1px solid rgba(255,255,255,.09);border-radius:999px;background:rgba(10,14,21,.82);font-size:21px;font-weight:900;letter-spacing:.14em;color:#7e8999}
+  .heroCard {
+    position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%);
+    width: 880px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px;
+    animation: heroZoom 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes heroZoom {
+    from { opacity: 0; transform: translate(-50%, -46%) scale(0.92); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  .heroPill {
+    padding: 10px 24px; background: rgba(56, 189, 248, 0.14);
+    border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 999px;
+    color: var(--cyan); font-size: 24px; font-weight: 850; letter-spacing: 0.16em;
+  }
+  .megaNumber { font-size: 156px; font-weight: 950; letter-spacing: -0.05em; line-height: 0.9; }
+  .versusTag { font-size: 60px; font-weight: 950; margin-top: 10px; }
 
-/* Scene 9 */
-#s9 .balanceLine{top:245px}.balance{font-size:156px;margin-top:20px;white-space:nowrap;text-shadow:0 0 30px rgba(99,242,161,.12)}
-#s9 .chart{position:absolute;left:68px;right:68px;top:650px;height:560px;border:1px solid rgba(255,255,255,.07);border-radius:30px;background:linear-gradient(180deg,rgba(14,20,29,.94),rgba(7,10,16,.92));overflow:hidden}.chartgrid{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px) 0 0/100% 20%,linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/20% 100%}.lineSvg{position:absolute;inset:30px 28px 30px 28px;width:calc(100% - 56px);height:calc(100% - 60px)}.end{position:absolute;right:44px;top:34px;color:var(--green);font-size:25px;letter-spacing:.18em;font-weight:900}
-#s9 .freeze{top:1300px;font-size:92px;font-weight:950;letter-spacing:.08em}.freezeSub{position:absolute;left:50%;top:1430px;transform:translateX(-50%);font-size:24px;color:#707b8b;letter-spacing:.24em;font-weight:900}.but{top:1555px;font-size:120px;font-weight:950;text-shadow:0 0 34px rgba(255,81,109,.13)}
+  .simCard, .resultBox, .consoleBox, .chartBox {
+    position: absolute; left: 70px; right: 70px; top: 220px;
+    background: var(--panel); border: 1px solid var(--panel-border);
+    border-radius: 36px; padding: 42px; box-shadow: var(--shadow);
+    animation: cardDrop 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes cardDrop {
+    from { opacity: 0; transform: translateY(-16px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .simCard, .consoleBox, .chartBox { height: 960px; display: flex; flex-direction: column; }
+  
+  .panelHead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+  .panelHeadTitle { font-size: 30px; font-weight: 900; letter-spacing: 0.08em; }
+  .panelBadge {
+    padding: 8px 18px; border-radius: 999px; background: rgba(74, 222, 128, 0.15);
+    border: 1px solid rgba(74, 222, 128, 0.3); color: var(--green); font-size: 20px; font-weight: 800;
+  }
+  .twoCol { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .boxMetric { background: rgba(255, 255, 255, 0.035); border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 24px; padding: 24px; }
+  .metricLabel { font-size: 19px; color: var(--muted); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+  .metricVal { font-size: 60px; font-weight: 900; margin-top: 10px; line-height: 1; }
+  
+  .spinTape { display: flex; gap: 16px; overflow: hidden; margin-top: auto; }
+  .spinChip {
+    min-width: 170px; background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; padding: 16px; text-align: center;
+  }
 
-/* Scene 10 */
-#s10 .loseTitle{position:absolute;left:50%;top:235px;transform:translateX(-50%);font-size:29px;letter-spacing:.24em;color:#8792a2;font-weight:900}.loses{position:absolute;left:50%;top:325px;transform:translateX(-50%);display:flex;gap:18px}.loseDot{width:86px;height:86px;border-radius:50%;border:2px solid rgba(255,81,109,.46);display:flex;align-items:center;justify-content:center;color:var(--red);font-weight:950;font-size:25px;background:rgba(92,15,35,.24);box-shadow:inset 0 0 24px rgba(255,81,109,.05)}
-#s10 .loseLabel{position:absolute;left:50%;top:450px;transform:translateX(-50%);font-size:45px;font-weight:950;color:var(--red);letter-spacing:.08em;white-space:nowrap;text-shadow:0 0 18px rgba(255,81,109,.18)}
-#s10 .martSeq{position:absolute;left:50%;top:610px;transform:translateX(-50%);width:860px}.mRow{display:grid;grid-template-columns:230px 55px 1fr;align-items:center;min-height:128px;border-bottom:1px solid rgba(255,255,255,.055)}.mRow .a{font-size:72px;font-weight:950}.mRow .ar{font-size:39px;color:#707b89;text-align:center}.mRow .n{font-size:22px;color:#727e8d;letter-spacing:.16em;font-weight:900}
-#s10 .cut{position:absolute;left:50%;top:1410px;transform:translateX(-50%);font-size:30px;letter-spacing:.21em;color:#8a95a3;font-weight:900;white-space:nowrap}.cliff{top:1495px;font-size:108px;line-height:.85;font-weight:950;text-align:center;text-shadow:0 0 34px rgba(255,81,109,.12)}
+  .profitPill {
+    display: inline-flex; align-items: center; gap: 10px; padding: 14px 38px;
+    border-radius: 999px; background: rgba(74, 222, 128, 0.16);
+    border: 2px solid rgba(74, 222, 128, 0.45); font-size: 48px; font-weight: 950; color: var(--green);
+    box-shadow: 0 0 35px rgba(74, 222, 128, 0.35);
+    animation: profitPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes profitPop {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
 
-/* Outro */
-#final .glow{position:absolute;left:50%;top:900px;width:760px;height:760px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(99,230,255,.16),transparent 68%);filter:blur(6px)}
-#final .q1{top:500px;font-size:40px;color:#8d98a7;letter-spacing:.16em}.q2{top:650px;font-size:116px;line-height:.92}.q3{top:1065px;font-size:54px;color:#cfd6e0;letter-spacing:.24em}.q4{top:1200px;font-size:27px;color:#7a8595;letter-spacing:.20em}.outroLine{position:absolute;left:50%;top:1310px;transform:translateX(-50%);width:540px;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);box-shadow:0 0 16px rgba(99,230,255,.34)}
+  .questionDramatic {
+    position: absolute; left: 70px; right: 70px; top: 38%; transform: translateY(-50%);
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.16), rgba(245, 158, 11, 0.04));
+    border: 2.5px solid rgba(251, 191, 36, 0.45); border-radius: 36px; padding: 60px 40px; text-align: center;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.7);
+    animation: questionPunch 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes questionPunch {
+    from { opacity: 0; transform: translateY(-44%) scale(0.88); }
+    to { opacity: 1; transform: translateY(-50%) scale(1); }
+  }
+  .qBig {
+    font-size: 96px; font-weight: 1000; color: var(--amber); letter-spacing: -0.02em;
+    margin-top: 10px; text-shadow: 0 0 45px rgba(251, 191, 36, 0.55);
+  }
 
-/* Controls outside record frame */
-#controls{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:300;display:flex;gap:8px;align-items:center;background:rgba(10,12,17,.82);border:1px solid rgba(255,255,255,.13);padding:8px;border-radius:999px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 10px 35px rgba(0,0,0,.28)}
-#controls button{border:1px solid rgba(255,255,255,.10);background:#151a23;color:#e8edf4;border-radius:999px;padding:9px 14px;font-size:13px;font-weight:900;letter-spacing:.05em;cursor:pointer;min-width:82px}#controls button:hover{background:#1b2330}#timeLabel{color:#8c96a6;font-size:12px;font-weight:900;letter-spacing:.08em;padding:0 7px;white-space:nowrap}
+  .testsGrid {
+    position: absolute; left: 70px; right: 70px; top: 240px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .testRow {
+    background: var(--panel); border: 1px solid var(--panel-border);
+    border-radius: 20px; padding: 20px 24px; display: flex;
+    justify-content: space-between; align-items: center; font-size: 24px; font-weight: 850;
+  }
 
-.flashLayer{position:absolute;inset:0;z-index:170;pointer-events:none;background:#fff;opacity:0}.scanlineLayer{position:absolute;inset:0;z-index:160;pointer-events:none;background:linear-gradient(180deg,transparent 0%,rgba(99,230,255,.10) 49%,transparent 52%);opacity:0}
+  .ratioWrap, .martingaleWrap, .ctaWrap {
+    position: absolute; left: 50%; top: 48%; transform: translate(-50%, -50%);
+    text-align: center; width: 880px;
+  }
+  .bigRatio {
+    font-size: 230px; font-weight: 1000; line-height: 0.85; color: var(--green);
+    text-shadow: 0 0 70px rgba(74, 222, 128, 0.45);
+    animation: ratioPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes ratioPop {
+    from { opacity: 0; transform: scale(0.7); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .ratioPill {
+    display: inline-block; padding: 12px 36px; background: rgba(74, 222, 128, 0.15);
+    border: 2px solid rgba(74, 222, 128, 0.4); border-radius: 999px;
+    font-size: 42px; font-weight: 900; color: var(--green); margin-top: 24px;
+  }
 
-@media(max-width:700px){#controls{transform:translateX(-50%) scale(.88);bottom:5px}}
+  .martTitle {
+    font-size: 110px; font-weight: 1000; color: var(--amber); line-height: 0.95;
+    text-shadow: 0 0 50px rgba(251, 191, 36, 0.45);
+    animation: martSlam 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes martSlam {
+    from { opacity: 0; transform: scale(1.2); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .martChips {
+    display: flex; justify-content: center; align-items: center; gap: 16px;
+    margin-top: 48px; font-size: 48px; font-weight: 950;
+  }
+  .chipItem {
+    padding: 16px 26px; background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.15); border-radius: 20px;
+  }
+
+  .stepsBox, .pairsWrap, .dangerBox {
+    position: absolute; left: 70px; right: 70px; top: 220px; display: flex; flex-direction: column; gap: 18px;
+  }
+  .stepCard {
+    background: var(--panel); border: 1px solid var(--panel-border);
+    border-radius: 24px; padding: 24px 32px; display: flex;
+    justify-content: space-between; align-items: center; font-size: 32px; font-weight: 900;
+  }
+
+  .pairCardRow { display: grid; grid-template-columns: 1fr 100px 1fr; align-items: center; gap: 20px; }
+  .betTargetCard {
+    height: 175px; background: var(--panel); border: 1px solid var(--panel-border);
+    border-radius: 26px; display: grid; place-items: center; font-size: 58px; font-weight: 950;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+
+  .dangerBanner {
+    background: rgba(248, 113, 113, 0.14); border: 2px solid rgba(248, 113, 113, 0.4);
+    border-radius: 26px; padding: 22px; text-align: center; color: var(--red);
+    font-size: 34px; font-weight: 950; letter-spacing: 0.08em;
+  }
+  .ladderGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .ladderRow {
+    background: rgba(255, 255, 255, 0.035); border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px; padding: 18px 24px; display: flex; justify-content: space-between; font-size: 26px; font-weight: 850;
+  }
+  .wipeoutAlert {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(185, 28, 28, 0.15));
+    border: 2px solid var(--red); border-radius: 26px; padding: 26px; text-align: center;
+    box-shadow: 0 0 40px rgba(248, 113, 113, 0.3);
+  }
+
+  .ctaTitle { font-size: 96px; font-weight: 1000; line-height: 0.94; }
+  .ep2Badge {
+    padding: 16px 44px; background: linear-gradient(90deg, #0284c7, #38bdf8);
+    border-radius: 999px; font-size: 34px; font-weight: 950; margin: 10px 0;
+    box-shadow: 0 12px 35px rgba(56, 189, 248, 0.4);
+  }
 </style>
 </head>
 <body>
-<div id="viewport">
-  <main id="stage" aria-label="Can AI Beat Roulette Episode 1">
-    <div id="cornerA"></div><div id="cornerB"></div><div id="cornerC"></div><div id="cornerD"></div>
-    <div id="episodeTag">EPISODE <span>01</span> · AI EXPERIMENT</div>
-    <div id="sceneCode">EUROPEAN ROULETTE</div>
 
-    <section class="scene" id="s1">
-      <div class="heroAura"></div>
-      <div class="wheel" id="heroWheel"><div class="ring"></div><div class="hub"></div><div class="pin"></div></div>
-      <div class="wheelGlow"></div>
-      <div class="center cash big" id="cashCounter">$0</div>
-      <div class="center cashLabel">VIRTUAL BANKROLL</div>
-      <div class="center title big" id="heroTitle">AI <span class="slash">VS</span> ROULETTE</div>
-      <div class="titleSub">CONTROLLED SIMULATION</div>
-    </section>
+<div id="appContainer">
+  <!-- 9:16 Shorts Stage -->
+  <div id="stageWrap">
+    <div id="stage">
+      <div id="sceneRoot"></div>
+      <div id="vignette"></div>
 
-    <section class="scene" id="s2">
-      <div class="hud glass">
-        <div class="statRow">
-          <div class="statBlock"><div class="label">BANKROLL</div><div class="value">$10,000</div></div>
-          <div class="statBlock" style="text-align:right"><div class="label">MODE</div><div class="value" style="font-size:58px;color:var(--cyan)">AI LIVE</div></div>
+      <div id="topHud">
+        <div class="hudBadge">EPISODE 1</div>
+        <div class="hudBadge hudTag" id="timerBadge">00:00</div>
+      </div>
+
+      <div id="disclaimer">SIMULATION — NOT REAL MONEY</div>
+
+      <div id="subtitle">
+        <div class="subCard" id="subText"></div>
+      </div>
+
+      <div id="shortsGuide">
+        <div class="guideRightIcons">
+          <div class="guideIcon">👍</div>
+          <div class="guideIcon">👎</div>
+          <div class="guideIcon">💬</div>
+          <div class="guideIcon">↗</div>
+          <div class="guideIcon">🎵</div>
         </div>
-        <div class="divider"></div>
-        <div class="label" style="font-size:22px;color:#758092;letter-spacing:.20em;font-weight:900">SPINS</div>
-        <div class="spinCount" id="spinCount">00 / 100</div>
-        <div class="betBox">NEXT DECISION<strong id="betText">WAITING...</strong></div>
+        <div class="guideBottomBar">
+          <div style="font-weight:900; color:#fff; margin-bottom:4px;">@AILabs • Subscribe</div>
+          <div>I Gave AI $10,000 to Beat Roulette #shorts</div>
+        </div>
       </div>
-      <div class="miniWheel"><div class="ring"></div><div class="hub"></div></div>
-      <div class="result" id="spinResult">READY</div>
-    </section>
+    </div>
+  </div>
 
-    <section class="scene" id="s3">
-      <div class="center startLabel">START</div><div class="center startVal">$10,000</div>
-      <div class="center finalLabel">FINAL BALANCE</div><div class="center finalVal" id="finalVal">$10,000</div>
-      <div class="center profitVal" id="profitVal">+$0</div>
-      <div class="profitBar"><span id="profitBarFill"></span></div>
-      <div class="card">ONE SIMULATION · 100 SPINS · OBSERVED RESULT: +$860</div>
-    </section>
-
-    <section class="scene" id="s4">
-      <div class="gridLines"></div>
-      <div class="center question big">WAS IT LUCK?</div>
-      <div class="questionSmall">STATISTICAL CHECK · TEST #01</div>
-      <div class="scan"></div>
-      <div class="center testTag">RE-RUNNING THE EXPERIMENT</div>
-    </section>
-
-    <section class="scene" id="s5">
-      <div class="testsGrid" id="testsGrid">
-        <div class="testCard profit"><div class="n">TEST 01</div><div class="v">+$420</div></div>
-        <div class="testCard profit"><div class="n">TEST 02</div><div class="v">+$180</div></div>
-        <div class="testCard loss"><div class="n">TEST 03</div><div class="v">−$210</div></div>
-        <div class="testCard profit"><div class="n">TEST 04</div><div class="v">+$670</div></div>
-        <div class="testCard profit"><div class="n">TEST 05</div><div class="v">+$90</div></div>
-        <div class="testCard profit"><div class="n">TEST 06</div><div class="v">+$310</div></div>
-        <div class="testCard loss"><div class="n">TEST 07</div><div class="v">−$140</div></div>
-        <div class="testCard profit"><div class="n">TEST 08</div><div class="v">+$520</div></div>
-        <div class="testCard profit"><div class="n">TEST 09</div><div class="v">+$230</div></div>
-        <div class="testCard profit"><div class="n">TEST 10</div><div class="v">+$410</div></div>
+  <!-- Controls Cleanly Outside Frame -->
+  <div id="externalControls">
+    <div class="timelineRow">
+      <span class="timeText mono" id="timeCurrent">00:00</span>
+      <div class="scrubTrack" id="scrubber">
+        <div id="progressBar"></div>
       </div>
-      <div class="summary" id="summary8"><div class="small">SIMULATIONS PROFITABLE</div><div class="big8"><span>8</span>/10</div><div class="desc">IN THESE 10 RUNS</div></div>
-      <div class="warning">RESULT OF THESE SIMULATIONS — NOT PROOF THE STRATEGY BEATS ROULETTE</div>
-    </section>
-
-    <section class="scene" id="s6">
-      <div class="codePanel">
-        <div class="terminalTop"><span>AI_DECISION_ENGINE.js · READ-ONLY</span><span class="terminalDots"><i></i><i></i><i></i></span></div>
-        <div class="code" id="codeText"></div>
-      </div>
-      <div class="detected" id="detected"><div class="label">BETTING STRATEGY DETECTED</div><div class="name">MARTINGALE</div></div>
-    </section>
-
-    <section class="scene" id="s7">
-      <div class="center mart big">MARTINGALE</div>
-      <div class="center simTag">SIMULATION · NOT REAL MONEY</div>
-      <div class="sequence" id="martSequence">
-        <div class="step"><div class="amt">$10</div><div class="arrow">↓</div><div class="note">BASE BET</div></div>
-        <div class="step"><div class="amt">$20</div><div class="arrow">↓</div><div class="note">LOSE → DOUBLE</div></div>
-        <div class="step"><div class="amt">$40</div><div class="arrow">↓</div><div class="note">LOSE → DOUBLE</div></div>
-        <div class="step"><div class="amt">$80</div><div class="arrow">↓</div><div class="note">LOSE → DOUBLE</div></div>
-        <div class="step"><div class="amt">$160</div><div class="arrow">↓</div><div class="note">LOSE → DOUBLE</div></div>
-      </div>
-      <div class="logic" id="logic"><div class="pill danger">LOSE</div><div class="arrow2">→</div><div class="pill">DOUBLE BET</div><div class="arrow2">→</div><div class="pill danger">LOSE</div></div>
-    </section>
-
-    <section class="scene" id="s8">
-      <div class="cards" id="betCards">
-        <div class="betCard redAccent"><div class="left">EVEN-MONEY</div><div class="right"><span class="redWord">RED</span> / BLACK</div></div>
-        <div class="betCard"><div class="left">EVEN-MONEY</div><div class="right">ODD / EVEN</div></div>
-        <div class="betCard"><div class="left">EVEN-MONEY</div><div class="right">1–18 / 19–36</div></div>
-      </div>
-      <div class="wheelInfo" id="wheelInfo"><div class="eu">EUROPEAN ROULETTE</div><div class="numbers"><span class="n18">18 RED</span> · 18 BLACK · <span class="n18">18 OTHER EVEN-MONEY OUTCOMES</span> · <span class="n0">1 ZERO</span></div></div>
-      <div class="rouletteTiny"><span>HOUSE EDGE ≈ 2.7%</span><span>0 IS NOT RED/BLACK</span></div>
-    </section>
-
-    <section class="scene" id="s9">
-      <div class="center balanceLine micro">BANKROLL SIMULATION</div><div class="center balance" id="climbBalance">$9,800</div>
-      <div class="chart"><div class="chartgrid"></div><svg class="lineSvg" viewBox="0 0 1000 540" preserveAspectRatio="none"><polyline points="10,455 155,410 280,380 400,330 520,295 630,245 760,175 885,125 990,45" fill="none" stroke="#63f2a1" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1250" stroke-dashoffset="1250" id="chartLine"/><circle cx="990" cy="45" r="10" fill="#63f2a1" /></svg><div class="end">+$1,200</div></div>
-      <div class="center freeze" id="freeze">STOP.</div><div class="freezeSub">BALANCE PEAK</div><div class="center but big" id="but">BUT…</div>
-    </section>
-
-    <section class="scene" id="s10">
-      <div class="loseTitle">SIX LOSSES IN A ROW</div>
-      <div class="loses" id="loses"><div class="loseDot">L</div><div class="loseDot">L</div><div class="loseDot">L</div><div class="loseDot">L</div><div class="loseDot">L</div><div class="loseDot">L</div></div>
-      <div class="loseLabel" id="loseLabel">LOSING STREAK</div>
-      <div class="martSeq" id="finalSeq">
-        <div class="mRow"><div class="a">$10</div><div class="ar">→</div><div class="n">BASE BET</div></div>
-        <div class="mRow"><div class="a">$20</div><div class="ar">→</div><div class="n">DOUBLE</div></div>
-        <div class="mRow"><div class="a">$40</div><div class="ar">→</div><div class="n">DOUBLE</div></div>
-        <div class="mRow"><div class="a">$80</div><div class="ar">→</div><div class="n">DOUBLE</div></div>
-        <div class="mRow"><div class="a">$160</div><div class="ar">→</div><div class="n">DOUBLE</div></div>
-        <div class="mRow"><div class="a" style="color:var(--red)">$320</div><div class="ar">→</div><div class="n">NEXT BET</div></div>
-      </div>
-      <div class="cut">AND IT KEEPS DOUBLING.</div><div class="center cliff" id="cliff">HUGE<br><span style="color:var(--red)">PROBLEM.</span></div>
-    </section>
-
-    <section class="scene" id="final">
-      <div class="glow"></div><div class="center q1">SO I ASKED AI…</div><div class="center q2 big">CAN WE<br><span style="color:var(--cyan)">FIX MARTINGALE?</span></div><div class="center q3">EPISODE 2</div><div class="center q4">FOLLOW TO SEE WHAT HAPPENS</div><div class="outroLine"></div>
-    </section>
-
-    <div id="subtitle"><div id="subtitleBox"></div></div>
-    <div id="progress"><div id="progressFill"></div></div>
-    <div class="flashLayer" id="flashLayer"></div>
-    <div class="scanlineLayer" id="scanlineLayer"></div>
-  </main>
-</div>
-
-<div id="controls" aria-label="Playback controls">
-  <button id="playBtn" type="button">▶ PLAY</button>
-  <button id="restartBtn" type="button">↻ RESTART</button>
-  <button id="muteBtn" type="button">🔊 SOUND</button>
-  <span id="timeLabel">00:00 / 00:55</span>
+      <span class="timeText mono">00:52</span>
+    </div>
+    <div class="btnRow">
+      <button class="btn btnPrimary" id="playBtn">▶ PLAY</button>
+      <button class="btn" id="restartBtn">↺ RESTART</button>
+      <button class="btn" id="muteBtn">🔊 SOUND ON</button>
+      <button class="btn" id="overlayBtn">📱 SHORTS OVERLAY</button>
+    </div>
+  </div>
 </div>
 
 <script>
 (() => {
-  'use strict';
-
-  const TOTAL = 55;
+  const DURATION = 52;
   const stage = document.getElementById('stage');
-  const viewport = document.getElementById('viewport');
-  const progressFill = document.getElementById('progressFill');
-  const subtitleBox = document.getElementById('subtitleBox');
-  const subtitle = document.getElementById('subtitle');
+  const stageWrap = document.getElementById('stageWrap');
+  const sceneRoot = document.getElementById('sceneRoot');
+  const subText = document.getElementById('subText');
+  const progressBar = document.getElementById('progressBar');
+  const scrubber = document.getElementById('scrubber');
+  const timeCurrent = document.getElementById('timeCurrent');
+  const timerBadge = document.getElementById('timerBadge');
   const playBtn = document.getElementById('playBtn');
   const restartBtn = document.getElementById('restartBtn');
   const muteBtn = document.getElementById('muteBtn');
-  const timeLabel = document.getElementById('timeLabel');
-  const flashLayer = document.getElementById('flashLayer');
-  const scanlineLayer = document.getElementById('scanlineLayer');
+  const overlayBtn = document.getElementById('overlayBtn');
+  const shortsGuide = document.getElementById('shortsGuide');
 
-  const scenes = ['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','final'];
-  const bounds = [0,4,9,14,18,25,30,37,41,46,52,55];
+  let running = false;
+  let muted = false;
+  let startPerf = 0;
+  let elapsed = 0;
+  let raf = 0;
+  let activeSceneIndex = -1;
+  let activeSceneState = null;
+  let showOverlay = false;
 
-  const subtitles = [
-    [0,4,'I gave AI <span class="hi">$10,000</span> and told it to <span class="gold">beat roulette.</span>'],
-    [4,9,'I gave it <span class="hi">100 spins</span> and told it to decide what to bet every round.'],
-    [9,14,'And somehow… it finished with <span class="profit">MORE money.</span>'],
-    [14,18,'But was that just <span class="gold">luck?</span>'],
-    [18,25,'So I ran the exact same experiment another <span class="hi">10 times.</span>'],
-    [25,30,'Okay… I had to see what AI was actually doing.'],
-    [30,37,'And that’s when I realized… AI was using one of the oldest roulette strategies ever: <span class="hi">Martingale.</span>'],
-    [37,41,'It was betting <span class="hi">red or black</span>, <span class="hi">odd or even</span>, and <span class="hi">1–18 or 19–36.</span>'],
-    [41,46,'And honestly… watching the balance go up looked <span class="profit">REALLY convincing.</span>'],
-    [46,52,'But there’s a <span class="danger">huge problem.</span>'],
-    [52,55,'So I asked AI… <span class="hi">can we make Martingale safer?</span>']
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function fmtTime(t) {
+    const s = Math.min(DURATION, Math.max(0, Math.floor(t)));
+    return `${pad(Math.floor(s / 60))}:${pad(s % 60)}`;
+  }
+
+  function renderWheel(canvas, rot = 0, size = 680) {
+    const ctx = canvas.getContext('2d');
+    const cx = size / 2, cy = size / 2, r = (size / 2) - 30;
+    ctx.clearRect(0, 0, size, size);
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rot);
+
+    const reds = new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]);
+    const seg = (2 * Math.PI) / 37;
+
+    for (let i = 0; i < 37; i++) {
+      const a = i * seg - Math.PI / 2, b = a + seg;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, r, a, b);
+      ctx.closePath();
+      ctx.fillStyle = i === 0 ? '#10b981' : (reds.has(i) ? '#e11d48' : '#1e293b');
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      const ta = a + seg / 2;
+      ctx.save();
+      ctx.rotate(ta);
+      ctx.translate(r * 0.84, 0);
+      ctx.rotate(Math.PI / 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 15px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(String(i), 0, 0);
+      ctx.restore();
+    }
+
+    ctx.beginPath(); ctx.arc(0, 0, 56, 0, Math.PI * 2); ctx.fillStyle = '#d97706'; ctx.fill();
+    ctx.beginPath(); ctx.arc(0, 0, 44, 0, Math.PI * 2); ctx.fillStyle = '#0f172a'; ctx.fill();
+    ctx.restore();
+
+    ctx.beginPath();
+    ctx.moveTo(cx, 10); ctx.lineTo(cx - 14, 34); ctx.lineTo(cx + 14, 34);
+    ctx.closePath();
+    ctx.fillStyle = '#fbbf24';
+    ctx.fill();
+  }
+
+  function makeCanvas(size = 680) {
+    const c = document.createElement('canvas');
+    c.className = 'rouletteCanvas';
+    c.width = size; c.height = size;
+    return c;
+  }
+
+  /* --- DEFINING 12 SCENES (MOUNT ONCE, UPDATE VARIABLES AT 60FPS) --- */
+  const scenes = [
+    // Scene 0: Hook
+    {
+      a: 0, b: 3,
+      sub: 'I gave AI <span class="hl-cyan">$10,000</span> and told it to beat <span class="hl-amber">roulette</span>.',
+      mount(root) {
+        const c = makeCanvas(600);
+        c.style.top = '28%'; c.style.opacity = '0.35';
+        root.append(c);
+
+        const card = document.createElement('div');
+        card.className = 'heroCard';
+        card.innerHTML = `
+          <div class="heroPill">EXPERIMENT #01</div>
+          <div class="metricLabel">STARTING BANKROLL</div>
+          <div class="megaNumber mono" id="heroMoney" style="color:var(--cyan);">$0</div>
+          <div class="versusTag"><span class="hl-cyan">AI</span> VS <span class="hl-amber">ROULETTE</span></div>
+        `;
+        root.append(card);
+        return { c, moneyEl: card.querySelector('#heroMoney') };
+      },
+      update(local, s) {
+        renderWheel(s.c, local * 2.2, 600);
+        const p = Math.min(1, local / 2.6);
+        s.moneyEl.textContent = '$' + Math.round(p * 10000).toLocaleString();
+      }
+    },
+
+    // Scene 1: 100 Spins Simulation
+    {
+      a: 3, b: 8,
+      sub: 'I gave it <span class="hl-cyan">100 spins</span> and told it to decide what to bet every round.',
+      mount(root) {
+        const p = document.createElement('div');
+        p.className = 'simCard';
+        p.innerHTML = `
+          <div class="panelHead">
+            <div class="panelHeadTitle">AI ROULETTE ENGINE</div>
+            <div class="panelBadge">● ACTIVE EVALUATION</div>
+          </div>
+          <div class="twoCol">
+            <div class="boxMetric">
+              <div class="metricLabel">BANKROLL</div>
+              <div class="metricVal mono hl-cyan">$10,000</div>
+            </div>
+            <div class="boxMetric">
+              <div class="metricLabel">SPINS EVALUATED</div>
+              <div class="metricVal mono" id="spinsCounter" style="color:var(--amber);">0 / 100</div>
+            </div>
+          </div>
+          <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 24px; padding: 28px; text-align: center; margin-bottom: 24px;">
+            <div class="metricLabel">NEURAL DECISION LOG</div>
+            <div id="aiDecisionText" style="font-size: 42px; font-weight: 900; color: var(--cyan); margin-top: 8px;">ANALYZING SPIN BIAS...</div>
+          </div>
+          <div class="metricLabel">REAL-TIME TAPE</div>
+          <div class="spinTape">
+            <div class="spinChip"><div class="metricLabel">SPIN 96</div><div style="font-size:28px; font-weight:900; color:var(--red);">RED 14</div></div>
+            <div class="spinChip"><div class="metricLabel">SPIN 97</div><div style="font-size:28px; font-weight:900;">BLK 22</div></div>
+            <div class="spinChip"><div class="metricLabel">SPIN 98</div><div style="font-size:28px; font-weight:900; color:var(--red);">RED 07</div></div>
+            <div class="spinChip"><div class="metricLabel">SPIN 99</div><div style="font-size:28px; font-weight:900;">BLK 33</div></div>
+            <div class="spinChip"><div class="metricLabel">SPIN 100</div><div style="font-size:28px; font-weight:900; color:var(--red);">RED 01</div></div>
+          </div>
+        `;
+        root.append(p);
+        return {
+          spinsEl: p.querySelector('#spinsCounter'),
+          decisionEl: p.querySelector('#aiDecisionText')
+        };
+      },
+      update(local, s) {
+        const p = Math.min(1, local / 4.6);
+        s.spinsEl.textContent = `${Math.round(p * 100)} / 100`;
+        s.decisionEl.textContent = local < 1.6 ? 'ANALYZING SPIN BIAS...' : (local < 3.6 ? 'PLACING BET: $10 ON RED' : 'OUTCOME: WIN • +$10');
+      }
+    },
+
+    // Scene 2: The Profit & "Was That Just Luck?" (Separated into clean non-overlapping phases)
+    {
+      a: 8, b: 12,
+      sub: 'And somehow it finished with <span class="hl-green">more money</span>. But was that just luck?',
+      mount(root) {
+        const box1 = document.createElement('div');
+        box1.className = 'resultBox';
+        box1.style.cssText = 'position: absolute; left: 70px; right: 70px; top: 220px; text-align: center;';
+        box1.innerHTML = `
+          <div class="metricLabel" style="margin-bottom:20px; font-size:22px; color:var(--cyan);">100 SPINS COMPLETED</div>
+          <div class="twoCol" style="margin-bottom:28px;">
+            <div class="boxMetric">
+              <div class="metricLabel">STARTING</div>
+              <div style="font-size: 48px; font-weight: 900; margin-top: 6px;" class="mono">$10,000</div>
+            </div>
+            <div class="boxMetric">
+              <div class="metricLabel">FINAL BALANCE</div>
+              <div id="finalBalVal" style="font-size: 48px; font-weight: 900; margin-top: 6px; color: var(--green);" class="mono">$10,000</div>
+            </div>
+          </div>
+          <div id="profitPillEl" class="profitPill mono">+ $0 PROFIT</div>
+        `;
+
+        const box2 = document.createElement('div');
+        box2.className = 'questionDramatic';
+        box2.style.display = 'none';
+        box2.innerHTML = `
+          <div class="metricLabel" style="color:#e2e8f0; font-size:26px; letter-spacing:0.2em;">THE CRITICAL QUESTION</div>
+          <div class="qBig">WAS IT JUST LUCK?</div>
+          <div style="font-size: 26px; color: var(--muted); margin-top: 20px; font-weight: 800; letter-spacing: 0.12em;">
+            OR DID AI CRACK THE CASINO?
+          </div>
+        `;
+
+        const c = makeCanvas(560);
+        c.style.top = '36%'; c.style.opacity = '0.22'; c.style.display = 'none';
+
+        root.append(c);
+        root.append(box1);
+        root.append(box2);
+
+        return {
+          c, box1, box2,
+          balEl: box1.querySelector('#finalBalVal'),
+          profitEl: box1.querySelector('#profitPillEl'),
+          phase: 1
+        };
+      },
+      update(local, s) {
+        if (local < 2.2) {
+          s.box1.style.display = 'block';
+          s.box2.style.display = 'none';
+          s.c.style.display = 'none';
+          const p = Math.min(1, local / 1.8);
+          const currentVal = Math.round(10000 + 860 * p);
+          s.balEl.textContent = '$' + currentVal.toLocaleString();
+          s.profitEl.textContent = `+ $${currentVal - 10000} PROFIT`;
+        } else {
+          s.box1.style.display = 'none';
+          s.box2.style.display = 'block';
+          s.c.style.display = 'block';
+          renderWheel(s.c, local * 2.5, 560);
+        }
+      }
+    },
+
+    // Scene 3: Running 10 More Tests
+    {
+      a: 12, b: 16,
+      sub: 'So I ran the exact same experiment another <span class="hl-cyan">10 times</span>.',
+      mount(root) {
+        const container = document.createElement('div');
+        container.style.cssText = 'position:absolute; inset: 0; padding: 220px 70px 0;';
+        container.innerHTML = `<div style="text-align:center; font-size:32px; font-weight:900; letter-spacing:0.1em; margin-bottom:28px; color:var(--cyan);">RUNNING 10 IDENTICAL TRIALS...</div>`;
+        
+        const grid = document.createElement('div');
+        grid.className = 'testsGrid';
+        const data = [420, 180, -210, 670, 90, 310, -140, 520, 230, 410];
+        const cardEls = [];
+
+        data.forEach((val, i) => {
+          const card = document.createElement('div');
+          card.className = 'testRow';
+          card.style.opacity = '0';
+          const isProf = val >= 0;
+          card.innerHTML = `
+            <span style="color:var(--muted)">TRIAL #${pad(i+1)}</span>
+            <span class="mono" style="color:${isProf ? 'var(--green)' : 'var(--red)'}">${isProf ? '+' : ''}$${Math.abs(val)}</span>
+          `;
+          grid.append(card);
+          cardEls.push(card);
+        });
+
+        container.append(grid);
+        root.append(container);
+        return { cardEls };
+      },
+      update(local, s) {
+        const showCount = Math.min(10, Math.ceil(Math.max(0, (local - 0.1) / 3.2) * 10));
+        s.cardEls.forEach((el, idx) => {
+          el.style.opacity = idx < showCount ? '1' : '0';
+        });
+      }
+    },
+
+    // Scene 4: 8 / 10 Profitable
+    {
+      a: 16, b: 20,
+      sub: 'And in <span class="hl-green">8 out of those 10 tests</span>, the AI ended up profitable.',
+      mount(root) {
+        const wrap = document.createElement('div');
+        wrap.className = 'ratioWrap';
+        wrap.innerHTML = `
+          <div class="metricLabel" style="font-size: 28px; letter-spacing: 0.2em; margin-bottom: 12px;">TEST RESULTS</div>
+          <div class="bigRatio mono">8 / 10</div>
+          <div><span class="ratioPill">PROFITABLE SESSIONS</span></div>
+          <div style="font-size: 26px; color: var(--muted); margin-top: 26px; letter-spacing: 0.1em; text-transform: uppercase;">
+            8 SESSIONS WON • 2 SESSIONS LOST
+          </div>
+        `;
+        root.append(wrap);
+        return {};
+      },
+      update() {}
+    },
+
+    // Scene 5: Decompiling Decisions
+    {
+      a: 20, b: 23,
+      sub: 'Okay, I had to see what AI was <span class="hl-amber">actually doing</span>.',
+      mount(root) {
+        const box = document.createElement('div');
+        box.className = 'consoleBox';
+        box.innerHTML = `
+          <div class="panelHead">
+            <div class="panelHeadTitle">REVERSE ENGINEERING DECISIONS</div>
+            <div class="panelBadge" id="decPct">0% DECODED</div>
+          </div>
+          <div style="font-size: 24px; line-height: 1.8; color: #cbd5e1;" class="mono">
+            <div>&gt; sample_size = 1,000 spins</div>
+            <div>&gt; target_market = <span class="hl-cyan">even_money_outside</span></div>
+            <div>&gt; loss_reaction = <span class="hl-amber">multiply_previous_bet</span></div>
+            <div>&gt; multiplier_factor = <span class="hl-green">2.00x</span></div>
+            <div>&gt; recovery_target = <span class="hl-cyan">initial_unit</span></div>
+            <div style="margin-top:20px; color:var(--amber);">&gt; STRATEGY IDENTIFIED: MATCH CONFIRMED (99.8%)</div>
+          </div>
+          <div style="margin-top: auto; padding: 26px; background: rgba(167, 139, 250, 0.14); border: 1px solid rgba(167, 139, 250, 0.35); border-radius: 20px; text-align: center;">
+            <div class="metricLabel">IDENTIFIED PATTERN</div>
+            <div style="font-size: 44px; font-weight: 950; color: #d8b4fe; margin-top: 6px;">CLASSIC MARTINGALE</div>
+          </div>
+        `;
+        root.append(box);
+        return { pctEl: box.querySelector('#decPct') };
+      },
+      update(local, s) {
+        const pct = Math.min(100, Math.round((local / 2.8) * 100));
+        s.pctEl.textContent = `${pct}% DECODED`;
+      }
+    },
+
+    // Scene 6: Martingale Reveal
+    {
+      a: 23, b: 28,
+      sub: 'That’s when I realized: AI was using the oldest strategy ever: <span class="hl-amber">Martingale</span>.',
+      mount(root) {
+        const wrap = document.createElement('div');
+        wrap.className = 'martingaleWrap';
+        wrap.innerHTML = `
+          <div class="metricLabel" style="font-size: 26px; letter-spacing: 0.22em; margin-bottom: 20px; color: var(--amber);">
+            STRATEGY UNMASKED
+          </div>
+          <div class="martTitle">MARTINGALE</div>
+          <div class="martChips mono">
+            <div class="chipItem">$10</div>
+            <div style="color:var(--muted)">→</div>
+            <div class="chipItem">$20</div>
+            <div style="color:var(--muted)">→</div>
+            <div class="chipItem">$40</div>
+            <div style="color:var(--muted)">→</div>
+            <div class="chipItem">$80</div>
+          </div>
+          <div style="margin-top: 40px; font-size: 28px; color: #cbd5e1; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 800;">
+            DOUBLE BET AFTER EVERY SINGLE LOSS
+          </div>
+        `;
+        root.append(wrap);
+        return {};
+      },
+      update() {}
+    },
+
+    // Scene 7: Doubling Steps
+    {
+      a: 28, b: 31,
+      sub: 'Every time it lost, it <span class="hl-red">doubled the bet</span> to recover the loss.',
+      mount(root) {
+        const box = document.createElement('div');
+        box.className = 'stepsBox';
+        const rows = [
+          { bet: 10, res: 'LOSE (-$10)', col: 'var(--red)' },
+          { bet: 20, res: 'LOSE (-$30 total)', col: 'var(--red)' },
+          { bet: 40, res: 'LOSE (-$70 total)', col: 'var(--red)' },
+          { bet: 80, res: 'WIN (+$80)', col: 'var(--green)' }
+        ];
+
+        rows.forEach((r, idx) => {
+          const card = document.createElement('div');
+          card.className = 'stepCard';
+          card.innerHTML = `
+            <span class="mono" style="color:var(--muted)">BET #${idx + 1}: <strong style="color:#fff; font-size:38px;">$${r.bet}</strong></span>
+            <span class="mono" style="color:${r.col}">${r.res}</span>
+          `;
+          box.append(card);
+        });
+
+        const summary = document.createElement('div');
+        summary.style.cssText = 'padding: 26px; background: rgba(74, 222, 128, 0.12); border: 2px solid rgba(74, 222, 128, 0.35); border-radius: 24px; text-align: center; margin-top: 10px;';
+        summary.innerHTML = `
+          <div class="metricLabel">NET AFTER 1 WIN</div>
+          <div style="font-size: 46px; font-weight: 950; color: var(--green); margin-top: 4px;" class="mono">+$10 NET PROFIT</div>
+        `;
+        box.append(summary);
+        root.append(box);
+        return {};
+      },
+      update() {}
+    },
+
+    // Scene 8: 1:1 Pairs
+    {
+      a: 31, b: 37,
+      sub: 'It was betting on <span class="hl-cyan">Red or Black</span>, <span class="hl-cyan">Odd or Even</span>, and <span class="hl-cyan">1 to 18 / 19 to 36</span>.',
+      mount(root) {
+        const wrap = document.createElement('div');
+        wrap.className = 'pairsWrap';
+        const pairs = [['RED', 'BLACK'], ['ODD', 'EVEN'], ['1–18', '19–36']];
+
+        pairs.forEach(p => {
+          const row = document.createElement('div');
+          row.className = 'pairCardRow';
+          row.innerHTML = `
+            <div class="betTargetCard">${p[0]}</div>
+            <div style="text-align:center; font-size:28px; font-weight:900; color:var(--muted)">VS</div>
+            <div class="betTargetCard">${p[1]}</div>
+          `;
+          wrap.append(row);
+        });
+
+        const note = document.createElement('div');
+        note.style.cssText = 'text-align: center; font-size: 26px; font-weight: 800; letter-spacing: 0.14em; color: var(--cyan); text-transform: uppercase; margin-top: 14px;';
+        note.textContent = '1:1 EVEN-MONEY PROBABILITY BETS';
+        wrap.append(note);
+        root.append(wrap);
+        return {};
+      },
+      update() {}
+    },
+
+    // Scene 9: Dynamic Line Drawing (HTML5 Canvas)
+    {
+      a: 37, b: 41,
+      sub: 'And watching the balance go up looked <span class="hl-green">really convincing</span>.',
+      mount(root) {
+        const box = document.createElement('div');
+        box.className = 'chartBox';
+        box.innerHTML = `
+          <div class="panelHead">
+            <div class="panelHeadTitle">BALANCE TRAJECTORY</div>
+            <div class="panelBadge" style="color:var(--green); border-color:var(--green); background:rgba(74,222,128,0.15)">STEADY GAINS</div>
+          </div>
+          <div style="position:relative; flex:1; width:100%; margin-top: 10px;">
+            <canvas id="chartCanvas" width="900" height="520" style="width:100%; height:100%; border-radius:18px;"></canvas>
+          </div>
+          <div style="text-align:center; font-size:28px; font-weight:850; letter-spacing:0.12em; color:#cbd5e1; margin-top:14px; text-transform:uppercase;">
+            WATCHING IT GO UP LOOKS VERY CONVINCING
+          </div>
+        `;
+        root.append(box);
+        return { cv: box.querySelector('#chartCanvas') };
+      },
+      update(local, s) {
+        const ctx = s.cv.getContext('2d');
+        const points = [
+          [0, 440], [110, 380], [220, 340], [330, 300], 
+          [440, 240], [560, 190], [680, 130], [800, 90], [900, 50]
+        ];
+
+        ctx.clearRect(0, 0, 900, 520);
+        const progress = Math.min(1, local / 2.8);
+        const count = Math.max(2, Math.floor(progress * points.length));
+        const activePoints = points.slice(0, count);
+
+        const grad = ctx.createLinearGradient(0, 0, 0, 520);
+        grad.addColorStop(0, 'rgba(74, 222, 128, 0.35)');
+        grad.addColorStop(1, 'rgba(74, 222, 128, 0.0)');
+
+        ctx.beginPath();
+        ctx.moveTo(activePoints[0][0], activePoints[0][1]);
+        for (let i = 1; i < activePoints.length; i++) ctx.lineTo(activePoints[i][0], activePoints[i][1]);
+        ctx.lineTo(activePoints[activePoints.length - 1][0], 520);
+        ctx.lineTo(0, 520);
+        ctx.closePath();
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(activePoints[0][0], activePoints[0][1]);
+        for (let i = 1; i < activePoints.length; i++) ctx.lineTo(activePoints[i][0], activePoints[i][1]);
+        ctx.strokeStyle = '#4ade80';
+        ctx.lineWidth = 9;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+
+        const head = activePoints[activePoints.length - 1];
+        ctx.beginPath();
+        ctx.arc(head[0], head[1], 12, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = '900 28px monospace';
+        ctx.fillText('$10,000', 15, 470);
+        if (count > 3) ctx.fillText('$10,400', 340, 340);
+        if (count > 6) ctx.fillText('$11,100', 680, 170);
+        if (count >= 9) ctx.fillText('$11,460', 740, 50);
+      }
+    },
+
+    // Scene 10: Danger Escalation
+    {
+      a: 41, b: 49,
+      sub: 'If you hit a losing streak, the bets double exponentially and <span class="hl-red">wipe you out</span>.',
+      mount(root) {
+        const box = document.createElement('div');
+        box.className = 'dangerBox';
+        box.innerHTML = `
+          <div class="dangerBanner">⚠️ THE EXPONENTIAL TRAP</div>
+          <div class="ladderGrid mono">
+            <div class="ladderRow"><span>LOSS 1</span><span class="hl-red">$10</span></div>
+            <div class="ladderRow"><span>LOSS 2</span><span class="hl-red">$20</span></div>
+            <div class="ladderRow"><span>LOSS 3</span><span class="hl-red">$40</span></div>
+            <div class="ladderRow"><span>LOSS 4</span><span class="hl-red">$80</span></div>
+            <div class="ladderRow"><span>LOSS 5</span><span class="hl-red">$160</span></div>
+            <div class="ladderRow"><span>LOSS 6</span><span class="hl-red">$320</span></div>
+            <div class="ladderRow"><span>LOSS 7</span><span class="hl-red">$640</span></div>
+            <div class="ladderRow"><span>LOSS 8</span><span class="hl-red">$1,280</span></div>
+          </div>
+          <div class="wipeoutAlert">
+            <div class="metricLabel" style="color:var(--red);">SPIN 9 REQUIRES</div>
+            <div style="font-size:68px; font-weight:1000; color:#fff; margin:6px 0;" class="mono">$2,560</div>
+            <div style="font-size:26px; font-weight:800; color:#fca5a5;">TOTAL AT RISK: $5,110 TO WIN JUST $10</div>
+          </div>
+        `;
+        root.append(box);
+        return {};
+      },
+      update() {}
+    },
+
+    // Scene 11: Cliffhanger CTA
+    {
+      a: 49, b: 52,
+      sub: '',
+      mount(root) {
+        const cta = document.createElement('div');
+        cta.className = 'ctaWrap';
+        cta.innerHTML = `
+          <div class="metricLabel" style="font-size:28px; letter-spacing:0.2em; color:var(--amber);">THE EXPERIMENT CONTINUES</div>
+          <div class="ctaTitle">CAN AI IMPROVE<br><span class="hl-amber">MARTINGALE?</span></div>
+          <div class="ep2Badge">EPISODE 2 COMING NEXT</div>
+          <div style="font-size: 30px; font-weight: 800; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;">
+            SUBSCRIBE TO SEE IF AI BEATS THE HOUSE
+          </div>
+        `;
+        root.append(cta);
+        return {};
+      },
+      update() {}
+    }
   ];
 
-  const codeLines = [
-    '<span class="kw">function</span> <span class="fn">decideBet</span>(history) {',
-    '  <span class="kw">if</span> (history.loss) {',
-    '    <span class="kw">return</span> <span class="num">2</span> × history.lastBet;',
-    '  }',
-    '  <span class="kw">return</span> <span class="num">10</span>;',
-    '}',
-    '',
-    '<span class="kw">const</span> bankroll = <span class="num">10000</span>;',
-    '<span class="kw">const</span> rounds = <span class="num">100</span>;',
-    '',
-    '<span class="ok">// RED / BLACK</span>',
-    '<span class="ok">// ODD / EVEN</span>',
-    '<span class="ok">// 1–18 / 19–36</span>',
-    '',
-    '<span class="kw">while</span> (round &lt; rounds) {',
-    '  result = <span class="fn">spinRoulette</span>();',
-    '  bet = <span class="fn">decideBet</span>(history);',
-    '  updateBankroll(result, bet);',
-    '}',
-    '',
-    '<span class="dim">// strategy pattern: after loss → double next bet</span>'
-  ].join('\n');
-
-  let playing = false;
-  let currentTime = 0;
-  let raf = 0;
-  let audioMuted = false;
-  let audioCtx = null;
-  let noiseBuffer = null;
-  let lastAudioBucket = -1;
-
-  const el = id => document.getElementById(id);
-  const all = sel => [...document.querySelectorAll(sel)];
-
-  function fitStage(){
-    const scale = Math.min(viewport.clientWidth / 1080, viewport.clientHeight / 1920);
-    stage.style.transform = `scale(${scale})`;
-  }
-  window.addEventListener('resize', fitStage);
-  fitStage();
-
-  function clamp(v,a=0,b=1){return Math.max(a,Math.min(b,v));}
-  function lerp(a,b,p){return a+(b-a)*clamp(p);}
-  function easeOutCubic(p){p=clamp(p);return 1-Math.pow(1-p,3);}
-  function easeInOutCubic(p){p=clamp(p);return p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;}
-  function fmtMoney(n){return (n<0?'−':'')+'$'+Math.abs(Math.round(n)).toLocaleString('en-US');}
-  function fmtTime(s){const m=Math.floor(s/60).toString().padStart(2,'0');const sec=Math.floor(s%60).toString().padStart(2,'0');return `${m}:${sec}`;}
-
-  function sceneAt(t){
-    for(let i=0;i<bounds.length-1;i++) if(t>=bounds[i] && t<bounds[i+1]) return scenes[i];
-    return 'final';
-  }
-  function setActiveScene(id){
-    for(const s of scenes){const node=el(s);node.classList.toggle('active',s===id);}
-    document.getElementById('sceneCode').textContent = id==='final'?'EPISODE 02 HOOK':`SCENE ${String(scenes.indexOf(id)+1).padStart(2,'0')}`;
-  }
-
-  function setSubtitle(t){
-    let found = null;
-    for(const item of subtitles){if(t>=item[0] && t<item[1]){found=item;break;}}
-    if(!found){subtitle.style.opacity='0';subtitleBox.innerHTML='';return;}
-    const html = found[2];
-    if(subtitleBox.innerHTML !== html){
-      subtitleBox.innerHTML = html;
-      subtitle.style.opacity = '1';
-    }
-  }
-
-  // ----- Web Audio: all synthesized, no external assets -----
-  function initAudio(){
-    if(audioCtx) return audioCtx;
-    try{
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const sr = audioCtx.sampleRate;
-      noiseBuffer = audioCtx.createBuffer(1,sr*.5,sr);
-      const data = noiseBuffer.getChannelData(0);
-      let seed=0x51C0FFEE; for(let i=0;i<data.length;i++){ seed=(seed*1664525+1013904223)>>>0; const r=(seed/4294967296)*2-1; data[i]=r*Math.exp(-i/(sr*.12)); }
-    }catch(e){audioCtx=null;}
-    return audioCtx;
-  }
-  function resumeAudio(){
-    const ctx=initAudio();
-    if(ctx && ctx.state==='suspended') ctx.resume().catch(()=>{});
-  }
-  function tone(freq=640,dur=.08,gain=.03,type='sine',when=0){
-    if(audioMuted || !audioCtx) return;
-    const now=audioCtx.currentTime+when;
-    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
-    o.type=type;o.frequency.setValueAtTime(freq,now);
-    g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(gain,now+.008);g.gain.exponentialRampToValueAtTime(.0001,now+dur);
-    o.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+dur+.03);
-  }
-  function noiseBurst(dur=.16,gain=.035,when=0){
-    if(audioMuted || !audioCtx || !noiseBuffer) return;
-    const now=audioCtx.currentTime+when, src=audioCtx.createBufferSource(), g=audioCtx.createGain(), f=audioCtx.createBiquadFilter();
-    src.buffer=noiseBuffer;f.type='highpass';f.frequency.value=900;g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(gain,now+.01);g.gain.exponentialRampToValueAtTime(.0001,now+dur);src.connect(f);f.connect(g);g.connect(audioCtx.destination);src.start(now);src.stop(now+dur+.02);
-  }
-  function impact(){tone(110,.20,.09,'sine');tone(55,.24,.06,'sine',.025);noiseBurst(.10,.018,.015)}
-  function whoosh(){tone(150,.30,.018,'sawtooth');tone(420,.24,.012,'triangle',.08);noiseBurst(.24,.012)}
-  function click(){tone(680,.035,.018,'square')}
-  function rouletteHum(){
-    if(audioMuted || !audioCtx) return;
-    const now=audioCtx.currentTime, o=audioCtx.createOscillator(), g=audioCtx.createGain();
-    o.type='triangle';o.frequency.setValueAtTime(90,now);o.frequency.exponentialRampToValueAtTime(280,now+.8);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.028,now+.08);g.gain.exponentialRampToValueAtTime(.0001,now+1.0);o.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+1.02);
-  }
-
-  function triggerAudioAt(t){
-    const bucket=Math.floor(t*10);
-    if(bucket===lastAudioBucket) return;
-    const prev=currentTime;
-    lastAudioBucket=bucket;
-    const events=[[0,'impact'],[.9,'rouletteHum'],[2.1,'whoosh'],[4,'whoosh'],[9,'impact'],[12.45,'impact'],[14,'impact'],[18,'whoosh'],[19.0,'click'],[19.5,'click'],[20.0,'click'],[20.5,'click'],[21.0,'click'],[22.0,'click'],[25,'impact'],[28.6,'impact'],[30,'impact'],[33.0,'click'],[34.0,'click'],[35.0,'click'],[37,'impact'],[39.3,'whoosh'],[41,'whoosh'],[45.15,'impact'],[46,'impact'],[48.8,'click'],[49.4,'click'],[50.0,'click'],[51.0,'impact'],[52,'impact']];
-    for(const [time,type] of events){
-      if(prev<=time && t>time){
-        if(type==='impact')impact();
-        else if(type==='whoosh')whoosh();
-        else if(type==='click')click();
-        else if(type==='rouletteHum')rouletteHum();
-      }
-    }
-  }
-
-  function resetVisuals(){
-    all('.testCard').forEach(x=>x.style.opacity='0');
-    all('.betCard').forEach(x=>x.style.opacity='0');
-    all('.step').forEach(x=>{x.style.opacity='0';x.classList.remove('current')});
-    all('.loseDot').forEach(x=>x.style.opacity='0');
-    all('.mRow').forEach(x=>x.style.opacity='0');
-    ['summary8','detected','logic','wheelInfo','freeze','but','loseLabel','cliff'].forEach(id=>{el(id).style.opacity='0'});
-    el('codeText').innerHTML='';
-    el('spinCount').textContent='00 / 100';el('spinResult').textContent='READY';el('betText').textContent='WAITING...';
-    el('cashCounter').textContent='$0';el('heroTitle').style.opacity='0';
-    el('finalVal').textContent='$10,000';el('profitVal').textContent='+$0';el('profitBarFill').style.width='0%';
-    el('climbBalance').textContent='$9,800';
-    el('chartLine').style.strokeDashoffset='1250';
-    subtitleBox.innerHTML='';subtitle.style.opacity='0';
-    flashLayer.style.opacity='0';scanlineLayer.style.opacity='0';
-  }
-
-  function renderScene1(t){
-    const local=t;
-    const counterP=clamp(local/2.18);
-    const q=easeOutCubic(counterP);
-    const milestones=[0,100,1000,5000,10000];
-    let value=0;
-    if(q>=1)value=10000;else{const idx=Math.min(3,Math.floor(q*4));const p=(q*4)-idx;value=lerp(milestones[idx],milestones[idx+1],easeOutCubic(p));}
-    el('cashCounter').textContent=fmtMoney(value);
-    el('heroTitle').style.opacity=clamp((local-2.10)/.65);
-    el('heroTitle').style.transform=`translateX(-50%) translateY(${lerp(24,0,easeOutCubic(clamp((local-2.10)/.65))) }px) scale(${lerp(.94,1,easeOutCubic(clamp((local-2.10)/.65)))})`;
-    const spinP=clamp((local-.05)/3.1);el('heroWheel').style.transform=`translateX(-50%) rotate(${540*easeOutCubic(spinP)}deg)`;
-  }
-  function renderScene2(t){
-    const l=t-4;
-    const segs=[[0,1.05,0,4],[1.05,2.4,4,37],[2.4,3.6,37,72],[3.6,4.55,72,100]];
-    let count=0;
-    for(const [a,b,start,end] of segs){
-      if(l>=a && l<=b){count=Math.floor(lerp(start,end,(l-a)/(b-a)));break;}
-    }
-    if(l>=4.55)count=100;
-    count=Math.max(0,Math.min(100,count));
-    el('spinCount').textContent=`${String(count).padStart(2,'0')} / 100`;
-    const result=count===100?'COMPLETE':count===0?'READY':(count%2?'RED':'BLACK');
-    el('spinResult').textContent=result;el('spinResult').style.color=count%2?'var(--red)':'#dfe5ec';
-    el('betText').textContent=count===0?'WAITING...':(count%2?'BLACK':'RED');
-    const wheelP=clamp(l/5);document.querySelector('#s2 .miniWheel').style.transform=`translateX(-50%) rotate(${720*wheelP}deg)`;
-  }
-  function renderScene3(t){
-    const p=clamp((t-9)/4.4), e=easeOutCubic(p), value=lerp(10000,10860,e);el('finalVal').textContent=fmtMoney(value);el('profitVal').textContent='+'+fmtMoney(value-10000);el('profitBarFill').style.width=`${clamp((value-10000)/860)*100}%`;
-    flashLayer.style.opacity=t>12.45?String(clamp(1-(t-12.45)/.25)*.55):'0';
-  }
-  function renderScene4(t){
-    const p=clamp((t-14)/4);scanlineLayer.style.opacity=String(.5+0.2*Math.sin(p*Math.PI*8));
-  }
-  function renderScene5(t){
-    const l=t-18;const n=Math.min(10,Math.floor(l/0.54)+1);const cards=all('#testsGrid .testCard');cards.forEach((c,i)=>c.style.opacity=i<n?'1':'0');
-    const sp=clamp((l-4.9)/1.1);el('summary8').style.opacity=String(easeOutCubic(sp));
-  }
-  function renderScene6(t){
-    const l=t-25;const p=clamp(l/3.9);const visible=Math.floor(codeLines.replace(/<[^>]+>/g,' ').length*easeOutCubic(p));
-    // Deterministic visual type-on: reveal HTML character-by-character while keeping tags valid.
-    const raw=codeLines;let out='', count=0;let inTag=false;
-    for(let i=0;i<raw.length;i++){
-      const ch=raw[i];
-      if(ch==='<')inTag=true;
-      if(inTag){out+=ch;}else if(count<visible){out+=ch;count++;}else break;
-      if(ch==='>')inTag=false;
-    }
-    el('codeText').innerHTML=out;
-    el('detected').style.opacity=String(clamp((l-3.2)/.85));
-  }
-  function renderScene7(t){
-    const l=t-30;const steps=all('#martSequence .step');const active=Math.min(5,Math.floor(l/1.02)+1);steps.forEach((s,i)=>{s.style.opacity=i<active?'1':'0';s.classList.toggle('current',i===active-1 && l<5.2)});el('logic').style.opacity=String(clamp((l-5.1)/.65));
-  }
-  function renderScene8(t){
-    const l=t-37;const cards=all('#betCards .betCard');const n=Math.min(3,Math.floor(l/.86)+1);cards.forEach((c,i)=>c.style.opacity=i<n?'1':'0');el('wheelInfo').style.opacity=String(clamp((l-2.1)/.85));
-  }
-  function renderScene9(t){
-    const l=t-41;const stops=[9800,10100,10400,10700,11200];const p=clamp(l/3.65);let value;if(p>=1)value=11200;else{const pos=p*4,idx=Math.min(3,Math.floor(pos));value=lerp(stops[idx],stops[idx+1],easeInOutCubic(pos-idx));}el('climbBalance').textContent=fmtMoney(value);
-    const lineP=clamp(l/3.45);el('chartLine').style.strokeDashoffset=String(1250*(1-easeOutCubic(lineP)));
-    el('freeze').style.opacity=String(clamp((l-3.6)/.35));el('but').style.opacity=String(clamp((l-4.2)/.4));
-  }
-  function renderScene10(t){
-    const l=t-46;const dots=all('.loseDot');const n=Math.min(6,Math.floor(l/.85)+1);dots.forEach((d,i)=>d.style.opacity=i<n?'1':'0');
-    el('loseLabel').style.opacity=String(clamp((l-2.7)/.35));
-    const rows=all('.mRow'), r=Math.min(6,Math.max(0,Math.floor((l-2.2)*1.0)));rows.forEach((row,i)=>row.style.opacity=i<r?'1':'0');
-    el('cliff').style.opacity=String(clamp((l-4.9)/.6));
-  }
-  function renderOutro(t){
-    const l=t-52,p=clamp(l/3);const final=el('final');final.style.opacity='1';
-    el('sceneCode').textContent='EPISODE 02 HOOK';
-    const q1=el('final').querySelector('.q1'),q2=el('final').querySelector('.q2'),q3=el('final').querySelector('.q3'),q4=el('final').querySelector('.q4');
-    q1.style.opacity=String(clamp(l/.55));q2.style.opacity=String(clamp((l-.25)/.75));q3.style.opacity=String(clamp((l-1.0)/.55));q4.style.opacity=String(clamp((l-1.45)/.70));
-  }
-
-  function render(t){
-    currentTime=clamp(t,0,TOTAL);
-    setActiveScene(sceneAt(currentTime));
-    // All scene visuals are derived directly from currentTime; nothing depends on earlier frames.
-    for(const s of scenes){if(!el(s).classList.contains('active')) el(s).style.opacity = s==='final' ? '0' : ''}
-    switch(sceneAt(currentTime)){
-      case 's1':renderScene1(currentTime);break;
-      case 's2':renderScene2(currentTime);break;
-      case 's3':renderScene3(currentTime);break;
-      case 's4':renderScene4(currentTime);break;
-      case 's5':renderScene5(currentTime);break;
-      case 's6':renderScene6(currentTime);break;
-      case 's7':renderScene7(currentTime);break;
-      case 's8':renderScene8(currentTime);break;
-      case 's9':renderScene9(currentTime);break;
-      case 's10':renderScene10(currentTime);break;
-      case 'final':renderOutro(currentTime);break;
-    }
-    setSubtitle(currentTime);
-    progressFill.style.width=`${currentTime/TOTAL*100}%`;
-    timeLabel.textContent=`${fmtTime(currentTime)} / ${fmtTime(TOTAL)}`;
-    if(audioCtx && !audioMuted && playing) triggerAudioAt(currentTime);
-  }
-
-  function frame(now){
-    if(!playing) return;
-    render((now-sessionStart)/1000);
-    if(currentTime>=TOTAL){
-      playing=false;
-      playBtn.textContent='▶ PLAY';
-      timeLabel.textContent=`${fmtTime(TOTAL)} / ${fmtTime(TOTAL)}`;
+  /* --- ENGINE CONTROLLER --- */
+  function updateSubtitles(idx) {
+    const text = scenes[idx].sub;
+    if (!text) {
+      subText.style.display = 'none';
       return;
     }
-    raf=requestAnimationFrame(frame);
+    subText.style.display = 'inline-block';
+    subText.innerHTML = text;
   }
 
-  let sessionStart=performance.now();
-  function start(){
-    resumeAudio();
-    if(currentTime>=TOTAL){currentTime=0;lastAudioBucket=-1;resetVisuals();render(0);}
-    sessionStart=performance.now()-currentTime*1000;
-    playing=true;playBtn.textContent='❚❚ PAUSE';requestAnimationFrame(frame);
+  function goScene(t) {
+    let idx = scenes.findIndex(s => t >= s.a && t < s.b);
+    if (idx === -1) idx = scenes.length - 1;
+
+    // Mount only when changing scene!
+    if (idx !== activeSceneIndex) {
+      sceneRoot.innerHTML = '';
+      activeSceneIndex = idx;
+      activeSceneState = scenes[idx].mount(sceneRoot);
+      updateSubtitles(idx);
+    }
+
+    // Update smooth values every frame
+    if (scenes[idx].update) {
+      scenes[idx].update(t - scenes[idx].a, activeSceneState);
+    }
   }
-  function pause(){
-    if(!playing)return;playing=false;cancelAnimationFrame(raf);render(currentTime);playBtn.textContent='▶ PLAY';}
-  function restart(){cancelAnimationFrame(raf);playing=false;currentTime=0;lastAudioBucket=-1;resetVisuals();render(0);start();}
 
-  playBtn.addEventListener('click',()=>{if(playing)pause();else start();});
-  restartBtn.addEventListener('click',restart);
-  muteBtn.addEventListener('click',()=>{audioMuted=!audioMuted;muteBtn.textContent=audioMuted?'🔇 MUTED':'🔊 SOUND';if(!audioMuted)resumeAudio();});
-  window.addEventListener('pointerdown',()=>{if(!audioMuted)resumeAudio();},{passive:true});
-  window.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();if(playing)pause();else start();}if(e.key.toLowerCase()==='r')restart();if(e.key.toLowerCase()==='m'){audioMuted=!audioMuted;muteBtn.textContent=audioMuted?'🔇 MUTED':'🔊 SOUND';}});
+  function tick(now) {
+    if (!running) return;
+    elapsed = Math.min(DURATION, (now - startPerf) / 1000);
+    goScene(elapsed);
 
-  // Autoplay visuals; audio waits for an allowed user gesture if the browser blocks autoplay.
-  resetVisuals();render(0);setTimeout(()=>start(),650);
+    const pct = (elapsed / DURATION) * 100;
+    progressBar.style.width = pct + '%';
+    timeCurrent.textContent = fmtTime(elapsed);
+    timerBadge.textContent = fmtTime(elapsed);
+
+    if (elapsed >= DURATION) {
+      pause();
+      return;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  function play() {
+    if (running) return;
+    if (elapsed >= DURATION) elapsed = 0;
+    running = true;
+    startPerf = performance.now() - elapsed * 1000;
+    playBtn.textContent = '❚❚ PAUSE';
+    raf = requestAnimationFrame(tick);
+  }
+
+  function pause() {
+    running = false;
+    cancelAnimationFrame(raf);
+    playBtn.textContent = '▶ PLAY';
+  }
+
+  function restart() {
+    pause();
+    elapsed = 0;
+    activeSceneIndex = -1;
+    progressBar.style.width = '0%';
+    timeCurrent.textContent = '00:00';
+    timerBadge.textContent = '00:00';
+    goScene(0);
+  }
+
+  function seek(targetSec) {
+    elapsed = Math.max(0, Math.min(DURATION, targetSec));
+    startPerf = performance.now() - elapsed * 1000;
+    goScene(elapsed);
+    progressBar.style.width = ((elapsed / DURATION) * 100) + '%';
+    timeCurrent.textContent = fmtTime(elapsed);
+    timerBadge.textContent = fmtTime(elapsed);
+  }
+
+  playBtn.addEventListener('click', () => running ? pause() : play());
+  restartBtn.addEventListener('click', () => { restart(); play(); });
+  
+  muteBtn.addEventListener('click', () => {
+    muted = !muted;
+    muteBtn.textContent = muted ? '🔇 MUTED' : '🔊 SOUND ON';
+  });
+
+  overlayBtn.addEventListener('click', () => {
+    showOverlay = !showOverlay;
+    shortsGuide.style.display = showOverlay ? 'block' : 'none';
+    overlayBtn.classList.toggle('btnToggleActive', showOverlay);
+  });
+
+  scrubber.addEventListener('click', (e) => {
+    const rect = scrubber.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    seek(ratio * DURATION);
+  });
+
+  function handleResize() {
+    const margin = 140;
+    const availWidth = window.innerWidth - 30;
+    const availHeight = window.innerHeight - margin;
+    const scale = Math.min(availWidth / 1080, availHeight / 1920);
+
+    stage.style.transform = `scale(${scale})`;
+    stageWrap.style.width = `${1080 * scale}px`;
+    stageWrap.style.height = `${1920 * scale}px`;
+  }
+
+  window.addEventListener('resize', handleResize);
+  handleResize();
+
+  restart();
+  setTimeout(play, 180);
 })();
 </script>
 </body>
