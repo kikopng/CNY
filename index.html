@@ -278,7 +278,7 @@
   }
 
   .testsGrid {
-    position: absolute; left: 70px; right: 70px; top: 240px;
+    position: absolute; left: 70px; right: 70px; top: 300px;
     display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
   }
   .testRow {
@@ -415,6 +415,11 @@
       <button class="btn" id="muteBtn">🔊 SOUND ON</button>
       <button class="btn" id="overlayBtn">📱 SHORTS OVERLAY</button>
     </div>
+    <div class="btnRow">
+      <button class="btn" id="recordBtn">🎥 RECORD SHORT</button>
+      <a class="btn btnPrimary" id="downloadLink" download="roulette_ai_episode1.webm" style="display:none; text-decoration:none;">⬇ DOWNLOAD VIDEO</a>
+    </div>
+    <div id="recordHint" style="display:none; font-size:13px; color:var(--muted); line-height:1.5; text-align:center;"></div>
   </div>
 </div>
 
@@ -434,6 +439,9 @@
   const muteBtn = document.getElementById('muteBtn');
   const overlayBtn = document.getElementById('overlayBtn');
   const shortsGuide = document.getElementById('shortsGuide');
+  const recordBtn = document.getElementById('recordBtn');
+  const downloadLink = document.getElementById('downloadLink');
+  const recordHint = document.getElementById('recordHint');
 
   let running = false;
   let muted = false;
@@ -443,6 +451,18 @@
   let activeSceneIndex = -1;
   let activeSceneState = null;
   let showOverlay = false;
+
+  /* --- Recording state (captures the 9:16 stage only, no external controls) --- */
+  const OUT_W = 1080, OUT_H = 1920;
+  let isRecording = false;
+  let displayStream = null;
+  let captureVideo = null;
+  let captureCanvas = null;
+  let captureCtx = null;
+  let outStream = null;
+  let mediaRecorder = null;
+  let recordedChunks = [];
+  let captureRAF = 0;
 
   function pad(n) { return String(n).padStart(2, '0'); }
   function fmtTime(t) {
@@ -1004,6 +1024,7 @@
 
     if (elapsed >= DURATION) {
       pause();
+      if (isRecording) stopRecording();
       return;
     }
     raf = requestAnimationFrame(tick);
@@ -1061,6 +1082,110 @@
     const rect = scrubber.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
     seek(ratio * DURATION);
+  });
+
+  /* --- Screen recording: captures ONLY the #stage element (no external controls) ---
+     Works by asking the browser to share this tab, then every frame we crop the
+     shared video down to just the stage's on-screen rectangle and redraw that
+     crop onto an offscreen canvas, which is what actually gets recorded. */
+  function pickMimeType() {
+    const candidates = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+    for (const c of candidates) {
+      if (window.MediaRecorder && MediaRecorder.isTypeSupported(c)) return c;
+    }
+    return '';
+  }
+
+  async function startRecording() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia || !window.MediaRecorder) {
+      alert('Screen recording isn\'t supported in this browser. Try the latest Chrome or Edge on desktop.');
+      return;
+    }
+
+    try {
+      displayStream = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: 30 }, audio: false });
+    } catch (err) {
+      return; // user cancelled the share prompt
+    }
+
+    // Hide the shorts guide overlay so it doesn't get baked into the video
+    showOverlay = false;
+    shortsGuide.style.display = 'none';
+    overlayBtn.classList.remove('btnToggleActive');
+
+    captureVideo = document.createElement('video');
+    captureVideo.muted = true;
+    captureVideo.playsInline = true;
+    captureVideo.srcObject = displayStream;
+    await captureVideo.play();
+
+    captureCanvas = document.createElement('canvas');
+    captureCanvas.width = OUT_W;
+    captureCanvas.height = OUT_H;
+    captureCtx = captureCanvas.getContext('2d');
+
+    outStream = captureCanvas.captureStream(30);
+    const mimeType = pickMimeType();
+    mediaRecorder = new MediaRecorder(outStream, mimeType ? { mimeType, videoBitsPerSecond: 8000000 } : { videoBitsPerSecond: 8000000 });
+    recordedChunks = [];
+    mediaRecorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) recordedChunks.push(e.data); };
+    mediaRecorder.onstop = finishRecording;
+
+    const track = displayStream.getVideoTracks()[0];
+    if (track) track.addEventListener('ended', () => { if (isRecording) stopRecording(); });
+
+    isRecording = true;
+    recordBtn.textContent = '⏹ STOP RECORDING';
+    recordBtn.classList.add('btnToggleActive');
+    downloadLink.style.display = 'none';
+    recordHint.style.display = 'block';
+    recordHint.textContent = 'Recording… capturing just the 9:16 frame. Keep this tab visible.';
+
+    mediaRecorder.start();
+    captureFrame();
+
+    // Play the short from the very beginning so the recording covers all 52s
+    restart();
+    play();
+  }
+
+  function captureFrame() {
+    if (!isRecording) return;
+    const rect = stage.getBoundingClientRect();
+    const vw = captureVideo.videoWidth, vh = captureVideo.videoHeight;
+    if (vw && vh && rect.width > 0 && rect.height > 0) {
+      const scaleX = vw / window.innerWidth;
+      const scaleY = vh / window.innerHeight;
+      const sx = Math.max(0, rect.left * scaleX);
+      const sy = Math.max(0, rect.top * scaleY);
+      const sw = rect.width * scaleX;
+      const sh = rect.height * scaleY;
+      captureCtx.drawImage(captureVideo, sx, sy, sw, sh, 0, 0, OUT_W, OUT_H);
+    }
+    captureRAF = requestAnimationFrame(captureFrame);
+  }
+
+  function stopRecording() {
+    if (!isRecording) return;
+    isRecording = false;
+    cancelAnimationFrame(captureRAF);
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+    if (displayStream) displayStream.getTracks().forEach(t => t.stop());
+    recordBtn.textContent = '🎥 RECORD SHORT';
+    recordBtn.classList.remove('btnToggleActive');
+  }
+
+  function finishRecording() {
+    const blob = new Blob(recordedChunks, { type: (mediaRecorder && mediaRecorder.mimeType) || 'video/webm' });
+    const url = URL.createObjectURL(blob);
+    downloadLink.href = url;
+    downloadLink.style.display = 'inline-block';
+    recordHint.textContent = 'Recording ready — tap "Download Video" to save it.';
+  }
+
+  recordBtn.addEventListener('click', () => {
+    if (isRecording) stopRecording();
+    else startRecording();
   });
 
   function handleResize() {
