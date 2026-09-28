@@ -2,6 +2,8 @@
 *{box-sizing:border-box;margin:0}html,body{height:100%;background:#000;overflow:hidden;font-family:Inter,system-ui,Arial,sans-serif;color:#fff}
 #w{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;overflow:hidden;background:radial-gradient(circle at 50% 40%,#1d1326,#07070b 70%)}
 #c{position:absolute;left:0;right:0;top:190px;bottom:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;text-align:center;padding:0 50px}
+html,body{touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+body{position:fixed;inset:0}body.imm{background:#000}
 #top{position:absolute;top:80px;width:100%;text-align:center;font-size:32px;letter-spacing:10px;color:#ffffff66;font-weight:700}
 #pgw{position:absolute;bottom:90px;left:90px;right:90px;height:8px;background:#ffffff18;border-radius:4px}#pg{height:100%;background:#ffd54a;border-radius:4px}
 .h{font-size:220px;font-weight:900;line-height:1}.m{font-size:96px;font-weight:900;line-height:1.05}.s{font-size:56px;font-weight:700;color:#dcdce8}.t{font-size:42px;letter-spacing:8px;color:#9a9ab0;font-weight:700}
@@ -122,5 +124,20 @@ const tog=()=>{if(T>=END-.01)T=0;playing=!playing};
 $('bp').onclick=tog;$('br').onclick=()=>{T=0;playing=true};$('sp').onchange=e=>speed=+e.target.value;
 $('tl').oninput=e=>T=+e.target.value;
 $('bg').onclick=()=>{const p=$('bj').value.split(':').map(Number);T=Math.max(0,Math.min(END-.01,p.length>1?p[0]*60+p[1]:p[0]||0))};
+// ===== TOUCH: tap = play/pause, double tap = fullscreen, long press = restart =====
+let lpT=null,lpFired=false,tapT=null,sx=0,sy=0;
+const de=document.documentElement,inFS=()=>document.fullscreenElement||document.webkitFullscreenElement;
+function toggleFS(){const rq=de.requestFullscreen||de.webkitRequestFullscreen;
+if(inFS()){(document.exitFullscreen||document.webkitExitFullscreen).call(document)}
+else if(rq){rq.call(de).catch(()=>{})}
+else{document.body.classList.toggle('imm');setTimeout(()=>{scrollTo(0,1);fit()},50)}}
+document.addEventListener('pointerdown',e=>{if(e.target.closest('#dev'))return;lpFired=false;sx=e.clientX;sy=e.clientY;clearTimeout(lpT);
+lpT=setTimeout(()=>{lpFired=true;clearTimeout(tapT);tapT=null;T=0;playing=true;if(navigator.vibrate)navigator.vibrate(30)},650)});
+document.addEventListener('pointermove',e=>{if(Math.hypot(e.clientX-sx,e.clientY-sy)>15)clearTimeout(lpT)});
+document.addEventListener('pointercancel',()=>clearTimeout(lpT));
+document.addEventListener('pointerup',e=>{if(e.target.closest('#dev'))return;clearTimeout(lpT);if(lpFired)return;
+if(tapT){clearTimeout(tapT);tapT=null;toggleFS()}else tapT=setTimeout(()=>{tapT=null;tog()},260)});
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('fullscreenchange',fit);document.addEventListener('webkitfullscreenchange',fit);
 addEventListener('keydown',e=>{if(e.target.tagName=='INPUT')return;if(e.key=='d'||e.key=='D'){const d=$('dev');d.style.display=d.style.display=='block'?'none':'block'}if(e.key==' '){e.preventDefault();tog()}});
 </script></body></html>
