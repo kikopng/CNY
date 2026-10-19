@@ -1,180 +1,51 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>11 Supercar Paradox - Short</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tokyo Rule Rush — Minna no Nihongo 15</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;height:100%;background:#07090f;color:#cfe8ff;font:13px system-ui,sans-serif}
-#dock{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 12px;background:rgba(10,14,24,.96);border-bottom:1px solid #1d2b44}
-button,label.btn{background:#122038;color:#cfe8ff;border:1px solid #2a4a7a;border-radius:6px;padding:6px 12px;cursor:pointer;font:inherit}
-button:hover,label.btn:hover{background:#1b3358}
-#seek{flex:1;min-width:140px}#tm{font-family:Courier New,monospace;min-width:92px}
-#wrap{position:absolute;top:56px;bottom:0;left:0;right:0;display:flex;justify-content:center;align-items:center;padding:6px}
-canvas{max-width:100%;max-height:100%;width:auto;height:auto;box-shadow:0 0 40px #000}
-#prog{width:110px;height:8px;background:#122038;border-radius:4px;overflow:hidden;display:none}#bar{height:100%;width:0;background:#00f0ff}
-</style></head><body>
-<div id="dock">
-<label class="btn">Load Voiceover Audio<input type="file" id="aud" accept="audio/*" hidden></label>
-<button id="pp">Play</button><input type="range" id="seek" min="0" max="56.2" step="0.01" value="0"><span id="tm">0.00 / 56.20</span>
-<label><input type="checkbox" id="sz"> Show Safe Zones</label>
-<button id="png">Download Frame 0 PNG</button><button id="exp">Export MP4 Video</button>
-<div id="prog"><div id="bar"></div></div><span id="pct"></span>
-</div>
-<div id="wrap"><canvas id="stage" width="1080" height="1920"></canvas></div>
+:root{--ink:#16223d;--paper:#fffaf0;--red:#ff4f64;--pink:#ff7ca8;--blue:#38bdf8;--navy:#20234c;--yellow:#ffd166;--mint:#45d6b0;--violet:#8b5cf6;--shadow:0 8px 0 #18203a,0 18px 40px #18203a44}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 20% 0%,#4f46a5 0,transparent 29%),linear-gradient(135deg,#101332,#29306c);font-family:ui-rounded,"Nunito",system-ui,sans-serif;color:var(--ink);overflow-x:hidden}button{font:inherit;cursor:pointer}.game{max-width:1040px;margin:auto;padding:18px 16px 42px}.top{color:white;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.brand{font-size:clamp(21px,4vw,34px);font-weight:1000;letter-spacing:-1px;text-shadow:3px 3px #142044}.brand small{display:block;font-size:11px;letter-spacing:2px;color:#a5f3fc}.toggles{display:flex;gap:7px}.toggle{border:2px solid #ffffff66;background:#ffffff1e;color:#fff;border-radius:99px;padding:8px 10px;font-weight:800;font-size:12px}.toggle.on{background:var(--yellow);color:#3a2b00;border-color:#fff}.hud{background:#fffdf6;border-radius:20px;padding:12px 16px;box-shadow:0 5px 0 #0e1430;display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:13px;align-items:center;margin-bottom:16px}.hudBlock{font-weight:900;font-size:13px}.hudNum{font-size:21px;color:var(--navy)}.timer{height:14px;background:#e6e7ee;border-radius:99px;overflow:hidden;margin-top:5px}.timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--mint),var(--yellow),var(--red));border-radius:inherit;transition:width .1s linear}.scene{position:relative;min-height:540px;background:var(--paper);border-radius:28px;padding:clamp(18px,4vw,38px);box-shadow:var(--shadow);overflow:hidden}.scene:before,.scene:after{content:"";position:absolute;border-radius:50%;opacity:.18;pointer-events:none}.scene:before{width:270px;height:270px;background:var(--pink);top:-120px;right:-70px}.scene:after{width:230px;height:230px;background:var(--blue);bottom:-130px;left:-60px}.mission{position:relative;z-index:1;text-align:center;animation:pop .35s ease}.chapter{display:inline-block;background:var(--navy);color:#fff;border-radius:99px;padding:7px 13px;font-size:12px;font-weight:900;letter-spacing:.8px}.mission h1{font-size:clamp(28px,5vw,48px);line-height:1.05;margin:17px 0 8px;color:var(--navy)}.mission p{max-width:590px;margin:0 auto 20px;font-size:16px;line-height:1.45}.district{font-size:70px;filter:drop-shadow(4px 5px 0 #ffd166);margin:8px}.brief{position:relative;z-index:1;background:#fff;border:3px solid #e6e9f2;border-radius:22px;padding:18px;max-width:720px;margin:16px auto;text-align:left}.brief h2{margin:0 0 8px;color:var(--red);font-size:20px}.brief li{margin:7px 0}.play{border:0;border-radius:16px;background:var(--red);color:#fff;font-weight:1000;padding:16px 26px;font-size:17px;box-shadow:0 6px 0 #a82640;transition:transform .12s,box-shadow .12s}.play:hover{transform:translateY(-2px)}.play:active{transform:translateY(5px);box-shadow:0 1px 0 #a82640}.card{position:relative;z-index:1;max-width:760px;margin:auto;background:#fff;border-radius:24px;padding:clamp(17px,4vw,30px);box-shadow:0 10px 25px #24305c1c}.caseTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.type{font-size:12px;font-weight:1000;letter-spacing:1px;color:#fff;background:var(--violet);padding:6px 10px;border-radius:8px}.caseNo{font-weight:900;color:#7a8499}.setting{font-size:16px;color:#59637a;margin:18px 0 4px}.japanese{font-size:clamp(28px,6vw,45px);font-weight:1000;line-height:1.25;color:var(--navy);min-height:78px}.assist{min-height:28px;color:#64748b;font-size:15px}.meaning{font-weight:800;color:#cf3152;margin-top:8px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:20px}.choice{border:3px solid #dfe4ef;background:#fff;border-radius:16px;padding:14px 7px;font-weight:1000;color:var(--navy);min-height:76px;transition:.15s}.choice:hover{border-color:var(--blue);background:#effbff;transform:translateY(-3px)}.choice b{display:block;font-size:16px}.choice span{display:block;font-size:11px;margin-top:4px;color:#65708a;font-weight:700}.choice.permit:hover{border-color:var(--mint)}.choice.forbid:hover{border-color:var(--red)}.choice.status:hover{border-color:var(--violet)}.feedback{position:relative;z-index:2;max-width:760px;margin:17px auto 0;border-radius:18px;padding:14px 17px;display:none;font-weight:700;line-height:1.35;animation:pop .25s ease}.feedback.good{display:block;background:#d8fff2;border:2px solid #50d7ae;color:#075e4b}.feedback.bad{display:block;background:#ffe2e7;border:2px solid #ff8391;color:#8b1830}.next{display:none;margin:14px auto 0}.assembly{margin-top:18px}.slots{min-height:58px;padding:9px;border:3px dashed #bac4d8;border-radius:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#f7f9ff}.slots.empty:after{content:'Tap the tiles in order';color:#8792a9;font-weight:800;font-size:14px}.tiles{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}.tile{border:2px solid #cbd5e1;border-radius:10px;background:#f8fafc;padding:9px 12px;font-weight:900;color:#253454}.tile:hover{background:#e0f7ff;border-color:#38bdf8}.tile.used{opacity:.3;pointer-events:none}.assemblyActions{display:flex;gap:9px;margin-top:13px}.smallBtn{border:0;border-radius:10px;padding:10px 13px;font-weight:900;background:#e9edf6;color:#26334e}.check{background:var(--navy);color:#fff}.boss{background:linear-gradient(135deg,#35245f,#7c3aed);color:#fff}.boss .japanese{color:#fff}.boss .assist{color:#dcd2ff}.boss .setting{color:#e9ddff}.boss .type{background:var(--yellow);color:#302100}.boss .choice{background:#ffffff14;border-color:#ffffff55;color:#fff}.boss .choice span{color:#ddd5ff}.boss .choice:hover{background:#ffffff2a;border-color:var(--yellow)}.stamp{position:absolute;inset:12%;display:grid;place-items:center;font-size:clamp(65px,15vw,130px);font-weight:1000;transform:rotate(-15deg);pointer-events:none;opacity:0;z-index:4}.stamp.show{animation:stamp .7s ease forwards}.stamp.ok{color:#14b88f;text-shadow:3px 3px #fff}.stamp.no{color:#ff3657;text-shadow:3px 3px #fff}.float{position:fixed;z-index:10;color:#fff;font-size:26px;font-weight:1000;text-shadow:2px 3px #1e1b4b;pointer-events:none;animation:float .85s ease forwards}.confetti{position:fixed;z-index:9;width:10px;height:14px;pointer-events:none;animation:fall 1.1s ease-out forwards}.end{text-align:center}.end h1{font-size:clamp(34px,7vw,62px);margin:6px 0;color:var(--navy)}.rank{font-size:90px;margin:5px}.scoreBox{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:22px 0}.scoreItem{background:#f3f5fb;border-radius:15px;padding:12px;font-weight:900}.scoreItem b{display:block;font-size:25px;color:var(--red)}.lesson{font-size:13px;background:#fff0c7;border-radius:13px;padding:12px;line-height:1.4;text-align:left}.shake{animation:shake .35s}.hidden{display:none!important}@keyframes pop{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}@keyframes stamp{30%{opacity:1;transform:scale(1.3) rotate(-15deg)}100%{opacity:0;transform:scale(1) rotate(-15deg)}}@keyframes float{to{opacity:0;transform:translateY(-75px) scale(1.3)}}@keyframes fall{to{opacity:0;transform:translateY(220px) rotate(520deg)}}@keyframes shake{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}@media(max-width:570px){.hud{grid-template-columns:1fr 1fr}.hud .timeBlock{grid-column:1/-1;order:-1}.scene{min-height:550px;padding:18px 13px}.choices{grid-template-columns:1fr}.choice{min-height:58px}.choice b{display:inline}.choice span{display:inline;margin-left:5px}.scoreBox{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="game">
+ <header class="top"><div class="brand">東京 RULE RUSH <small>MINNA NO NIHONGO • LESSON 15</small></div><div class="toggles"><button class="toggle" id="furi">ふりがな</button><button class="toggle" id="roma">ROMAJI</button><button class="toggle" id="sound">♫ SFX</button></div></header>
+ <section class="hud"><div class="hudBlock">SCORE <div class="hudNum" id="score">0000</div></div><div class="hudBlock timeBlock">INSPECTION WINDOW <div class="timer"><i id="timebar"></i></div></div><div class="hudBlock" style="text-align:right">COMBO <div class="hudNum" id="combo">×0</div></div></section>
+ <section class="scene" id="scene" aria-live="polite"></section>
+</main>
 <script>
-const TIMED_TRANSCRIPT=[
-{start:0.000,end:3.950,text:"A Wall Street billionaire just froze his entire estate over this single clause.",emphasis:"froze"},
-{start:3.950,end:6.850,text:"Eleven pristine hypercars sit inside his vault.",emphasis:"Eleven"},
-{start:6.850,end:9.300,text:"The oldest son inherits exactly half.",emphasis:"half"},
-{start:9.300,end:11.400,text:"The second son inherits one fourth.",emphasis:"fourth"},
-{start:11.400,end:13.400,text:"The youngest son inherits one sixth.",emphasis:"sixth"},
-{start:13.400,end:15.550,text:"Rule one: no car can be cut up.",emphasis:"no car"},
-{start:15.550,end:17.800,text:"Rule two: every son gets whole vehicles.",emphasis:"whole"},
-{start:17.800,end:20.000,text:"Half of eleven is five and a half.",emphasis:"five and a half"},
-{start:20.000,end:22.400,text:"Eleven doesn't divide by four or six either.",emphasis:"doesn't divide"},
-{start:22.400,end:25.000,text:"Most people assume the estate is completely deadlocked.",emphasis:"deadlocked"},
-{start:25.000,end:27.700,text:"Pause right here. Comment your solution below.",emphasis:"Comment"},
-{start:27.700,end:28.450,text:"Three.",emphasis:"Three"},
-{start:28.450,end:29.200,text:"Two.",emphasis:"Two"},
-{start:29.200,end:30.100,text:"One.",emphasis:"One"},
-{start:30.100,end:33.200,text:"The executor drives his own car into the vault.",emphasis:"own car"},
-{start:33.200,end:35.000,text:"Now there are twelve cars.",emphasis:"twelve"},
-{start:35.000,end:37.300,text:"The oldest gets half: six cars.",emphasis:"six"},
-{start:37.300,end:39.600,text:"The second gets one fourth: three cars.",emphasis:"three"},
-{start:39.600,end:41.800,text:"The youngest gets one sixth: two cars.",emphasis:"two"},
-{start:41.800,end:44.800,text:"Six plus three plus two equals eleven cars.",emphasis:"eleven"},
-{start:44.800,end:48.000,text:"The executor gets back into his own car and drives away.",emphasis:"drives away"},
-{start:48.000,end:51.500,text:"Here's the catch: the father's fractions only add up to eleven twelfths.",emphasis:"eleven twelfths"},
-{start:51.500,end:56.200,text:"So, did the lawyer brilliantly honor the contract, or did he pull off legal fraud?",emphasis:"legal fraud"}];
-const W=1080,H=1920,DUR=56.2,$=id=>document.getElementById(id),cv=$('stage'),c=cv.getContext('2d');
-const audio=new Audio();let hasAudio=false,offset=0,playing=false,vStart=0,cur=0,exporting=false,showSafe=false,rec=null;
-const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),prog=(t,a,b)=>cl((t-a)/(b-a)),ease=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2,lerp=(a,b,p)=>a+(b-a)*p;
-const rr=(x,y,w,h,r)=>{c.beginPath();c.roundRect(x,y,w,h,r)};
-const ACC=t=>t<33.2?'#00f0ff':'#35ff9a',MONO='Courier New,monospace',BLK='"Arial Black",Montserrat,"Trebuchet MS",sans-serif';
-const bay=i=>({x:90+205*(i%4),y:450+170*Math.floor(i/4),w:195,h:160});
-const son=i=>i<6?0:i<9?1:2;
-function txt(s,x,y,size,col,font=BLK,align='center'){c.font=`900 ${size}px ${font}`;c.textAlign=align;c.textBaseline='middle';c.fillStyle=col;c.fillText(s,x,y)}
-function dim(a){c.fillStyle=`rgba(4,6,12,${a})`;c.fillRect(60,220,870,800)}
-
-function car(x,y,s,col,dir,glow){c.save();c.translate(x,y);c.scale(dir*s,s);
- if(glow){c.shadowColor=col;c.shadowBlur=glow}
- const g=c.createLinearGradient(0,-24,0,16);g.addColorStop(0,col);g.addColorStop(1,'rgba(0,0,0,.65)');
- c.fillStyle=g;c.beginPath();c.moveTo(-75,14);c.lineTo(-76,-3);c.lineTo(-58,-8);c.lineTo(-26,-22);c.lineTo(8,-22);c.lineTo(34,-6);c.lineTo(72,2);c.lineTo(76,14);c.closePath();c.fill();
- c.shadowBlur=0;c.fillStyle='rgba(0,20,40,.85)';c.beginPath();c.moveTo(-22,-18);c.lineTo(6,-18);c.lineTo(24,-6);c.lineTo(-30,-6);c.closePath();c.fill();
- c.strokeStyle='rgba(255,255,255,.5)';c.lineWidth=2;c.beginPath();c.moveTo(-70,4);c.lineTo(70,6);c.stroke();
- [-45,46].forEach(wx=>{c.fillStyle='#05070b';c.beginPath();c.arc(wx,14,13,0,7);c.fill();c.strokeStyle=col;c.lineWidth=3;c.stroke()});
- c.restore()}
-
-function pos(i,t){const b=bay(i),bx=b.x+97,by=b.y+92;
- if(i==11){let x=bx;if(t<44.8)x=bx+(1-ease(prog(t,30.1,33.2)))*560;else x=bx+ease(prog(t,44.8,47.8))*560;return{x,y:by,s:1}}
- const k=son(i),idx=i<6?i:i<9?i-6:i-9,tx=95+270*k+125,ty=500+80*idx,e=ease(prog(t,35+i*.28,36.4+i*.28));
- return{x:lerp(bx,tx,e),y:lerp(by,ty,e)-Math.sin(Math.PI*e)*50,s:lerp(1,.55,e)}}
-
-function bg(t){const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#05070d');g.addColorStop(.5,'#0b1220');g.addColorStop(1,'#04060b');c.fillStyle=g;c.fillRect(0,0,W,H);
- const r=c.createRadialGradient(540,640,50,540,640,620);r.addColorStop(0,t<33.2?'rgba(0,120,160,.28)':'rgba(0,160,90,.28)');r.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=r;c.fillRect(0,200,W,900);
- c.save();c.strokeStyle=ACC(t);c.globalAlpha=.09;c.lineWidth=2;
- for(let k=-9;k<=9;k++){c.beginPath();c.moveTo(540+k*40,220);c.lineTo(540+k*140,1040);c.stroke()}
- for(let n=0;n<10;n++){const y=220+Math.pow(n/9,2)*820;c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke()}c.restore()}
-
-function bays(t){for(let i=0;i<12;i++){const b=bay(i);c.save();c.fillStyle='rgba(255,255,255,.04)';rr(b.x,b.y,b.w,b.h,10);c.fill();
- const haz=i==11&&t<33.2;
- if(haz){c.save();rr(b.x,b.y,b.w,b.h,10);c.clip();c.fillStyle='#120d00';c.fill();c.globalAlpha=.35+.25*Math.sin(t*6);c.fillStyle='#ffb300';
-  for(let x=b.x-b.h;x<b.x+b.w;x+=44){c.beginPath();c.moveTo(x,b.y+b.h);c.lineTo(x+22,b.y+b.h);c.lineTo(x+22+b.h,b.y);c.lineTo(x+b.h,b.y);c.fill()}c.restore()}
- c.strokeStyle=haz?'#ffb300':ACC(t);c.globalAlpha=haz?1:.6;c.lineWidth=3;c.setLineDash(haz?[]:[14,8]);if(haz){c.shadowColor='#ffb300';c.shadowBlur=18}rr(b.x,b.y,b.w,b.h,10);c.stroke();
- c.shadowBlur=0;c.globalAlpha=.85;c.fillStyle=haz?'#ffb300':ACC(t);c.font=`bold 20px ${MONO}`;c.textAlign='left';c.textBaseline='alphabetic';c.fillText('BAY '+String(i+1).padStart(2,'0'),b.x+12,b.y+28);c.restore()}}
-
-function cars(t){for(let i=0;i<11;i++){const p=pos(i,t),lit=t<3.95?0:t<6.85?(t>=3.95+i*.26?1:0):1;
- const col=t>=33.2?'#b9ffdc':t<3.95?'#7fa0d0':lit?'#ffffff':'#3e5878';car(p.x,p.y,p.s,col,1,t>=33.2?12:lit?18:t<3.95?8:0)}
- if(t>=30.1&&t<47.9){const p=pos(11,t);car(p.x,p.y,1,'#ffd24a',-1,32)}}
-
-function label(t){let s='';
- if(t>=3.95&&t<6.85)s=`TOTAL: ${Math.min(11,Math.floor(prog(t,3.95,6.5)*11)+1)} CARS`;
- else if(t>=6.85&&t<22.4)s='TOTAL: 11 CARS';else if(t>=22.4&&t<30.1)s='ESTATE: DEADLOCKED';
- else if(t>=30.1&&t<33.2)s=t>=32.6?'11 + 1 = 12':'11 + 1';else if(t>=33.2&&t<41.8)s='12 CARS IN VAULT';
- else if(t>=41.8&&t<48)s='6 + 3 + 2 = 11 CARS GIVEN';else if(t>=48&&t<51.5)s='ONLY 11/12 DISTRIBUTED';else if(t>=51.5)s='THE VERDICT?';
- if(s){c.save();c.shadowColor=ACC(t);c.shadowBlur=16;txt(s,540,268,40,ACC(t),MONO);c.restore()}}
-
-function head(t){if(t>=3.95)return;c.save();c.globalAlpha=1-prog(t,3.4,3.95);c.shadowColor='#000';c.shadowBlur=20;
- txt('11 CARS. 3 SONS.',540,260,70,'#fff');txt('IMPOSSIBLE MATH.',540,332,62,'#ff3b3b');c.restore()}
-
-function seal(t){const a=1-prog(t,6.3,6.85);if(a<=0)return;c.save();c.globalAlpha=a;c.translate(540,405);c.rotate(-.06);c.fillStyle='#ece4cf';c.shadowColor='#000';c.shadowBlur=20;rr(-320,-48,640,96,6);c.fill();c.shadowBlur=0;
- c.strokeStyle='#c4141c';c.lineWidth=6;rr(-300,-36,600,72,8);c.stroke();txt('ESTATE FROZEN: SECTION 4',0,2,32,'#c4141c');c.restore()}
-
-function cards(t){if(!((t>=6.85&&t<25)||t>=33.2))return;const fr=['1/2','1/4','1/6'],f=[.5,.25,1/6],eq=['12 × 1/2 = 6','12 × 1/4 = 3','12 × 1/6 = 2'],et=[35,37.3,39.6];
- for(let j=0;j<3;j++){const p=t>=33.2?1:prog(t,6.85+j*.5,7.6+j*.5),x=95+270*j,y=310-(1-ease(p))*150;c.save();c.globalAlpha=p;
-  c.fillStyle='#0e1a2e';c.shadowColor=ACC(t);c.shadowBlur=14;rr(x,y,250,128,12);c.fill();c.shadowBlur=0;c.strokeStyle=ACC(t);c.lineWidth=3;c.stroke();
-  txt('SON '+(j+1),x+125,y+26,24,'#9fc3ff',MONO);txt(fr[j],x+125,y+72,54,'#fff');
-  c.fillStyle='#1b2a44';rr(x+20,y+104,210,10,5);c.fill();c.fillStyle=ACC(t);c.shadowColor=ACC(t);c.shadowBlur=12;rr(x+20,y+104,210*f[j],10,5);c.fill();c.restore();
-  if(t>=et[j]){c.save();c.globalAlpha=prog(t,et[j],et[j]+.4);txt(eq[j],x+125,466,28,'#ffd24a',MONO);c.restore()}}}
-
-function overlays(t){
- if(t>=13.4&&t<17.8){dim(.6);[['RULE 1: NO DISMANTLING',590,13.4],['RULE 2: WHOLE CARS ONLY',790,15.55]].forEach(([s,y,t0])=>{if(t<t0)return;const p=ease(prog(t,t0,t0+.25));
-  c.save();c.translate(540,y);c.scale(lerp(1.5,1,p),lerp(1.5,1,p));c.globalAlpha=p;c.fillStyle='#14090b';rr(-380,-75,760,150,12);c.fill();c.strokeStyle='#ff2a2a';c.lineWidth=8;c.setLineDash([26,14]);c.shadowColor='#ff2a2a';c.shadowBlur=20;c.stroke();c.setLineDash([]);c.shadowBlur=0;
-  txt(s,0,0,44,'#fff');c.restore()})}
- if(t>=17.8&&t<22.4){const ct=['11 ÷ 2 = 5.5','11 ÷ 4 = 2.75','11 ÷ 6 = 1.83'],tt=[17.8,19.4,20.9];
-  for(let i=0;i<12;i++){const b=bay(i),a=.5+.5*Math.sin(t*10+i);c.save();c.globalAlpha=.35+.5*a;c.fillStyle='#ff2a2a';c.beginPath();c.arc(b.x+b.w-28,b.y+28,18,0,7);c.fill();txt('!',b.x+b.w-28,b.y+29,24,'#fff');c.restore()}
-  for(let j=0;j<3;j++){if(t<tt[j])continue;const p=prog(t,tt[j],tt[j]+.3);c.save();c.globalAlpha=p;c.fillStyle='rgba(10,4,6,.92)';rr(95+270*j,640,250,90,10);c.fill();c.strokeStyle='#ff2a2a';c.lineWidth=3;c.stroke();txt(ct[j],220+270*j,685,30,'#ff6b6b',MONO);c.restore()}}
- if(t>=22.4&&t<25){dim(.78);const p=ease(prog(t,22.4,23.1));c.save();c.shadowColor='#ff2a2a';c.shadowBlur=30;c.strokeStyle='#ff4040';c.lineWidth=26;c.lineCap='round';
-  c.beginPath();c.arc(540,640-(1-p)*46,80,Math.PI,0);c.lineTo(620,640-(1-p)*46+(1-p)*0);c.stroke();c.fillStyle='#ff4040';rr(430,650,220,170,18);c.fill();c.shadowBlur=0;c.fillStyle='#14090b';c.beginPath();c.arc(540,720,22,0,7);c.fill();c.fillRect(532,720,16,50);c.restore();
-  txt('MATHEMATICAL',540,890,56,'#ff4040');txt('IMPOSSIBILITY',540,955,56,'#ff4040')}
- if(t>=25&&t<30.1){dim(.82);const q=prog(t,25,30.1);c.save();c.lineWidth=26;c.lineCap='round';c.strokeStyle='#14233b';c.beginPath();c.arc(540,720,210,0,7);c.stroke();
-  c.strokeStyle='#00f0ff';c.shadowColor='#00f0ff';c.shadowBlur=26;c.beginPath();c.arc(540,720,210,-Math.PI/2,-Math.PI/2+q*Math.PI*2);c.stroke();c.restore();
-  let n=t<27.7?'?':t<28.45?'3':t<29.2?'2':'1',st=t<27.7?25:t<28.45?27.7:t<29.2?28.45:29.2;const pl=1+.18*(1-prog(t,st,st+.4));
-  c.save();c.translate(540,720);c.scale(pl,pl);c.shadowColor='#00f0ff';c.shadowBlur=30;txt(n,0,0,230,'#fff');c.restore();
-  const bp=1+.05*Math.sin(t*8);c.save();c.translate(540,460);c.scale(bp,bp);c.fillStyle='#ffd700';rr(-210,-40,420,80,40);c.fill();txt('PAUSE & SOLVE',0,2,36,'#111');c.restore()}
- if(t>=48&&t<51.5){dim(.88);const n=Math.floor(prog(t,48.2,50)*11)+(t>=48.2?1:0),cols=['#2d7dff','#2d7dff','#2d7dff','#2d7dff','#2d7dff','#2d7dff','#35ff9a','#35ff9a','#35ff9a','#ffd24a','#ffd24a'],sw=800/12;
-  txt('6/12 + 3/12 + 2/12 = 11/12',540,560,38,'#fff',MONO);
-  for(let i=0;i<Math.min(11,n);i++){c.fillStyle=cols[i];c.shadowColor=cols[i];c.shadowBlur=14;rr(110+i*sw+2,640,sw-4,90,6);c.fill()}c.shadowBlur=0;
-  if(t>=50){const fl=.5+.5*Math.sin(t*12);c.save();c.globalAlpha=.4+.6*fl;c.strokeStyle='#ff2a2a';c.lineWidth=5;c.setLineDash([12,8]);rr(110+11*sw+2,640,sw-4,90,6);c.stroke();c.restore();
-   txt('▲ 1/12 VACANT',800,790,34,'#ff5050',MONO);txt('THE LOOPHOLE',540,880,56,'#ff5050')}}
- if(t>=51.5){const fa=1-prog(t,55.4,56.2);dim(.9*fa);c.save();c.globalAlpha=fa;const q=t-51.5,a=.26*Math.sin(q*2.4)*Math.exp(-q*.2)+.05*Math.sin(q*.5),px=540,py=640,L=360;
-  c.strokeStyle='#9fc3ff';c.lineWidth=12;c.lineCap='round';c.beginPath();c.moveTo(px,py);c.lineTo(px,930);c.stroke();c.fillStyle='#9fc3ff';rr(400,930,280,24,8);c.fill();
-  c.save();c.translate(px,py);c.rotate(a);c.beginPath();c.moveTo(-L,0);c.lineTo(L,0);c.stroke();c.restore();
-  [[-1,'LEGAL GENIUS','#00f0ff'],[1,'CONTRACT FRAUD','#ff4040']].forEach(([s,l,col])=>{const ex=px+s*L*Math.cos(a),ey=py+s*L*Math.sin(a);c.strokeStyle=col;c.lineWidth=4;c.beginPath();c.moveTo(ex,ey);c.lineTo(ex-100,ey+190);c.moveTo(ex,ey);c.lineTo(ex+100,ey+190);c.stroke();
-   c.fillStyle='#0e1a2e';c.shadowColor=col;c.shadowBlur=18;rr(ex-110,ey+190,220,20,10);c.fill();c.shadowBlur=0;txt(l,ex,ey+250,24,col,BLK)});c.restore()}}
-
-function subs(t){const s=TIMED_TRANSCRIPT.find(s=>t>=s.start&&t<s.end);if(!s)return;
- const ws=s.text.toUpperCase().split(' '),cn=ws.map(w=>w.replace(/[^A-Z0-9']/g,'')),em=s.emphasis.toUpperCase().split(' ').map(w=>w.replace(/[^A-Z0-9']/g,''));
- let ei=-1;for(let i=0;i+em.length<=cn.length;i++)if(em.every((e,k)=>cn[i+k]==e)){ei=i;break}
- let fs=64,lines;for(;fs>=40;fs-=4){c.font=`900 ${fs}px ${BLK}`;const sp=c.measureText(' ').width;lines=[{w:[],tw:0}];
-  ws.forEach((w,i)=>{const m=c.measureText(w).width,L=lines[lines.length-1];if(L.w.length&&L.tw+sp+m>860)lines.push({w:[],tw:0});const l=lines[lines.length-1];l.tw+=(l.w.length?sp:0)+m;l.w.push({w,m,f:ei>=0&&i>=ei&&i<ei+em.length})});
-  if(lines.length*fs*1.3<=260)break}
- const sp=c.measureText(' ').width,a=cl((t-s.start)/.12),sc=.96+.04*a,lh=fs*1.3,cy=1250;
- c.save();c.globalAlpha=a;c.translate(540,cy);c.scale(sc,sc);c.textAlign='left';c.textBaseline='middle';c.lineJoin='round';c.lineWidth=10;c.strokeStyle='rgba(0,0,0,.85)';
- lines.forEach((L,li)=>{let x=-L.tw/2,y=(li-(lines.length-1)/2)*lh;L.w.forEach(o=>{c.strokeText(o.w,x,y);c.fillStyle=o.f?'#FFD700':'#fff';c.fillText(o.w,x,y);x+=o.m+sp})});c.restore()}
-
-function safe(){c.save();c.fillStyle='rgba(255,40,40,.2)';c.fillRect(0,0,W,200);c.fillRect(0,1470,W,450);c.fillRect(940,200,140,1270);
- c.lineWidth=3;c.strokeStyle='#35ff9a';c.strokeRect(60,220,870,800);c.strokeStyle='#00f0ff';c.strokeRect(60,1060,870,360);
- c.font='bold 26px Courier New';c.fillStyle='#fff';c.textAlign='left';c.fillText('TOP DEAD ZONE',70,110);c.fillText('BOTTOM DEAD ZONE',70,1700);c.fillText('ARENA',70,250);c.fillText('SUBTITLE BAND',70,1090);c.fillText('R',990,700);c.restore()}
-
-function render(t,sz){c.clearRect(0,0,W,H);bg(t);bays(t);cars(t);head(t);label(t);seal(t);cards(t);overlays(t);subs(t);if(sz)safe()}
-
-/* ---- transport ---- */
-function seek(t){cur=cl(t,0,DUR);if(hasAudio)audio.currentTime=cur+offset;vStart=performance.now()-cur*1000}
-function play(){if(cur>=DUR-.05)seek(0);playing=true;if(hasAudio)audio.play();else vStart=performance.now()-cur*1000;$('pp').textContent='Pause'}
-function pause(){playing=false;audio.pause();$('pp').textContent='Play'}
-$('pp').onclick=()=>playing?pause():play();
-$('seek').oninput=e=>seek(+e.target.value);
-$('sz').onchange=e=>showSafe=e.target.checked;
-$('aud').onchange=async e=>{const f=e.target.files[0];if(!f)return;pause();audio.src=URL.createObjectURL(f);hasAudio=true;offset=0;
- try{const ac=new AudioContext(),d=await ac.decodeAudioData(await f.arrayBuffer()),ch=d.getChannelData(0);let i=0;while(i<ch.length&&Math.abs(ch[i])<.02)i++;offset=Math.max(0,i/d.sampleRate-.03);ac.close()}catch(err){offset=0}
- seek(0)};
-$('png').onclick=()=>{render(0,false);const a=document.createElement('a');a.href=cv.toDataURL('image/png');a.download='frame0_thumbnail.png';a.click()};
-
-/* ---- export ---- */
-let actx,adest;
-$('exp').onclick=async()=>{if(exporting)return;exporting=true;pause();
- const types=['video/mp4;codecs="avc1.42E01E, mp4a.40.2"','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'],mt=types.find(t=>MediaRecorder.isTypeSupported(t))||'';
- const vs=cv.captureStream(60);
- if(hasAudio){if(!actx){actx=new AudioContext();const src=actx.createMediaElementSource(audio);adest=actx.createMediaStreamDestination();src.connect(adest);src.connect(actx.destination)}await actx.resume();adest.stream.getAudioTracks().forEach(t=>vs.addTrack(t))}
- const ch=[];rec=new MediaRecorder(vs,mt?{mimeType:mt,videoBitsPerSecond:12e6}:{videoBitsPerSecond:12e6});
- rec.ondataavailable=e=>e.data.size&&ch.push(e.data);
- rec.onstop=()=>{const b=new Blob(ch,{type:mt||'video/webm'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='supercar_paradox.'+(mt.includes('mp4')?'mp4':'webm');a.click();exporting=false;$('prog').style.display='none';$('pct').textContent='Done';rec=null};
- $('prog').style.display='block';seek(0);rec.start(250);play()};
-
-function loop(){
- if(playing){cur=hasAudio?Math.max(0,audio.currentTime-offset):(performance.now()-vStart)/1000;
-  if(cur>=DUR||(hasAudio&&audio.ended)){cur=Math.min(cur,DUR);pause();if(exporting&&rec)setTimeout(()=>rec&&rec.state!=='inactive'&&rec.stop(),400)}}
- render(cur,showSafe&&!exporting);
- $('seek').value=cur;$('tm').textContent=cur.toFixed(2)+' / '+DUR.toFixed(2);
- if(exporting){const p=Math.round(cur/DUR*100);$('bar').style.width=p+'%';$('pct').textContent='Exporting '+p+'%'}
- requestAnimationFrame(loop)}
-render(0,false);loop();
-</script></body></html>
+const $=s=>document.querySelector(s),scene=$('#scene');let score=0,combo=0,index=0,furigana=false,romaji=false,soundOn=true,timer=null,timeLeft=100,locked=false,correct=0;
+const cases=[
+ {kind:'RULE CHECK',place:'⛩️ Shrine courtyard',jp:'ここで <ruby>写真<rt>しゃしん</rt></ruby>を <ruby>撮<rt>と</rt></ruby>ってもいいですか。',ro:'Koko de shashin o tottemo ii desu ka?',en:'A visitor asks: “May I take photos here?”',answer:'permit',ex:'Correct. <b>〜てもいいですか</b> asks permission: “May I...?” Stamp it PERMIT.'},
+ {kind:'RULE CHECK',place:'🏥 Hospital waiting room',jp:'ここで たばこを <ruby>吸<rt>す</rt></ruby>ってはいけません。',ro:'Koko de tabako o sutte wa ikemasen.',en:'A sign states: “Smoking is prohibited here.”',answer:'forbid',ex:'Exactly. <b>〜てはいけません</b> is the red-light rule: “You must not...”'},
+ {kind:'STATUS SCAN',place:'🏙️ Apartment registry',jp:'ミラーさんは <ruby>大阪<rt>おおさか</rt></ruby>に <ruby>住<rt>す</rt></ruby>んでいます。',ro:'Miraa-san wa Osaka ni sunde imasu.',en:'What does the dossier report?',answer:'status',ex:'Yes. <b>住んでいます</b> is a continuing state: Mr. Miller lives in Osaka.'},
+ {kind:'RULE CHECK',place:'📚 Library archive',jp:'この <ruby>資料<rt>しりょう</rt></ruby>を <ruby>借<rt>か</rt></ruby>りてもいいですか。',ro:'Kono shiryou o karitemo ii desu ka?',en:'A learner asks permission to borrow these materials.',answer:'permit',ex:'Right. It is a permission request: “May I borrow these materials?”'},
+ {kind:'STATUS SCAN',place:'🏢 IMC headquarters',jp:'ワンさんは IMCで <ruby>働<rt>はたら</rt></ruby>いています。',ro:'Wan-san wa IMC de hataraite imasu.',en:'Choose the best report.',answer:'status',ex:'Correct. <b>働いています</b> reports an ongoing work/business state: “works at IMC.”'},
+ {kind:'RULE CHECK',place:'🚇 Train platform',jp:'ここに <ruby>荷物<rt>にもつ</rt></ruby>を <ruby>置<rt>お</rt></ruby>いてはいけません。',ro:'Koko ni nimotsu o oite wa ikemasen.',en:'A station rule about luggage.',answer:'forbid',ex:'Correct: <b>置いてはいけません</b> — “Do not put luggage here.”'},
+ {kind:'STATUS SCAN',place:'💍 City registry',jp:'サントスさんは <ruby>結婚<rt>けっこん</rt></ruby>しています。',ro:'Santosu-san wa kekkon shite imasu.',en:'Choose the best report.',answer:'status',ex:'Yes. <b>結婚しています</b> describes the resultant state: “is married,” not “is marrying.”'},
+ {kind:'RULE CHECK',place:'🛍️ Department store',jp:'ここで <ruby>製品<rt>せいひん</rt></ruby>の カタログを もらってもいいですか。',ro:'Koko de seihin no katarogu o moratte mo ii desu ka?',en:'A shopper politely asks for a product catalogue.',answer:'permit',ex:'Correct. <b>もらってもいいですか</b>: “May I receive/get a catalogue?”'},
+ {kind:'STATUS SCAN',place:'🚗 Car showroom',jp:'あの <ruby>店<rt>みせ</rt></ruby>は <ruby>車<rt>くるま</rt></ruby>を <ruby>売<rt>う</rt></ruby>っています。',ro:'Ano mise wa kuruma o utte imasu.',en:'Choose the best report.',answer:'status',ex:'Exactly. <b>売っています</b> means the shop is in the business of selling cars.'}
+];
+const assemblies=[
+ {place:'🦷 Dentist reception',prompt:'Build: “May I make an appointment with the dentist?”',tiles:['歯医者さんに','予約を','しても','いいですか'],answer:'歯医者さんに|予約を|しても|いいですか',tip:'Permission formula: verb て-form + もいいですか.'},
+ {place:'🚌 Bus terminal',prompt:'Build: “You must not look at the timetable here.”',tiles:['ここで','時刻表を','見ては','いけません'],answer:'ここで|時刻表を|見ては|いけません',tip:'Prohibition formula: verb て-form + はいけません.'}
+];
+const boss={place:'👁️ TRAP DETECTOR // knowledge anomaly',jp:'その <ruby>住所<rt>じゅうしょ</rt></ruby>を ______。',ro:'Sono juusho o ______.',en:'Choose: “I don’t know that address.”',options:[['知りません','I do not know'],['知っていません','⚠ ongoing-state trap'],['知りませんでした','I did not know']],answer:0,ex:'Trap neutralized! For present “don’t know,” Japanese uses <b>知りません</b>. “知っていません” is a classic Lesson 15 error.'};
+function gloss(jp,ro,en){return `<div class="japanese">${furigana?jp:jp.replace(/<ruby>(.*?)<rt>.*?<\/rt><\/ruby>/g,'$1')}</div><div class="assist">${romaji?ro:''}</div><div class="meaning">${en}</div>`}
+function start(){index=0;score=0;combo=0;correct=0;updateHud();renderCase()}
+function intro(){scene.innerHTML=`<div class="mission"><span class="chapter">TOKYO MUNICIPAL LANGUAGE UNIT</span><div class="district">🗼</div><h1>Tokyo Rule Rush</h1><p>Inspect signs, visitors, and office dossiers. Your Japanese keeps the city moving.</p><div class="brief"><h2>Your Lesson 15 kit</h2><ul><li><b>Permit:</b> 〜てもいいですか / 〜てもいいです</li><li><b>Forbid:</b> 〜てはいけません</li><li><b>States & work:</b> 住んでいます・結婚しています・働いています・売っています</li><li><b>Boss trap:</b> 知りません — never 知っていません</li></ul></div><button class="play" id="begin">START SHIFT →</button></div>`;$('#begin').onclick=start}
+function updateHud(){$('#score').textContent=String(score).padStart(4,'0');$('#combo').textContent='×'+combo;$('#timebar').style.width=timeLeft+'%'}
+function renderCase(){clearInterval(timer);locked=false;timeLeft=100;let c=cases[index];if(index<cases.length){scene.innerHTML=`<div class="card"><div class="caseTop"><span class="type">${c.kind}</span><span class="caseNo">CASE ${index+1}/${cases.length+3}</span></div><div class="setting">${c.place}</div>${gloss(c.jp,c.ro,c.en)}<div class="choices"><button class="choice permit" data-a="permit"><b>✓ PERMIT</b><span>〜てもいいです</span></button><button class="choice forbid" data-a="forbid"><b>✕ FORBID</b><span>〜てはいけません</span></button><button class="choice status" data-a="status"><b>⌕ STATUS</b><span>〜ています report</span></button></div></div><div class="stamp" id="stamp"></div><div class="feedback" id="feedback"></div><button class="play next" id="next">NEXT CASE →</button>`;document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>answer(b.dataset.a,c.answer,c.ex));$('#next').onclick=()=>{index++;renderCase()};startTimer();return}if(index===cases.length){renderAssembly(0);return}if(index===cases.length+1){renderAssembly(1);return}if(index===cases.length+2){renderBoss();return}finish()}
+function startTimer(){timer=setInterval(()=>{timeLeft-=.35;updateHud();if(timeLeft<=0){clearInterval(timer);answer('timeout','', 'Time out! Rules need quick instincts. Review the pattern and keep going.',true)}},100)}
+function answer(chosen,ans,ex,timeout=false){if(locked)return;locked=true;clearInterval(timer);let ok=chosen===ans;let fb=$('#feedback'),stamp=$('#stamp');if(ok){correct++;combo++;let pts=100+combo*25+Math.floor(timeLeft);score+=pts;fb.className='feedback good';fb.innerHTML=`<b>✓ PERFECT INSPECTION! +${pts}</b><br>${ex}`;stamp.textContent='PERMIT!';stamp.className='stamp show ok';sfx('win');burst();floatText('+'+pts)}else{combo=0;fb.className='feedback bad';fb.innerHTML=`<b>${timeout?'⌛ SHIFT EXPIRED':'✕ NOT QUITE'}</b><br>${ex}`;stamp.textContent='RECHECK';stamp.className='stamp show no';scene.classList.add('shake');setTimeout(()=>scene.classList.remove('shake'),400);sfx('fail')}updateHud();$('#next').style.display='block'}
+function renderAssembly(n){clearInterval(timer);locked=false;let a=assemblies[n],pool=[...a.tiles].sort(()=>Math.random()-.5);scene.innerHTML=`<div class="card"><div class="caseTop"><span class="type">SYNTAX SPRINT</span><span class="caseNo">CASE ${cases.length+n+1}/${cases.length+3}</span></div><div class="setting">${a.place}</div><div class="japanese" style="font-size:25px">${a.prompt}</div><div class="assembly"><div class="slots empty" id="slots"></div><div class="tiles" id="tiles">${pool.map((t,i)=>`<button class="tile" data-t="${t}" data-i="${i}">${t}</button>`).join('')}</div><div class="assemblyActions"><button class="smallBtn" id="undo">UNDO</button><button class="smallBtn check" id="check">CHECK SENTENCE</button></div></div></div><div class="feedback" id="feedback"></div><button class="play next" id="next">${n?'FACE THE BOSS →':'NEXT SPRINT →'}</button>`;let selected=[];function paint(){let slots=$('#slots');slots.classList.toggle('empty',!selected.length);slots.innerHTML=selected.map(x=>`<span class="tile">${x}</span>`).join('')}document.querySelectorAll('.tile[data-t]').forEach(b=>b.onclick=()=>{if(locked)return;selected.push(b.dataset.t);b.classList.add('used');paint();sfx('pop')});$('#undo').onclick=()=>{let last=selected.pop();if(last){let b=[...document.querySelectorAll('.tile[data-t]')].find(x=>x.dataset.t===last&&x.classList.contains('used'));if(b)b.classList.remove('used');paint()}};$('#check').onclick=()=>{if(locked)return;locked=true;let ok=selected.join('|')===a.answer,fb=$('#feedback');if(ok){correct++;combo++;let pts=200+combo*25;score+=pts;fb.className='feedback good';fb.innerHTML=`<b>✓ SENTENCE LOCKED! +${pts}</b><br>${a.tip}`;sfx('win');burst();floatText('+'+pts)}else{combo=0;fb.className='feedback bad';fb.innerHTML=`<b>✕ TILE JAM!</b><br>${a.tip} Correct order: <b>${a.answer.replaceAll('|',' ')}</b>`;sfx('fail')}updateHud();$('#next').style.display='block'};$('#next').onclick=()=>{index++;renderCase()}}
+function renderBoss(){let b=boss;scene.innerHTML=`<div class="card boss"><div class="caseTop"><span class="type">BOSS: NEGATION TRAP</span><span class="caseNo">FINAL CASE</span></div><div class="setting">${b.place}</div>${gloss(b.jp,b.ro,b.en)}<div class="choices">${b.options.map((o,i)=>`<button class="choice" data-b="${i}"><b>${o[0]}</b><span>${o[1]}</span></button>`).join('')}</div></div><div class="stamp" id="stamp"></div><div class="feedback" id="feedback"></div><button class="play next" id="next">CLAIM YOUR BADGE →</button>`;document.querySelectorAll('[data-b]').forEach(x=>x.onclick=()=>answer(+x.dataset.b,b.answer,b.ex));$('#next').onclick=()=>{index++;renderCase()}}
+function finish(){clearInterval(timer);let rank=correct>=10?'S':correct>=7?'A':correct>=4?'B':'C';scene.innerHTML=`<div class="card end"><div class="district">🏮</div><span class="chapter">SHIFT COMPLETE</span><h1>Tokyo is safe!</h1><div class="rank">${rank}</div><p>You kept the grammar gates clean. Your next real-world conversation just got easier.</p><div class="scoreBox"><div class="scoreItem"><b>${score}</b>POINTS</div><div class="scoreItem"><b>${correct}/12</b>CLEARED</div><div class="scoreItem"><b>×${combo}</b>FINAL COMBO</div></div><div class="lesson"><b>Lesson 15 power recap:</b> Ask/allow with 〜てもいいですか／〜てもいいです. Prohibit with 〜てはいけません. Use 〜ています for continuing states, habits, and jobs — but say <b>知りません</b> for “I don’t know.”</div><br><button class="play" id="again">PLAY AGAIN ↻</button></div>`;sfx('fanfare');burst(34);$('#again').onclick=start}
+function sfx(type){if(!soundOn)return;let C=window.AudioContext||window.webkitAudioContext,ctx=new C(),now=ctx.currentTime;let notes=type==='win'?[523,659,784]:type==='fail'?[170,120]:type==='fanfare'?[392,523,659,784]:[420];notes.forEach((f,i)=>{let o=ctx.createOscillator(),g=ctx.createGain();o.type=type==='fail'?'sawtooth':'square';o.frequency.value=f;g.gain.setValueAtTime(.07,now+i*.075);g.gain.exponentialRampToValueAtTime(.001,now+i*.075+.16);o.connect(g).connect(ctx.destination);o.start(now+i*.075);o.stop(now+i*.075+.18)})}
+function burst(n=18){for(let i=0;i<n;i++){let x=document.createElement('i');x.className='confetti';x.style.left=(20+Math.random()*60)+'vw';x.style.top=(15+Math.random()*20)+'vh';x.style.background=['#ff4f64','#ffd166','#45d6b0','#38bdf8','#8b5cf6'][i%5];x.style.transform=`rotate(${Math.random()*180}deg)`;document.body.append(x);setTimeout(()=>x.remove(),1200)}}
+function floatText(t){let e=document.createElement('div');e.className='float';e.textContent=t;e.style.left=(38+Math.random()*25)+'vw';e.style.top='45vh';document.body.append(e);setTimeout(()=>e.remove(),900)}
+$('#furi').onclick=function(){furigana=!furigana;this.classList.toggle('on',furigana);if(index<cases.length&&index>=0)renderCase()};$('#roma').onclick=function(){romaji=!romaji;this.classList.toggle('on',romaji);if(index<cases.length&&index>=0)renderCase()};$('#sound').onclick=function(){soundOn=!soundOn;this.classList.toggle('on',soundOn);this.textContent=soundOn?'♫ SFX':'SFX OFF';if(soundOn)sfx('pop')};intro();
+</script>
+</body>
+</html>
