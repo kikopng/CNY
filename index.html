@@ -1,51 +1,1703 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tokyo Rule Rush — Minna no Nihongo 15</title>
-<style>
-:root{--ink:#16223d;--paper:#fffaf0;--red:#ff4f64;--pink:#ff7ca8;--blue:#38bdf8;--navy:#20234c;--yellow:#ffd166;--mint:#45d6b0;--violet:#8b5cf6;--shadow:0 8px 0 #18203a,0 18px 40px #18203a44}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 20% 0%,#4f46a5 0,transparent 29%),linear-gradient(135deg,#101332,#29306c);font-family:ui-rounded,"Nunito",system-ui,sans-serif;color:var(--ink);overflow-x:hidden}button{font:inherit;cursor:pointer}.game{max-width:1040px;margin:auto;padding:18px 16px 42px}.top{color:white;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.brand{font-size:clamp(21px,4vw,34px);font-weight:1000;letter-spacing:-1px;text-shadow:3px 3px #142044}.brand small{display:block;font-size:11px;letter-spacing:2px;color:#a5f3fc}.toggles{display:flex;gap:7px}.toggle{border:2px solid #ffffff66;background:#ffffff1e;color:#fff;border-radius:99px;padding:8px 10px;font-weight:800;font-size:12px}.toggle.on{background:var(--yellow);color:#3a2b00;border-color:#fff}.hud{background:#fffdf6;border-radius:20px;padding:12px 16px;box-shadow:0 5px 0 #0e1430;display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:13px;align-items:center;margin-bottom:16px}.hudBlock{font-weight:900;font-size:13px}.hudNum{font-size:21px;color:var(--navy)}.timer{height:14px;background:#e6e7ee;border-radius:99px;overflow:hidden;margin-top:5px}.timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--mint),var(--yellow),var(--red));border-radius:inherit;transition:width .1s linear}.scene{position:relative;min-height:540px;background:var(--paper);border-radius:28px;padding:clamp(18px,4vw,38px);box-shadow:var(--shadow);overflow:hidden}.scene:before,.scene:after{content:"";position:absolute;border-radius:50%;opacity:.18;pointer-events:none}.scene:before{width:270px;height:270px;background:var(--pink);top:-120px;right:-70px}.scene:after{width:230px;height:230px;background:var(--blue);bottom:-130px;left:-60px}.mission{position:relative;z-index:1;text-align:center;animation:pop .35s ease}.chapter{display:inline-block;background:var(--navy);color:#fff;border-radius:99px;padding:7px 13px;font-size:12px;font-weight:900;letter-spacing:.8px}.mission h1{font-size:clamp(28px,5vw,48px);line-height:1.05;margin:17px 0 8px;color:var(--navy)}.mission p{max-width:590px;margin:0 auto 20px;font-size:16px;line-height:1.45}.district{font-size:70px;filter:drop-shadow(4px 5px 0 #ffd166);margin:8px}.brief{position:relative;z-index:1;background:#fff;border:3px solid #e6e9f2;border-radius:22px;padding:18px;max-width:720px;margin:16px auto;text-align:left}.brief h2{margin:0 0 8px;color:var(--red);font-size:20px}.brief li{margin:7px 0}.play{border:0;border-radius:16px;background:var(--red);color:#fff;font-weight:1000;padding:16px 26px;font-size:17px;box-shadow:0 6px 0 #a82640;transition:transform .12s,box-shadow .12s}.play:hover{transform:translateY(-2px)}.play:active{transform:translateY(5px);box-shadow:0 1px 0 #a82640}.card{position:relative;z-index:1;max-width:760px;margin:auto;background:#fff;border-radius:24px;padding:clamp(17px,4vw,30px);box-shadow:0 10px 25px #24305c1c}.caseTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.type{font-size:12px;font-weight:1000;letter-spacing:1px;color:#fff;background:var(--violet);padding:6px 10px;border-radius:8px}.caseNo{font-weight:900;color:#7a8499}.setting{font-size:16px;color:#59637a;margin:18px 0 4px}.japanese{font-size:clamp(28px,6vw,45px);font-weight:1000;line-height:1.25;color:var(--navy);min-height:78px}.assist{min-height:28px;color:#64748b;font-size:15px}.meaning{font-weight:800;color:#cf3152;margin-top:8px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:20px}.choice{border:3px solid #dfe4ef;background:#fff;border-radius:16px;padding:14px 7px;font-weight:1000;color:var(--navy);min-height:76px;transition:.15s}.choice:hover{border-color:var(--blue);background:#effbff;transform:translateY(-3px)}.choice b{display:block;font-size:16px}.choice span{display:block;font-size:11px;margin-top:4px;color:#65708a;font-weight:700}.choice.permit:hover{border-color:var(--mint)}.choice.forbid:hover{border-color:var(--red)}.choice.status:hover{border-color:var(--violet)}.feedback{position:relative;z-index:2;max-width:760px;margin:17px auto 0;border-radius:18px;padding:14px 17px;display:none;font-weight:700;line-height:1.35;animation:pop .25s ease}.feedback.good{display:block;background:#d8fff2;border:2px solid #50d7ae;color:#075e4b}.feedback.bad{display:block;background:#ffe2e7;border:2px solid #ff8391;color:#8b1830}.next{display:none;margin:14px auto 0}.assembly{margin-top:18px}.slots{min-height:58px;padding:9px;border:3px dashed #bac4d8;border-radius:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#f7f9ff}.slots.empty:after{content:'Tap the tiles in order';color:#8792a9;font-weight:800;font-size:14px}.tiles{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}.tile{border:2px solid #cbd5e1;border-radius:10px;background:#f8fafc;padding:9px 12px;font-weight:900;color:#253454}.tile:hover{background:#e0f7ff;border-color:#38bdf8}.tile.used{opacity:.3;pointer-events:none}.assemblyActions{display:flex;gap:9px;margin-top:13px}.smallBtn{border:0;border-radius:10px;padding:10px 13px;font-weight:900;background:#e9edf6;color:#26334e}.check{background:var(--navy);color:#fff}.boss{background:linear-gradient(135deg,#35245f,#7c3aed);color:#fff}.boss .japanese{color:#fff}.boss .assist{color:#dcd2ff}.boss .setting{color:#e9ddff}.boss .type{background:var(--yellow);color:#302100}.boss .choice{background:#ffffff14;border-color:#ffffff55;color:#fff}.boss .choice span{color:#ddd5ff}.boss .choice:hover{background:#ffffff2a;border-color:var(--yellow)}.stamp{position:absolute;inset:12%;display:grid;place-items:center;font-size:clamp(65px,15vw,130px);font-weight:1000;transform:rotate(-15deg);pointer-events:none;opacity:0;z-index:4}.stamp.show{animation:stamp .7s ease forwards}.stamp.ok{color:#14b88f;text-shadow:3px 3px #fff}.stamp.no{color:#ff3657;text-shadow:3px 3px #fff}.float{position:fixed;z-index:10;color:#fff;font-size:26px;font-weight:1000;text-shadow:2px 3px #1e1b4b;pointer-events:none;animation:float .85s ease forwards}.confetti{position:fixed;z-index:9;width:10px;height:14px;pointer-events:none;animation:fall 1.1s ease-out forwards}.end{text-align:center}.end h1{font-size:clamp(34px,7vw,62px);margin:6px 0;color:var(--navy)}.rank{font-size:90px;margin:5px}.scoreBox{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:22px 0}.scoreItem{background:#f3f5fb;border-radius:15px;padding:12px;font-weight:900}.scoreItem b{display:block;font-size:25px;color:var(--red)}.lesson{font-size:13px;background:#fff0c7;border-radius:13px;padding:12px;line-height:1.4;text-align:left}.shake{animation:shake .35s}.hidden{display:none!important}@keyframes pop{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}@keyframes stamp{30%{opacity:1;transform:scale(1.3) rotate(-15deg)}100%{opacity:0;transform:scale(1) rotate(-15deg)}}@keyframes float{to{opacity:0;transform:translateY(-75px) scale(1.3)}}@keyframes fall{to{opacity:0;transform:translateY(220px) rotate(520deg)}}@keyframes shake{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}@media(max-width:570px){.hud{grid-template-columns:1fr 1fr}.hud .timeBlock{grid-column:1/-1;order:-1}.scene{min-height:550px;padding:18px 13px}.choices{grid-template-columns:1fr}.choice{min-height:58px}.choice b{display:inline}.choice span{display:inline;margin-left:5px}.scoreBox{grid-template-columns:1fr}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>みんなの日本語 第15課 | Kawaii Vocab Arcade 🌸</title>
+  <style>
+    :root {
+      --bg-cream: #FFF7F9;
+      --card-bg: #FFFFFF;
+      --pink-primary: #FF7E9E;
+      --pink-light: #FFD4DF;
+      --pink-deep: #E75480;
+      --mint: #79E2B6;
+      --mint-dark: #3DB885;
+      --lavender: #C6B5FF;
+      --sky: #8CD9FF;
+      --yellow: #FFE373;
+      --text-main: #4A3E4E;
+      --text-muted: #8C7C92;
+      --shadow: 0 10px 25px rgba(255, 142, 170, 0.2);
+      --radius: 22px;
+      --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Hiragino Maru Gothic ProN', 'Meiryo', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background: var(--bg-cream);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(#FFDDE7 1.5px, transparent 1.5px),
+        radial-gradient(#E8F8F2 1.5px, var(--bg-cream) 1.5px);
+      background-size: 32px 32px;
+      background-position: 0 0, 16px 16px;
+    }
+
+    /* Top Navigation & Header */
+    header {
+      width: 100%;
+      max-width: 900px;
+      padding: 24px 20px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .xp-badge {
+      background: white;
+      border: 3px solid var(--pink-light);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--pink-deep);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .audio-toggle-btn {
+      background: white;
+      border: 3px solid var(--pink-light);
+      border-radius: 50px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--text-main);
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+    }
+    .audio-toggle-btn:hover {
+      transform: scale(1.06);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 5px;
+      margin-bottom: 18px;
+    }
+
+    .mascot-container {
+      width: 75px;
+      height: 75px;
+      animation: float 3s ease-in-out infinite;
+      cursor: pointer;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(2deg); }
+    }
+
+    .title-group h1 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--pink-deep);
+      text-shadow: 2px 2px 0px #FFF, 4px 4px 0px rgba(255, 126, 158, 0.2);
+      letter-spacing: 0.5px;
+    }
+
+    .title-group p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Tabs Bar */
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      max-width: 900px;
+      width: 92%;
+      overflow-x: auto;
+      padding: 6px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 50px;
+      box-shadow: var(--shadow);
+      scrollbar-width: none;
+    }
+    .tabs-nav::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 130px;
+      padding: 10px 14px;
+      border: none;
+      outline: none;
+      background: transparent;
+      border-radius: 40px;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      background: var(--pink-light);
+      color: var(--pink-deep);
+    }
+
+    .tab-btn.active {
+      background: var(--pink-primary);
+      color: white;
+      box-shadow: 0 4px 15px rgba(255, 126, 158, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Main Container */
+    main {
+      width: 92%;
+      max-width: 860px;
+      margin-top: 20px;
+    }
+
+    .game-section {
+      display: none;
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    .game-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Common Card Styles */
+    .kawaii-box {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 3px solid #FFF;
+      padding: 24px;
+      position: relative;
+    }
+
+    .btn-cute {
+      background: var(--pink-primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 5px 15px rgba(255, 126, 158, 0.35);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-cute:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 20px rgba(255, 126, 158, 0.45);
+    }
+    .btn-cute:active {
+      transform: translateY(1px);
+    }
+
+    .btn-mint {
+      background: var(--mint);
+      color: #176543;
+      box-shadow: 0 5px 15px rgba(121, 226, 182, 0.4);
+    }
+    .btn-mint:hover {
+      box-shadow: 0 8px 20px rgba(121, 226, 182, 0.5);
+    }
+
+    .btn-lavender {
+      background: var(--lavender);
+      color: #3f2f70;
+      box-shadow: 0 5px 15px rgba(198, 181, 255, 0.4);
+    }
+
+    /* -------------------------------------------
+       GAME 1: FLASHCARD STUDIO
+    ------------------------------------------- */
+    .flashcard-wrapper {
+      perspective: 1000px;
+      width: 100%;
+      max-width: 460px;
+      height: 300px;
+      margin: 15px auto 25px;
+      cursor: pointer;
+    }
+
+    .flashcard-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border-radius: 28px;
+      box-shadow: 0 15px 35px rgba(255, 158, 181, 0.25);
+    }
+
+    .flashcard-wrapper.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 28px;
+      background: white;
+      border: 4px solid var(--pink-light);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      background: #FFFDF9;
+      border-color: var(--yellow);
+    }
+
+    .card-face .card-icon {
+      font-size: 3rem;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.06));
+    }
+
+    .card-face .kanji-text {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .card-face .kana-text {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--pink-deep);
+    }
+
+    .card-face .romaji-text {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .card-face .english-text {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--pink-deep);
+      margin-bottom: 12px;
+    }
+
+    .example-sentence {
+      background: #FFF0F5;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: #6C4A5B;
+      margin-top: 6px;
+      border-left: 4px solid var(--pink-primary);
+    }
+
+    .card-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 12px;
+      background: #FFE8EF;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--mint), var(--pink-primary));
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .filter-tags {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .tag-btn {
+      padding: 6px 14px;
+      border-radius: 30px;
+      border: 2px solid var(--pink-light);
+      background: white;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .tag-btn.active {
+      background: var(--pink-light);
+      color: var(--pink-deep);
+      border-color: var(--pink-deep);
+    }
+
+    /* -------------------------------------------
+       GAME 2: MOCHI MATCH (MEMORY MATCH)
+    ------------------------------------------- */
+    .memory-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 18px;
+      font-weight: 800;
+      color: var(--text-muted);
+    }
+    .memory-stats span {
+      color: var(--pink-deep);
+      font-size: 1.2rem;
+    }
+
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      perspective: 1000px;
+    }
+
+    @media (max-width: 600px) {
+      .memory-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .memory-card {
+      height: 100px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease;
+      cursor: pointer;
+      border-radius: 18px;
+    }
+
+    .memory-card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .memory-card.matched {
+      animation: matchSuccess 0.5s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes matchSuccess {
+      0% { transform: rotateY(180deg) scale(1); }
+      50% { transform: rotateY(180deg) scale(1.08); }
+      100% { transform: rotateY(180deg) scale(1); opacity: 0.75; }
+    }
+
+    .memory-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      text-align: center;
+      font-weight: 800;
+      border: 3px solid #FFF;
+      box-shadow: 0 4px 12px rgba(255, 142, 170, 0.15);
+    }
+
+    .memory-front {
+      background: linear-gradient(135deg, #FFB8CE, #FF8CAE);
+      color: white;
+      font-size: 1.8rem;
+    }
+
+    .memory-back {
+      background: white;
+      transform: rotateY(180deg);
+      border-color: var(--pink-light);
+      color: var(--text-main);
+      font-size: 0.95rem;
+    }
+
+    .memory-back .sub {
+      font-size: 0.75rem;
+      color: var(--pink-deep);
+      margin-top: 3px;
+    }
+
+    /* -------------------------------------------
+       GAME 3: BENTO SPEED QUIZ
+    ------------------------------------------- */
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .quiz-streak {
+      background: var(--yellow);
+      color: #614800;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .timer-bar {
+      width: 100%;
+      height: 10px;
+      background: #FFE8EE;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .timer-fill {
+      height: 100%;
+      background: var(--pink-primary);
+      width: 100%;
+      transition: width 0.1s linear;
+    }
+
+    .quiz-question-box {
+      text-align: center;
+      padding: 30px 20px;
+      background: #FFF9FA;
+      border: 3px dashed var(--pink-light);
+      border-radius: 20px;
+      margin-bottom: 22px;
+    }
+
+    .quiz-prompt-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .quiz-prompt-word {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--pink-deep);
+      margin-top: 6px;
+    }
+
+    .quiz-prompt-sub {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+
+    .quiz-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 550px) {
+      .quiz-options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .quiz-opt-btn {
+      background: white;
+      border: 3px solid var(--pink-light);
+      padding: 18px 16px;
+      border-radius: 18px;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .quiz-opt-btn:hover {
+      border-color: var(--pink-primary);
+      background: #FFF5F8;
+      transform: translateY(-2px);
+    }
+
+    .quiz-opt-btn.correct {
+      background: var(--mint) !important;
+      border-color: var(--mint-dark) !important;
+      color: #0A5531 !important;
+      transform: scale(1.03);
+    }
+
+    .quiz-opt-btn.wrong {
+      background: #FFD4D4 !important;
+      border-color: #FF6868 !important;
+      color: #901111 !important;
+      animation: shake 0.4s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    /* -------------------------------------------
+       GAME 4: FALLING STAR CATCHER
+    ------------------------------------------- */
+    .catcher-arena {
+      width: 100%;
+      height: 380px;
+      background: linear-gradient(180deg, #1A1838 0%, #3B2A63 70%, #683F75 100%);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    .falling-star {
+      position: absolute;
+      background: white;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-weight: 900;
+      font-size: 1.25rem;
+      color: #3C1E5A;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 30px rgba(255, 215, 100, 0.5);
+      border: 3px solid var(--yellow);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: top 0.05s linear;
+      z-index: 10;
+    }
+
+    .star-basket-zone {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(5px);
+    }
+
+    .basket-btn {
+      background: white;
+      border: 3px solid var(--yellow);
+      border-radius: 16px;
+      padding: 12px 6px;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #3C1E5A;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: all 0.15s;
+    }
+
+    .basket-btn:hover {
+      background: var(--yellow);
+      transform: translateY(-3px);
+    }
+
+    .catcher-stats {
+      display: flex;
+      justify-content: space-between;
+      color: white;
+      font-weight: 800;
+      padding: 12px 18px;
+      font-size: 1rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* -------------------------------------------
+       GAME 5: SUSHI KANA SCRAMBLE
+    ------------------------------------------- */
+    .scramble-target {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .scramble-en {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--pink-deep);
+    }
+
+    .scramble-kanji {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .scramble-slots {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
+      min-height: 60px;
+      flex-wrap: wrap;
+    }
+
+    .slot-box {
+      width: 55px;
+      height: 60px;
+      border-bottom: 4px solid var(--pink-primary);
+      background: #FFF1F5;
+      border-radius: 14px 14px 4px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--pink-deep);
+      transition: all 0.2s;
+    }
+
+    .scramble-tiles {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    .kana-tile {
+      width: 60px;
+      height: 65px;
+      background: white;
+      border: 3px solid var(--pink-light);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--text-main);
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(255, 142, 170, 0.15);
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .kana-tile:hover {
+      transform: translateY(-4px);
+      border-color: var(--pink-primary);
+      box-shadow: 0 10px 18px rgba(255, 142, 170, 0.25);
+    }
+
+    .kana-tile.used {
+      opacity: 0.3;
+      transform: scale(0.9);
+      pointer-events: none;
+    }
+
+    /* Modal / Win Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.3s;
+    }
+
+    .modal-card {
+      background: white;
+      border-radius: 28px;
+      padding: 35px 25px;
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+      border: 4px solid var(--pink-light);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .modal-card h2 {
+      font-size: 2rem;
+      color: var(--pink-deep);
+      margin-bottom: 8px;
+    }
+
+    .modal-card p {
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+
+    /* Confetti Canvas */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
 </head>
 <body>
-<main class="game">
- <header class="top"><div class="brand">東京 RULE RUSH <small>MINNA NO NIHONGO • LESSON 15</small></div><div class="toggles"><button class="toggle" id="furi">ふりがな</button><button class="toggle" id="roma">ROMAJI</button><button class="toggle" id="sound">♫ SFX</button></div></header>
- <section class="hud"><div class="hudBlock">SCORE <div class="hudNum" id="score">0000</div></div><div class="hudBlock timeBlock">INSPECTION WINDOW <div class="timer"><i id="timebar"></i></div></div><div class="hudBlock" style="text-align:right">COMBO <div class="hudNum" id="combo">×0</div></div></section>
- <section class="scene" id="scene" aria-live="polite"></section>
-</main>
-<script>
-const $=s=>document.querySelector(s),scene=$('#scene');let score=0,combo=0,index=0,furigana=false,romaji=false,soundOn=true,timer=null,timeLeft=100,locked=false,correct=0;
-const cases=[
- {kind:'RULE CHECK',place:'⛩️ Shrine courtyard',jp:'ここで <ruby>写真<rt>しゃしん</rt></ruby>を <ruby>撮<rt>と</rt></ruby>ってもいいですか。',ro:'Koko de shashin o tottemo ii desu ka?',en:'A visitor asks: “May I take photos here?”',answer:'permit',ex:'Correct. <b>〜てもいいですか</b> asks permission: “May I...?” Stamp it PERMIT.'},
- {kind:'RULE CHECK',place:'🏥 Hospital waiting room',jp:'ここで たばこを <ruby>吸<rt>す</rt></ruby>ってはいけません。',ro:'Koko de tabako o sutte wa ikemasen.',en:'A sign states: “Smoking is prohibited here.”',answer:'forbid',ex:'Exactly. <b>〜てはいけません</b> is the red-light rule: “You must not...”'},
- {kind:'STATUS SCAN',place:'🏙️ Apartment registry',jp:'ミラーさんは <ruby>大阪<rt>おおさか</rt></ruby>に <ruby>住<rt>す</rt></ruby>んでいます。',ro:'Miraa-san wa Osaka ni sunde imasu.',en:'What does the dossier report?',answer:'status',ex:'Yes. <b>住んでいます</b> is a continuing state: Mr. Miller lives in Osaka.'},
- {kind:'RULE CHECK',place:'📚 Library archive',jp:'この <ruby>資料<rt>しりょう</rt></ruby>を <ruby>借<rt>か</rt></ruby>りてもいいですか。',ro:'Kono shiryou o karitemo ii desu ka?',en:'A learner asks permission to borrow these materials.',answer:'permit',ex:'Right. It is a permission request: “May I borrow these materials?”'},
- {kind:'STATUS SCAN',place:'🏢 IMC headquarters',jp:'ワンさんは IMCで <ruby>働<rt>はたら</rt></ruby>いています。',ro:'Wan-san wa IMC de hataraite imasu.',en:'Choose the best report.',answer:'status',ex:'Correct. <b>働いています</b> reports an ongoing work/business state: “works at IMC.”'},
- {kind:'RULE CHECK',place:'🚇 Train platform',jp:'ここに <ruby>荷物<rt>にもつ</rt></ruby>を <ruby>置<rt>お</rt></ruby>いてはいけません。',ro:'Koko ni nimotsu o oite wa ikemasen.',en:'A station rule about luggage.',answer:'forbid',ex:'Correct: <b>置いてはいけません</b> — “Do not put luggage here.”'},
- {kind:'STATUS SCAN',place:'💍 City registry',jp:'サントスさんは <ruby>結婚<rt>けっこん</rt></ruby>しています。',ro:'Santosu-san wa kekkon shite imasu.',en:'Choose the best report.',answer:'status',ex:'Yes. <b>結婚しています</b> describes the resultant state: “is married,” not “is marrying.”'},
- {kind:'RULE CHECK',place:'🛍️ Department store',jp:'ここで <ruby>製品<rt>せいひん</rt></ruby>の カタログを もらってもいいですか。',ro:'Koko de seihin no katarogu o moratte mo ii desu ka?',en:'A shopper politely asks for a product catalogue.',answer:'permit',ex:'Correct. <b>もらってもいいですか</b>: “May I receive/get a catalogue?”'},
- {kind:'STATUS SCAN',place:'🚗 Car showroom',jp:'あの <ruby>店<rt>みせ</rt></ruby>は <ruby>車<rt>くるま</rt></ruby>を <ruby>売<rt>う</rt></ruby>っています。',ro:'Ano mise wa kuruma o utte imasu.',en:'Choose the best report.',answer:'status',ex:'Exactly. <b>売っています</b> means the shop is in the business of selling cars.'}
-];
-const assemblies=[
- {place:'🦷 Dentist reception',prompt:'Build: “May I make an appointment with the dentist?”',tiles:['歯医者さんに','予約を','しても','いいですか'],answer:'歯医者さんに|予約を|しても|いいですか',tip:'Permission formula: verb て-form + もいいですか.'},
- {place:'🚌 Bus terminal',prompt:'Build: “You must not look at the timetable here.”',tiles:['ここで','時刻表を','見ては','いけません'],answer:'ここで|時刻表を|見ては|いけません',tip:'Prohibition formula: verb て-form + はいけません.'}
-];
-const boss={place:'👁️ TRAP DETECTOR // knowledge anomaly',jp:'その <ruby>住所<rt>じゅうしょ</rt></ruby>を ______。',ro:'Sono juusho o ______.',en:'Choose: “I don’t know that address.”',options:[['知りません','I do not know'],['知っていません','⚠ ongoing-state trap'],['知りませんでした','I did not know']],answer:0,ex:'Trap neutralized! For present “don’t know,” Japanese uses <b>知りません</b>. “知っていません” is a classic Lesson 15 error.'};
-function gloss(jp,ro,en){return `<div class="japanese">${furigana?jp:jp.replace(/<ruby>(.*?)<rt>.*?<\/rt><\/ruby>/g,'$1')}</div><div class="assist">${romaji?ro:''}</div><div class="meaning">${en}</div>`}
-function start(){index=0;score=0;combo=0;correct=0;updateHud();renderCase()}
-function intro(){scene.innerHTML=`<div class="mission"><span class="chapter">TOKYO MUNICIPAL LANGUAGE UNIT</span><div class="district">🗼</div><h1>Tokyo Rule Rush</h1><p>Inspect signs, visitors, and office dossiers. Your Japanese keeps the city moving.</p><div class="brief"><h2>Your Lesson 15 kit</h2><ul><li><b>Permit:</b> 〜てもいいですか / 〜てもいいです</li><li><b>Forbid:</b> 〜てはいけません</li><li><b>States & work:</b> 住んでいます・結婚しています・働いています・売っています</li><li><b>Boss trap:</b> 知りません — never 知っていません</li></ul></div><button class="play" id="begin">START SHIFT →</button></div>`;$('#begin').onclick=start}
-function updateHud(){$('#score').textContent=String(score).padStart(4,'0');$('#combo').textContent='×'+combo;$('#timebar').style.width=timeLeft+'%'}
-function renderCase(){clearInterval(timer);locked=false;timeLeft=100;let c=cases[index];if(index<cases.length){scene.innerHTML=`<div class="card"><div class="caseTop"><span class="type">${c.kind}</span><span class="caseNo">CASE ${index+1}/${cases.length+3}</span></div><div class="setting">${c.place}</div>${gloss(c.jp,c.ro,c.en)}<div class="choices"><button class="choice permit" data-a="permit"><b>✓ PERMIT</b><span>〜てもいいです</span></button><button class="choice forbid" data-a="forbid"><b>✕ FORBID</b><span>〜てはいけません</span></button><button class="choice status" data-a="status"><b>⌕ STATUS</b><span>〜ています report</span></button></div></div><div class="stamp" id="stamp"></div><div class="feedback" id="feedback"></div><button class="play next" id="next">NEXT CASE →</button>`;document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>answer(b.dataset.a,c.answer,c.ex));$('#next').onclick=()=>{index++;renderCase()};startTimer();return}if(index===cases.length){renderAssembly(0);return}if(index===cases.length+1){renderAssembly(1);return}if(index===cases.length+2){renderBoss();return}finish()}
-function startTimer(){timer=setInterval(()=>{timeLeft-=.35;updateHud();if(timeLeft<=0){clearInterval(timer);answer('timeout','', 'Time out! Rules need quick instincts. Review the pattern and keep going.',true)}},100)}
-function answer(chosen,ans,ex,timeout=false){if(locked)return;locked=true;clearInterval(timer);let ok=chosen===ans;let fb=$('#feedback'),stamp=$('#stamp');if(ok){correct++;combo++;let pts=100+combo*25+Math.floor(timeLeft);score+=pts;fb.className='feedback good';fb.innerHTML=`<b>✓ PERFECT INSPECTION! +${pts}</b><br>${ex}`;stamp.textContent='PERMIT!';stamp.className='stamp show ok';sfx('win');burst();floatText('+'+pts)}else{combo=0;fb.className='feedback bad';fb.innerHTML=`<b>${timeout?'⌛ SHIFT EXPIRED':'✕ NOT QUITE'}</b><br>${ex}`;stamp.textContent='RECHECK';stamp.className='stamp show no';scene.classList.add('shake');setTimeout(()=>scene.classList.remove('shake'),400);sfx('fail')}updateHud();$('#next').style.display='block'}
-function renderAssembly(n){clearInterval(timer);locked=false;let a=assemblies[n],pool=[...a.tiles].sort(()=>Math.random()-.5);scene.innerHTML=`<div class="card"><div class="caseTop"><span class="type">SYNTAX SPRINT</span><span class="caseNo">CASE ${cases.length+n+1}/${cases.length+3}</span></div><div class="setting">${a.place}</div><div class="japanese" style="font-size:25px">${a.prompt}</div><div class="assembly"><div class="slots empty" id="slots"></div><div class="tiles" id="tiles">${pool.map((t,i)=>`<button class="tile" data-t="${t}" data-i="${i}">${t}</button>`).join('')}</div><div class="assemblyActions"><button class="smallBtn" id="undo">UNDO</button><button class="smallBtn check" id="check">CHECK SENTENCE</button></div></div></div><div class="feedback" id="feedback"></div><button class="play next" id="next">${n?'FACE THE BOSS →':'NEXT SPRINT →'}</button>`;let selected=[];function paint(){let slots=$('#slots');slots.classList.toggle('empty',!selected.length);slots.innerHTML=selected.map(x=>`<span class="tile">${x}</span>`).join('')}document.querySelectorAll('.tile[data-t]').forEach(b=>b.onclick=()=>{if(locked)return;selected.push(b.dataset.t);b.classList.add('used');paint();sfx('pop')});$('#undo').onclick=()=>{let last=selected.pop();if(last){let b=[...document.querySelectorAll('.tile[data-t]')].find(x=>x.dataset.t===last&&x.classList.contains('used'));if(b)b.classList.remove('used');paint()}};$('#check').onclick=()=>{if(locked)return;locked=true;let ok=selected.join('|')===a.answer,fb=$('#feedback');if(ok){correct++;combo++;let pts=200+combo*25;score+=pts;fb.className='feedback good';fb.innerHTML=`<b>✓ SENTENCE LOCKED! +${pts}</b><br>${a.tip}`;sfx('win');burst();floatText('+'+pts)}else{combo=0;fb.className='feedback bad';fb.innerHTML=`<b>✕ TILE JAM!</b><br>${a.tip} Correct order: <b>${a.answer.replaceAll('|',' ')}</b>`;sfx('fail')}updateHud();$('#next').style.display='block'};$('#next').onclick=()=>{index++;renderCase()}}
-function renderBoss(){let b=boss;scene.innerHTML=`<div class="card boss"><div class="caseTop"><span class="type">BOSS: NEGATION TRAP</span><span class="caseNo">FINAL CASE</span></div><div class="setting">${b.place}</div>${gloss(b.jp,b.ro,b.en)}<div class="choices">${b.options.map((o,i)=>`<button class="choice" data-b="${i}"><b>${o[0]}</b><span>${o[1]}</span></button>`).join('')}</div></div><div class="stamp" id="stamp"></div><div class="feedback" id="feedback"></div><button class="play next" id="next">CLAIM YOUR BADGE →</button>`;document.querySelectorAll('[data-b]').forEach(x=>x.onclick=()=>answer(+x.dataset.b,b.answer,b.ex));$('#next').onclick=()=>{index++;renderCase()}}
-function finish(){clearInterval(timer);let rank=correct>=10?'S':correct>=7?'A':correct>=4?'B':'C';scene.innerHTML=`<div class="card end"><div class="district">🏮</div><span class="chapter">SHIFT COMPLETE</span><h1>Tokyo is safe!</h1><div class="rank">${rank}</div><p>You kept the grammar gates clean. Your next real-world conversation just got easier.</p><div class="scoreBox"><div class="scoreItem"><b>${score}</b>POINTS</div><div class="scoreItem"><b>${correct}/12</b>CLEARED</div><div class="scoreItem"><b>×${combo}</b>FINAL COMBO</div></div><div class="lesson"><b>Lesson 15 power recap:</b> Ask/allow with 〜てもいいですか／〜てもいいです. Prohibit with 〜てはいけません. Use 〜ています for continuing states, habits, and jobs — but say <b>知りません</b> for “I don’t know.”</div><br><button class="play" id="again">PLAY AGAIN ↻</button></div>`;sfx('fanfare');burst(34);$('#again').onclick=start}
-function sfx(type){if(!soundOn)return;let C=window.AudioContext||window.webkitAudioContext,ctx=new C(),now=ctx.currentTime;let notes=type==='win'?[523,659,784]:type==='fail'?[170,120]:type==='fanfare'?[392,523,659,784]:[420];notes.forEach((f,i)=>{let o=ctx.createOscillator(),g=ctx.createGain();o.type=type==='fail'?'sawtooth':'square';o.frequency.value=f;g.gain.setValueAtTime(.07,now+i*.075);g.gain.exponentialRampToValueAtTime(.001,now+i*.075+.16);o.connect(g).connect(ctx.destination);o.start(now+i*.075);o.stop(now+i*.075+.18)})}
-function burst(n=18){for(let i=0;i<n;i++){let x=document.createElement('i');x.className='confetti';x.style.left=(20+Math.random()*60)+'vw';x.style.top=(15+Math.random()*20)+'vh';x.style.background=['#ff4f64','#ffd166','#45d6b0','#38bdf8','#8b5cf6'][i%5];x.style.transform=`rotate(${Math.random()*180}deg)`;document.body.append(x);setTimeout(()=>x.remove(),1200)}}
-function floatText(t){let e=document.createElement('div');e.className='float';e.textContent=t;e.style.left=(38+Math.random()*25)+'vw';e.style.top='45vh';document.body.append(e);setTimeout(()=>e.remove(),900)}
-$('#furi').onclick=function(){furigana=!furigana;this.classList.toggle('on',furigana);if(index<cases.length&&index>=0)renderCase()};$('#roma').onclick=function(){romaji=!romaji;this.classList.toggle('on',romaji);if(index<cases.length&&index>=0)renderCase()};$('#sound').onclick=function(){soundOn=!soundOn;this.classList.toggle('on',soundOn);this.textContent=soundOn?'♫ SFX':'SFX OFF';if(soundOn)sfx('pop')};intro();
-</script>
-</body>
-</html>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <header>
+    <div class="top-bar">
+      <div class="xp-badge">
+        <span>⭐ XP</span>
+        <span id="player-xp">0</span>
+      </div>
+      <button class="audio-toggle-btn" id="sound-btn" onclick="toggleAudio()">🔊 Sound: ON</button>
+    </div>
+
+    <div class="header-content">
+      <!-- Cute Usagi-chan SVG Mascot -->
+      <div class="mascot-container" onclick="mascotCheer()" title="Click me for cute cheer!">
+        <svg viewBox="0 0 100 100" width="100%" height="100%">
+          <!-- Ears -->
+          <ellipse cx="35" cy="25" rx="8" ry="20" fill="#FFE5EC" transform="rotate(-10 35 25)" />
+          <ellipse cx="35" cy="25" rx="4" ry="14" fill="#FF8CAE" transform="rotate(-10 35 25)" />
+          <ellipse cx="65" cy="25" rx="8" ry="20" fill="#FFE5EC" transform="rotate(10 65 25)" />
+          <ellipse cx="65" cy="25" rx="4" ry="14" fill="#FF8CAE" transform="rotate(10 65 25)" />
+          <!-- Head -->
+          <circle cx="50" cy="60" r="32" fill="#FFFFFF" stroke="#FFE0E9" stroke-width="2" />
+          <!-- Eyes -->
+          <circle cx="40" cy="56" r="3.5" fill="#4A3E4E" />
+          <circle cx="41" cy="54.5" r="1.2" fill="#FFFFFF" />
+          <circle cx="60" cy="56" r="3.5" fill="#4A3E4E" />
+          <circle cx="61" cy="54.5" r="1.2" fill="#FFFFFF" />
+          <!-- Cheeks -->
+          <ellipse cx="34" cy="64" rx="4.5" ry="3" fill="#FFA5BE" opacity="0.8" />
+          <ellipse cx="66" cy="64" rx="4.5" ry="3" fill="#FFA5BE" opacity="0.8" />
+          <!-- Mouth -->
+          <path d="M 47 62 Q 50 65 53 62" fill="none" stroke="#4A3E4E" stroke-width="2" stroke-linecap="round" />
+          <!-- Blossom Bow -->
+          <circle cx="70" cy="38" r="5" fill="#FF8CAE" />
+          <circle cx="70" cy="38" r="2.5" fill="#FFE373" />
+        </svg>
+      </div>
+
+      <div class="title-group">
+        <h1>第15課 Vocab Arcade</h1>
+        <p>Minna no Nihongo Lesson 15 • Cute & Interactive</p>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('cards')">🎴 Flashcards</button>
+      <button class="tab-btn" onclick="switchTab('memory')">🍡 Mochi Match</button>
+      <button class="tab-btn" onclick="switchTab('quiz')">🍱 Bento Rush</button>
+      <button class="tab-btn" onclick="switchTab('catcher')">🌸 Star Catch</button>
+      <button class="tab-btn" onclick="switchTab('scramble')">🍣 Kana Sushi</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ==============================================
+         TAB 1: FLASHCARDS
+    =============================================== -->
+    <section id="tab-cards" class="game-section active">
+      <div class="kawaii-box">
+        <div class="filter-tags">
+          <button class="tag-btn active" onclick="filterCards('all', this)">All (24)</button>
+          <button class="tag-btn" onclick="filterCards('verb', this)">Verbs (9)</button>
+          <button class="tag-btn" onclick="filterCards('noun', this)">Nouns & Others (15)</button>
+        </div>
+
+        <div class="flashcard-wrapper" onclick="flipCard()">
+          <div class="flashcard-inner" id="flashcard-inner">
+            <!-- Front -->
+            <div class="card-face card-front">
+              <div class="card-icon" id="fc-icon">📦</div>
+              <div class="kanji-text" id="fc-kanji">置きます</div>
+              <div class="kana-text" id="fc-kana">おきます</div>
+              <div class="romaji-text" id="fc-romaji">okimasu</div>
+              <small style="margin-top: 15px; color: var(--text-muted);">✨ Tap card to flip ✨</small>
+            </div>
+            <!-- Back -->
+            <div class="card-face card-back">
+              <div class="card-icon" id="fc-icon-back">📦</div>
+              <div class="english-text" id="fc-en">put, place</div>
+              <div class="example-sentence" id="fc-example">
+                ここに 荷物を 置いても いいです。
+              </div>
+              <small style="margin-top: 15px; color: var(--text-muted);">Lesson 15: 〜てもいいです</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-controls">
+          <button class="btn-cute btn-lavender" onclick="prevCard()">◀ Prev</button>
+          <button class="btn-cute btn-mint" onclick="speakCurrentCard()">🔊 Listen</button>
+          <button class="btn-cute" onclick="nextCard()">Next ▶</button>
+          <button class="btn-cute" style="background: var(--yellow); color:#5d4700;" onclick="shuffleCards()">🔀 Shuffle</button>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-fill" id="card-progress"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TAB 2: MOCHI MATCH (MEMORY)
+    =============================================== -->
+    <section id="tab-memory" class="game-section">
+      <div class="kawaii-box">
+        <div class="memory-stats">
+          <div>Moves: <span id="memory-moves">0</span></div>
+          <div>Pairs Left: <span id="memory-left">8</span></div>
+          <div>Best: <span id="memory-best">-</span></div>
+        </div>
+        <div class="memory-grid" id="memory-grid">
+          <!-- Cards dynamically injected -->
+        </div>
+        <div style="text-align: center; margin-top: 22px;">
+          <button class="btn-cute btn-mint" onclick="initMemoryGame()">🔄 Restart Game</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TAB 3: BENTO SPEED QUIZ
+    =============================================== -->
+    <section id="tab-quiz" class="game-section">
+      <div class="kawaii-box">
+        <div class="quiz-header">
+          <div class="xp-badge">Q <span id="quiz-curr">1</span>/10</div>
+          <div class="quiz-streak" id="streak-indicator">🔥 Streak: 0</div>
+          <div style="font-weight: 800; color: var(--pink-deep);" id="quiz-score">Score: 0</div>
+        </div>
+
+        <div class="timer-bar">
+          <div class="timer-fill" id="quiz-timer-fill"></div>
+        </div>
+
+        <div class="quiz-question-box">
+          <div class="quiz-prompt-label">Select the correct translation:</div>
+          <div class="quiz-prompt-word" id="quiz-prompt">歯医者</div>
+          <div class="quiz-prompt-sub" id="quiz-prompt-sub">はいしゃ</div>
+        </div>
+
+        <div class="quiz-options-grid" id="quiz-options">
+          <!-- 4 option buttons -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TAB 4: FALLING STAR CATCHER
+    =============================================== -->
+    <section id="tab-catcher" class="game-section">
+      <div class="kawaii-box">
+        <div class="catcher-arena" id="catcher-arena">
+          <div class="catcher-stats">
+            <div>Score: <span id="catcher-score">0</span></div>
+            <div>Lives: <span id="catcher-lives">❤️❤️❤️</span></div>
+          </div>
+          <!-- Falling star -->
+          <div class="falling-star" id="active-star" style="display:none; top: 0; left: 50%;">
+            ⭐ <span id="star-text">服</span>
+          </div>
+          <!-- Baskets at bottom -->
+          <div class="star-basket-zone" id="catcher-baskets">
+            <!-- 3 buttons dynamically generated -->
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 15px;">
+          <button class="btn-cute btn-mint" id="catcher-start-btn" onclick="startCatcherGame()">🚀 Start Game</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TAB 5: SUSHI KANA SCRAMBLE
+    =============================================== -->
+    <section id="tab-scramble" class="game-section">
+      <div class="kawaii-box">
+        <div class="scramble-target">
+          <div style="font-size: 2.5rem;" id="scramble-icon">👗</div>
+          <div class="scramble-en" id="scramble-en">clothes</div>
+          <div class="scramble-kanji" id="scramble-kanji">Kanji: 服</div>
+        </div>
+
+        <!-- Drop slots -->
+        <div class="scramble-slots" id="scramble-slots"></div>
+
+        <!-- Scrambled kana plates -->
+        <div class="scramble-tiles" id="scramble-tiles"></div>
+
+        <div style="display: flex; justify-content: center; gap: 12px;">
+          <button class="btn-cute btn-lavender" onclick="clearScramble()">↩ Reset</button>
+          <button class="btn-cute btn-mint" onclick="hintScramble()">💡 Hint</button>
+          <button class="btn-cute" onclick="nextScrambleWord()">Next Word ▶</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Celebration Modal -->
+  <div class="modal-overlay" id="win-modal">
+    <div class="modal-card">
+      <div style="font-size: 3.5rem; margin-bottom: 10px;">🎉🌸</div>
+      <h2 id="modal-title">Subarashii! (素晴らしい)</h2>
+      <p id="modal-desc">You completed the challenge!</p>
+      <button class="btn-cute btn-mint" onclick="closeModal()">Yatta! Play Again</button>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       1. VOCABULARY DATABASE (MINNA NO NIHONGO LESSON 15)
+    ========================================================== */
+    const LESSON_15_VOCAB = [
+      { kanji: "置きます", kana: "おきます", romaji: "okimasu", en: "put, place", type: "verb", icon: "📦", example: "ここに 荷物を 置いても いいですか。" },
+      { kanji: "作ります", kana: "つくります", romaji: "tsukurimasu", en: "make, produce", type: "verb", icon: "🛠️", example: "日本の 会社は 車を 作っています。" },
+      { kanji: "売ります", kana: "うります", romaji: "urimasu", en: "sell", type: "verb", icon: "🏷️", example: "あの 店で 古い 本を 売っています。" },
+      { kanji: "知ります", kana: "しります", romaji: "shirimasu", en: "get to know", type: "verb", icon: "💡", example: "その ニュースを 知りました。" },
+      { kanji: "知っています", kana: "しっています", romaji: "shitte imasu", en: "know", type: "verb", icon: "🧠", example: "市役所の 電話番号を 知っていますか。" },
+      { kanji: "住みます", kana: "すみます", romaji: "sumimasu", en: "to live, reside", type: "verb", icon: "🏡", example: "来年 東京に 住みます。" },
+      { kanji: "住んでいます", kana: "すんでいます", romaji: "sunde imasu", en: "living (in)", type: "verb", icon: "🏘️", example: "私は 大阪に 住んでいます。" },
+      { kanji: "研究します", kana: "けんきゅうします", romaji: "kenkyuu shimasu", en: "do research", type: "verb", icon: "🔬", example: "大学で 経済を 研究しています。" },
+      { kanji: "資料", kana: "しりょう", romaji: "shiryou", en: "materials, data", type: "noun", icon: "📑", example: "会議の 資料を 読みます。" },
+      { kanji: "カタログ", kana: "カタログ", romaji: "katarogu", en: "catalogue", type: "noun", icon: "📖", example: "新しい 製品の カタログを 見ます。" },
+      { kanji: "時刻表", kana: "じこくひょう", romaji: "jikokuhyou", en: "timetable", type: "noun", icon: "🕒", example: "新幹線の 時刻表を 調べます。" },
+      { kanji: "服", kana: "ふく", romaji: "fuku", en: "clothes", type: "noun", icon: "👗", example: "デパートで 服を 買いました。" },
+      { kanji: "製品", kana: "せいひん", romaji: "seihin", en: "products, goods", type: "noun", icon: "📱", example: "これは 電気の 製品です。" },
+      { kanji: "ソフト", kana: "ソフト", romaji: "sofuto", en: "software", type: "noun", icon: "💾", example: "ゲームの ソフトを 作ります。" },
+      { kanji: "専門", kana: "せんもん", romaji: "senmon", en: "specialty, field", type: "noun", icon: "🎓", example: "私の 専門は コンピューターです。" },
+      { kanji: "歯医者", kana: "はいしゃ", romaji: "haisha", en: "dentist", type: "noun", icon: "🦷", example: "歯が 痛いので 歯医者へ 行きます。" },
+      { kanji: "床屋", kana: "とこや", romaji: "tokoya", en: "barber, barbershop", type: "noun", icon: "💈", example: "日曜日に 床屋へ 行きました。" },
+      { kanji: "プレイガイド", kana: "プレイガイド", romaji: "pureigaido", en: "theater ticket agency", type: "noun", icon: "🎟️", example: "プレイガイドで チケットを 買いました。" },
+      { kanji: "独身", kana: "どくしん", romaji: "dokushin", en: "single, unmarried", type: "noun", icon: "👤", example: "ミラーさんは 独身です。" },
+      { kanji: "特に", kana: "とくに", romaji: "tokuni", en: "especially", type: "noun", icon: "⭐", example: "日本料理、特に 寿司が 好きです。" },
+      { kanji: "思い出します", kana: "おもいだします", romaji: "omoidashimasu", en: "remember, recall", type: "verb", icon: "💭", example: "国の 家族を 思い出します。" },
+      { kanji: "ご家族", kana: "ごかぞく", romaji: "gokazoku", en: "your family (polite)", type: "noun", icon: "👨‍👩‍👧‍👦", example: "ご家族は どこに 住んでいますか。" },
+      { kanji: "いらっしゃいます", kana: "いらっしゃいます", romaji: "irasshaimasu", en: "be (honorific of います)", type: "verb", icon: "✨", example: "先生は 教室に いらっしゃいます。" },
+      { kanji: "高校", kana: "こうこう", romaji: "koukou", en: "senior high school", type: "noun", icon: "🏫", example: "妹は 高校生です。" }
+    ];
+
+    /* =========================================================
+       2. RETRO SOUND SYNTHESIZER (WEB AUDIO API)
+    ========================================================== */
+    class RetroAudio {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      pop() {
+        if (!this.enabled) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        const now = this.ctx.currentTime;
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+        g.gain.setValueAtTime(0.3, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        osc.connect(g);
+        g.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.09);
+      }
+      correct() {
+        if (!this.enabled) return;
+        this.init();
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, i) => {
+          const osc = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          const now = this.ctx.currentTime + (i * 0.07);
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+          g.gain.setValueAtTime(0.2, now);
+          g.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+          osc.connect(g);
+          g.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.22);
+        });
+      }
+      wrong() {
+        if (!this.enabled) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(240, now);
+        osc.frequency.linearRampToValueAtTime(140, now + 0.25);
+        g.gain.setValueAtTime(0.2, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc.connect(g);
+        g.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.26);
+      }
+      fanfare() {
+        if (!this.enabled) return;
+        this.init();
+        const chord = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+        chord.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          const now = this.ctx.currentTime + (idx * 0.09);
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+          g.gain.setValueAtTime(0.25, now);
+          g.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.connect(g);
+          g.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.36);
+        });
+      }
+    }
+
+    const sound = new RetroAudio();
+
+    function toggleAudio() {
+      sound.enabled = !sound.enabled;
+      document.getElementById('sound-btn').innerText = sound.enabled ? '🔊 Sound: ON' : '🔇 Sound: OFF';
+      if (sound.enabled) sound.pop();
+    }
+
+    // Japanese text-to-speech pronunciation
+    function speakJapanese(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'ja-JP';
+      utter.rate = 0.9;
+      window.speechSynthesis.speak(utter);
+    }
+
+    /* =========================================================
+       3. GLOBAL XP & STATE
+    ========================================================== */
+    let playerXP = 0;
+    function addXP(amount) {
+      playerXP += amount;
+      document.getElementById('player-xp').innerText = playerXP;
+    }
+
+    function mascotCheer() {
+      sound.correct();
+      speakJapanese('がんばってください！');
+      fireConfetti(50);
+    }
+
+    /* =========================================================
+       4. TAB MANAGER
+    ========================================================== */
+    function switchTab(tabId) {
+      sound.pop();
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.game-section').forEach(sec => sec.classList.remove('active'));
+
+      event.currentTarget.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+
+      if (tabId === 'memory' && memoryCards.length === 0) initMemoryGame();
+      if (tabId === 'quiz') startQuiz();
+      if (tabId === 'scramble') initScrambleWord();
+    }
+
+    /* =========================================================
+       GAME 1: FLASHCARDS
+    ========================================================== */
+    let cardList = [...LESSON_15_VOCAB];
+    let cardIndex = 0;
+
+    function renderCard() {
+      const item = cardList[cardIndex];
+      document.getElementById('fc-icon').innerText = item.icon;
+      document.getElementById('fc-kanji').innerText = item.kanji;
+      document.getElementById('fc-kana').innerText = item.kana;
+      document.getElementById('fc-romaji').innerText = item.romaji;
+      document.getElementById('fc-icon-back').innerText = item.icon;
+      document.getElementById('fc-en').innerText = item.en;
+      document.getElementById('fc-example').innerText = item.example;
+
+      const progress = ((cardIndex + 1) / cardList.length) * 100;
+      document.getElementById('card-progress').style.width = progress + '%';
+      document.querySelector('.flashcard-wrapper').classList.remove('flipped');
+    }
+
+    function flipCard() {
+      sound.pop();
+      document.querySelector('.flashcard-wrapper').classList.toggle('flipped');
+    }
+
+    function nextCard() {
+      sound.pop();
+      cardIndex = (cardIndex + 1) % cardList.length;
+      renderCard();
+      addXP(2);
+    }
+
+    function prevCard() {
+      sound.pop();
+      cardIndex = (cardIndex - 1 + cardList.length) % cardList.length;
+      renderCard();
+    }
+
+    function shuffleCards() {
+      sound.fanfare();
+      cardList.sort(() => Math.random() - 0.5);
+      cardIndex = 0;
+      renderCard();
+    }
+
+    function speakCurrentCard() {
+      const item = cardList[cardIndex];
+      speakJapanese(item.kana);
+    }
+
+    function filterCards(type, btn) {
+      sound.pop();
+      document.querySelectorAll('.filter-tags .tag-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (type === 'all') {
+        cardList = [...LESSON_15_VOCAB];
+      } else {
+        cardList = LESSON_15_VOCAB.filter(v => v.type === type);
+      }
+      cardIndex = 0;
+      renderCard();
+    }
+
+    /* =========================================================
+       GAME 2: MOCHI MATCH (MEMORY)
+    ========================================================== */
+    let memoryCards = [];
+    let flippedIndices = [];
+    let moves = 0;
+    let pairsLeft = 0;
+    let bestMoves = localStorage.getItem('minna15_memory_best') || '-';
+
+    function initMemoryGame() {
+      document.getElementById('memory-best').innerText = bestMoves;
+      moves = 0;
+      document.getElementById('memory-moves').innerText = moves;
+      flippedIndices = [];
+
+      // Pick 8 random vocabulary items
+      const selected = [...LESSON_15_VOCAB].sort(() => Math.random() - 0.5).slice(0, 8);
+      pairsLeft = selected.length;
+      document.getElementById('memory-left').innerText = pairsLeft;
+
+      let deck = [];
+      selected.forEach((item, id) => {
+        deck.push({ id, text: item.kanji, sub: item.kana, isJp: true });
+        deck.push({ id, text: item.en, sub: item.icon, isJp: false });
+      });
+      deck.sort(() => Math.random() - 0.5);
+      memoryCards = deck;
+
+      const grid = document.getElementById('memory-grid');
+      grid.innerHTML = '';
+      deck.forEach((card, idx) => {
+        const el = document.createElement('div');
+        el.className = 'memory-card';
+        el.dataset.idx = idx;
+        el.innerHTML = `
+          <div class="memory-face memory-front">🌸</div>
+          <div class="memory-face memory-back">
+            <div>${card.text}</div>
+            <div class="sub">${card.sub}</div>
+          </div>
+        `;
+        el.onclick = () => flipMemoryCard(idx, el);
+        grid.appendChild(el);
+      });
+    }
+
+    function flipMemoryCard(idx, el) {
+      if (flippedIndices.length >= 2 || el.classList.contains('flipped') || el.classList.contains('matched')) return;
+
+      sound.pop();
+      el.classList.add('flipped');
+      flippedIndices.push({ idx, el });
+
+      if (flippedIndices.length === 2) {
+        moves++;
+        document.getElementById('memory-moves').innerText = moves;
+        const [c1, c2] = flippedIndices;
+        const card1 = memoryCards[c1.idx];
+        const card2 = memoryCards[c2.idx];
+
+        if (card1.id === card2.id) {
+          // Matched!
+          setTimeout(() => {
+            sound.correct();
+            c1.el.classList.add('matched');
+            c2.el.classList.add('matched');
+            flippedIndices = [];
+            pairsLeft--;
+            document.getElementById('memory-left').innerText = pairsLeft;
+            addXP(15);
+
+            if (card1.isJp) speakJapanese(card1.sub);
+            else if (card2.isJp) speakJapanese(card2.sub);
+
+            if (pairsLeft === 0) {
+              sound.fanfare();
+              fireConfetti(100);
+              if (bestMoves === '-' || moves < bestMoves) {
+                bestMoves = moves;
+                localStorage.setItem('minna15_memory_best', bestMoves);
+                document.getElementById('memory-best').innerText = bestMoves;
+              }
+              showModal('Omedetou! 🎉', `You matched all pairs in ${moves} moves! +100 XP`);
+              addXP(100);
+            }
+          }, 450);
+        } else {
+          // Mismatch
+          setTimeout(() => {
+            sound.wrong();
+            c1.el.classList.remove('flipped');
+            c2.el.classList.remove('flipped');
+            flippedIndices = [];
+          }, 850);
+        }
+      }
+    }
+
+    /* =========================================================
+       GAME 3: BENTO SPEED QUIZ
+    ========================================================== */
+    let quizQuestionCount = 10;
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+    let quizStreak = 0;
+    let quizTimer = null;
+    let quizTimeLeft = 10;
+    let quizItem = null;
+
+    function startQuiz() {
+      currentQuizIndex = 0;
+      quizScore = 0;
+      quizStreak = 0;
+      document.getElementById('quiz-score').innerText = `Score: ${quizScore}`;
+      document.getElementById('streak-indicator').innerText = `🔥 Streak: 0`;
+      loadQuizQuestion();
+    }
+
+    function loadQuizQuestion() {
+      clearInterval(quizTimer);
+      if (currentQuizIndex >= quizQuestionCount) {
+        sound.fanfare();
+        fireConfetti(120);
+        showModal('Quiz Finished! 🍱', `Score: ${quizScore} pts! Subarashii! +80 XP`);
+        addXP(80);
+        return;
+      }
+
+      currentQuizIndex++;
+      document.getElementById('quiz-curr').innerText = currentQuizIndex;
+
+      // Pick random question item
+      quizItem = LESSON_15_VOCAB[Math.floor(Math.random() * LESSON_15_VOCAB.length)];
+      document.getElementById('quiz-prompt').innerText = quizItem.kanji;
+      document.getElementById('quiz-prompt-sub').innerText = quizItem.kana;
+      speakJapanese(quizItem.kana);
+
+      // Generate 4 options (1 correct, 3 wrong)
+      const distractors = LESSON_15_VOCAB.filter(v => v.kanji !== quizItem.kanji);
+      distractors.sort(() => Math.random() - 0.5);
+      const choices = [quizItem, distractors[0], distractors[1], distractors[2]];
+      choices.sort(() => Math.random() - 0.5);
+
+      const optsContainer = document.getElementById('quiz-options');
+      optsContainer.innerHTML = '';
+      choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-opt-btn';
+        btn.innerHTML = `${choice.icon} ${choice.en}`;
+        btn.onclick = () => answerQuiz(choice, btn);
+        optsContainer.appendChild(btn);
+      });
+
+      // Start 10s timer
+      quizTimeLeft = 10;
+      const fill = document.getElementById('quiz-timer-fill');
+      fill.style.width = '100%';
+
+      quizTimer = setInterval(() => {
+        quizTimeLeft -= 0.1;
+        fill.style.width = (quizTimeLeft / 10 * 100) + '%';
+        if (quizTimeLeft <= 0) {
+          clearInterval(quizTimer);
+          sound.wrong();
+          quizStreak = 0;
+          document.getElementById('streak-indicator').innerText = `🔥 Streak: 0`;
+          highlightQuizAnswer(false);
+          setTimeout(loadQuizQuestion, 1200);
+        }
+      }, 100);
+    }
+
+    function answerQuiz(choice, btn) {
+      clearInterval(quizTimer);
+      const isCorrect = choice.kanji === quizItem.kanji;
+
+      if (isCorrect) {
+        sound.correct();
+        btn.classList.add('correct');
+        quizStreak++;
+        const points = 100 + (quizStreak * 20);
+        quizScore += points;
+        addXP(20);
+        document.getElementById('quiz-score').innerText = `Score: ${quizScore}`;
+        document.getElementById('streak-indicator').innerText = `🔥 Streak: ${quizStreak}`;
+      } else {
+        sound.wrong();
+        btn.classList.add('wrong');
+        quizStreak = 0;
+        document.getElementById('streak-indicator').innerText = `🔥 Streak: 0`;
+        highlightQuizAnswer(true);
+      }
+
+      // Lock buttons
+      document.querySelectorAll('.quiz-opt-btn').forEach(b => b.style.pointerEvents = 'none');
+      setTimeout(loadQuizQuestion, 1200);
+    }
+
+    function highlightQuizAnswer() {
+      document.querySelectorAll('.quiz-opt-btn').forEach(b => {
+        if (b.innerText.includes(quizItem.en)) {
+          b.classList.add('correct');
+        }
+      });
+    }
+
+    /* =========================================================
+       GAME 4: FALLING STAR CATCHER
+    ========================================================== */
+    let catcherScore = 0;
+    let catcherLives = 3;
+    let catcherActive = false;
+    let starInterval = null;
+    let currentStarY = 0;
+    let currentStarItem = null;
+
+    function startCatcherGame() {
+      catcherScore = 0;
+      catcherLives = 3;
+      catcherActive = true;
+      document.getElementById('catcher-score').innerText = catcherScore;
+      document.getElementById('catcher-lives').innerText = '❤️❤️❤️';
+      document.getElementById('catcher-start-btn').style.display = 'none';
+      spawnStar();
+    }
+
+    function spawnStar() {
+      if (!catcherActive) return;
+      currentStarY = 10;
+      const star = document.getElementById('active-star');
+      star.style.display = 'flex';
+      star.style.top = currentStarY + 'px';
+      star.style.left = (20 + Math.random() * 55) + '%';
+
+      currentStarItem = LESSON_15_VOCAB[Math.floor(Math.random() * LESSON_15_VOCAB.length)];
+      document.getElementById('star-text').innerText = `${currentStarItem.kanji} (${currentStarItem.kana})`;
+
+      // 3 baskets
+      const distractors = LESSON_15_VOCAB.filter(v => v.kanji !== currentStarItem.kanji).sort(() => Math.random() - 0.5);
+      const basketChoices = [currentStarItem, distractors[0], distractors[1]].sort(() => Math.random() - 0.5);
+
+      const zone = document.getElementById('catcher-baskets');
+      zone.innerHTML = '';
+      basketChoices.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'basket-btn';
+        btn.innerText = item.en;
+        btn.onclick = () => catchWord(item);
+        zone.appendChild(btn);
+      });
+
+      clearInterval(starInterval);
+      const speed = 2.2 + (catcherScore / 600);
+      starInterval = setInterval(() => {
+        currentStarY += speed;
+        star.style.top = currentStarY + 'px';
+
+        if (currentStarY > 275) {
+          // Missed!
+          clearInterval(starInterval);
+          sound.wrong();
+          catcherLives--;
+          updateCatcherLives();
+        }
+      }, 30);
+    }
+
+    function catchWord(selectedItem) {
+      if (!catcherActive) return;
+      if (selectedItem.kanji === currentStarItem.kanji) {
+        sound.correct();
+        catcherScore += 100;
+        document.getElementById('catcher-score').innerText = catcherScore;
+        addXP(15);
+        clearInterval(starInterval);
+        spawnStar();
+      } else {
+        sound.wrong();
+        catcherLives--;
+        updateCatcherLives();
+      }
+    }
+
+    function updateCatcherLives() {
+      let hearts = '';
+      for (let i = 0; i < catcherLives; i++) hearts += '❤️';
+      document.getElementById('catcher-lives').innerText = hearts || '💀';
+
+      if (catcherLives <= 0) {
+        catcherActive = false;
+        clearInterval(starInterval);
+        document.getElementById('active-star').style.display = 'none';
+        document.getElementById('catcher-start-btn').style.display = 'inline-block';
+        showModal('Game Over! 🌟', `Final Catch Score: ${catcherScore} points!`);
+      } else {
+        spawnStar();
+      }
+    }
+
+    /* =========================================================
+       GAME 5: SUSHI KANA SCRAMBLE
+    ========================================================== */
+    let scrambleIndex = 0;
+    let currentScramble = null;
+    let placedLetters = [];
+
+    function initScrambleWord() {
+      currentScramble = LESSON_15_VOCAB[scrambleIndex];
+      document.getElementById('scramble-icon').innerText = currentScramble.icon;
+      document.getElementById('scramble-en').innerText = currentScramble.en;
+      document.getElementById('scramble-kanji').innerText = `Kanji: ${currentScramble.kanji}`;
+
+      const kanaChars = currentScramble.kana.split('');
+      placedLetters = [];
+
+      // Render Empty Slots
+      const slotsContainer = document.getElementById('scramble-slots');
+      slotsContainer.innerHTML = '';
+      kanaChars.forEach(() => {
+        const slot = document.createElement('div');
+        slot.className = 'slot-box';
+        slot.innerText = '';
+        slotsContainer.appendChild(slot);
+      });
+
+      // Render Scrambled Kana Tiles
+      const tilesContainer = document.getElementById('scramble-tiles');
+      tilesContainer.innerHTML = '';
+      const shuffled = [...kanaChars].sort(() => Math.random() - 0.5);
+
+      shuffled.forEach(char => {
+        const tile = document.createElement('div');
+        tile.className = 'kana-tile';
+        tile.innerText = char;
+        tile.onclick = () => tapKanaTile(char, tile);
+        tilesContainer.appendChild(tile);
+      });
+    }
+
+    function tapKanaTile(char, tileEl) {
+      if (tileEl.classList.contains('used')) return;
+      sound.pop();
+      tileEl.classList.add('used');
+
+      placedLetters.push({ char, tileEl });
+      updateScrambleSlots();
+
+      const kanaTarget = currentScramble.kana;
+      if (placedLetters.length === kanaTarget.length) {
+        const spelling = placedLetters.map(p => p.char).join('');
+        if (spelling === kanaTarget) {
+          // Success!
+          sound.correct();
+          speakJapanese(currentScramble.kana);
+          addXP(25);
+          fireConfetti(60);
+          setTimeout(() => {
+            nextScrambleWord();
+          }, 1000);
+        } else {
+          // Wrong order
+          sound.wrong();
+          setTimeout(clearScramble, 600);
+        }
+      }
+    }
+
+    function updateScrambleSlots() {
+      const slotEls = document.querySelectorAll('.slot-box');
+      slotEls.forEach((slot, idx) => {
+        slot.innerText = placedLetters[idx] ? placedLetters[idx].char : '';
+      });
+    }
+
+    function clearScramble() {
+      sound.pop();
+      placedLetters.forEach(p => p.tileEl.classList.remove('used'));
+      placedLetters = [];
+      updateScrambleSlots();
+    }
+
+    function hintScramble() {
+      sound.pop();
+      const nextIdx = placedLetters.length;
+      const targetChar = currentScramble.kana[nextIdx];
+      if (!targetChar) return;
+
+      const availableTile = [...document.querySelectorAll('.kana-tile')].find(
+        t => !t.classList.contains('used') && t.innerText === targetChar
+      );
+      if (availableTile) {
+        tapKanaTile(targetChar, availableTile);
+      }
+    }
+
+    function nextScrambleWord() {
+      scrambleIndex = (scrambleIndex + 1) % LESSON_15_VOCAB.length;
+      initScrambleWord();
+    }
+
+    /* =========================================================
+       CELEBRATION CONFETTI ENGINE
+    ========================================================== */
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function fireConfetti(count = 70) {
+      const colors = ['#FF7E9E', '#FFB8D2', '#79E2B6', '#FFE373', '#8CD9FF', '#C6B5FF'];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.8) * 14,
+          size: Math.random() * 8 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rot: Math.random() * 360,
+          vrot: (Math.random() - 0.5) * 10,
+          alpha: 1
+        });
+      }
+    }
+
+    function updateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.25; // gravity
+        p.rot += p.vrot;
+        p.alpha -= 0.012;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rot * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillRect(-p.size / 2, -
