@@ -1700,4 +1700,40 @@
         ctx.rotate((p.rot * Math.PI) / 180);
         ctx.fillStyle = p.color;
         ctx.globalAlpha = Math.max(0, p.alpha);
-        ctx.fillRect(-p.size / 2, -
+	ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+      requestAnimationFrame(updateConfetti);
+    }
+    requestAnimationFrame(updateConfetti);
+
+    /* =========================================================
+       MODAL CONTROLS & INITIALIZATION
+    ========================================================== */
+    function showModal(title, desc) {
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-desc').innerText = desc;
+      document.getElementById('win-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      sound.pop();
+      document.getElementById('win-modal').classList.remove('active');
+      
+      // If closing from memory or quiz, reset the current game mode
+      const activeSection = document.querySelector('.game-section.active').id;
+      if (activeSection === 'tab-memory') initMemoryGame();
+      if (activeSection === 'tab-quiz') startQuiz();
+    }
+
+    // Initialize initial flashcard on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCard();
+    });
+  </script>
+</body>
+</html>
